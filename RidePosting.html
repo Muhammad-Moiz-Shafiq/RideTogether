@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RideTogether - Post Your Ride</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav
+      class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top"
+    >
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <i class="fas fa-car-side text-primary me-2"></i>
+          <strong>RideTogether</strong>
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#"
+                ><i class="fas fa-search me-1"></i> Search Rides</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="#"
+                ><i class="fas fa-plus-circle me-1"></i> Offer a Ride</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"
+                ><i class="fas fa-question-circle me-1"></i> Help Center</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link btn btn-primary text-white px-3" href="#"
+                ><i class="fas fa-user me-1"></i> Login/Register</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="hero-section py-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto text-center">
+            <h1 class="display-4 fw-bold text-white mb-3">Offer Your Ride</h1>
+            <p class="lead text-white mb-0">
+              Share your journey, reduce costs, and help fellow students
+            </p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Section -->
+    <section class="py-5 bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto">
+            <!-- Form Container -->
+            <div class="card shadow-sm border-0 rounded-3">
+              <div class="card-body p-4 p-md-5">
+                <!-- Progress Steps -->
+                <div class="mb-4">
+                  <div
+                    class="d-flex justify-content-between position-relative mb-4"
+                  >
+                    <div class="step-item active">
+                      <div class="step-circle">1</div>
+                      <div class="step-title">Route Details</div>
+                    </div>
+                    <div class="step-item">
+                      <div class="step-circle">2</div>
+                      <div class="step-title">Trip Details</div>
+                    </div>
+                    <div class="step-item">
+                      <div class="step-circle">3</div>
+                      <div class="step-title">Preferences</div>
+                    </div>
+                    <div class="step-item">
+                      <div class="step-circle">4</div>
+                      <div class="step-title">Contact Info</div>
+                    </div>
+                    <div
+                      class="progress position-absolute"
+                      style="width: 100%; height: 2px; top: 21px; z-index: 0"
+                    >
+                      <div
+                        class="progress-bar bg-primary"
+                        role="progressbar"
+                        style="width: 25%"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Multi-Step Form -->
+                <form id="ridePostingForm" method="post" action="#">
+                  <!-- Step 1: Route Details -->
+                  <div class="step-content active" id="step1">
+                    <h3 class="mb-4 fw-bold">Where are you driving?</h3>
+
+                    <div class="mb-4">
+                      <label class="form-label">Starting Point</label>
+                      <div class="input-group mb-2">
+                        <span class="input-group-text bg-light">
+                          <i class="fas fa-map-marker-alt text-primary"></i>
+                        </span>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Enter your starting location"
+                          required
+                        />
+                      </div>
+                      <div class="form-check ms-2">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="isNustStart"
+                          name="nustCampus"
+                          value="start"
+                        />
+                        <label class="form-check-label small" for="isNustStart"
+                          >This is NUST campus</label
+                        >
+                      </div>
+                    </div>
+
+                    <div class="mb-4">
+                      <label class="form-label">Destination</label>
+                      <div class="input-group mb-2">
+                        <span class="input-group-text bg-light">
+                          <i class="fas fa-map-marker text-primary"></i>
+                        </span>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Enter your destination"
+                          required
+                        />
+                      </div>
+                      <div class="form-check ms-2">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="isNustDest"
+                          name="nustCampus"
+                          value="dest"
+                        />
+                        <label class="form-check-label small" for="isNustDest"
+                          >This is NUST campus</label
+                        >
+                      </div>
+                    </div>
+
+                    <div class="mb-4">
+                      <label class="form-label">Add Stops (Optional)</label>
+                      <div id="stopsContainer">
+                        <div class="input-group mb-2">
+                          <span class="input-group-text bg-light">
+                            <i class="fas fa-map-pin text-primary"></i>
+                          </span>
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Enter a stop on your route"
+                          />
+                          <button
+                            type="button"
+                            class="btn btn-outline-secondary"
+                          >
+                            <i class="fas fa-times"></i>
+                          </button>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        class="btn btn-outline-primary btn-sm mt-2"
+                        id="addStopBtn"
+                      >
+                        <i class="fas fa-plus me-1"></i> Add another stop
+                      </button>
+                    </div>
+
+                    <div class="d-flex justify-content-end">
+                      <button
+                        type="button"
+                        class="btn btn-primary btn-lg px-4 next-step"
+                      >
+                        Continue <i class="fas fa-arrow-right ms-2"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Step 2: Trip Details -->
+                  <div class="step-content" id="step2">
+                    <h3 class="mb-4 fw-bold">When are you going?</h3>
+
+                    <!-- Ride Frequency Options -->
+                    <div class="mb-4">
+                      <label class="form-label">Ride Frequency</label>
+                      <div class="d-flex">
+                        <div class="form-check me-4">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            name="rideFrequency"
+                            id="dailyBasis"
+                            value="daily"
+                            checked
+                          />
+                          <label class="form-check-label" for="dailyBasis"
+                            >Daily basis</label
+                          >
+                        </div>
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            name="rideFrequency"
+                            id="monthlyBasis"
+                            value="monthly"
+                          />
+                          <label class="form-check-label" for="monthlyBasis"
+                            >Monthly basis</label
+                          >
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Daily Basis Options -->
+                    <div id="dailyBasisOptions">
+                      <!-- Days available for daily basis -->
+                      <div class="mb-4">
+                        <label class="form-label">Days Available</label>
+                        <div class="row g-2">
+                          <!-- Repeat for all weekdays -->
+                          <div class="col-md-4 col-6">
+                            <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="monday-daily"
+                                name="dailyDays[]"
+                                value="monday"
+                                data-daily-required
+                              />
+                              <label class="form-check-label" for="monday-daily"
+                                >Monday</label
+                              >
+                            </div>
+                          </div>
+                          <div class="col-md-4 col-6">
+                            <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="tuesday-daily"
+                                name="dailyDays[]"
+                                value="tuesday"
+                                data-daily-required
+                              />
+                              <label
+                                class="form-check-label"
+                                for="tuesday-daily"
+                                >Tuesday</label
+                              >
+                            </div>
+                          </div>
+                          <!-- Wednesday -->
+                          <div class="col-md-4 col-6">
+                            <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="wednesday-daily"
+                                name="dailyDays[]"
+                                value="wednesday"
+                                data-daily-required
+                              />
+                              <label
+                                class="form-check-label"
+                                for="wednesday-daily"
+                                >Wednesday</label
+                              >
+                            </div>
+                          </div>
+                          <!-- Thursday -->
+                          <div class="col-md-4 col-6">
+                            <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="thursday-daily"
+                                name="dailyDays[]"
+                                value="thursday"
+                                data-daily-required
+                              />
+                              <label
+                                class="form-check-label"
+                                for="thursday-daily"
+                                >Thursday</label
+                              >
+                            </div>
+                          </div>
+                          <!-- Friday -->
+                          <div class="col-md-4 col-6">
+                            <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="friday-daily"
+                                name="dailyDays[]"
+                                value="friday"
+                                data-daily-required
+                              />
+                              <label class="form-check-label" for="friday-daily"
+                                >Friday</label
+                              >
+                            </div>
+                          </div>
+                          <!-- Saturday -->
+                          <div class="col-md-4 col-6">
+                            <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="saturday-daily"
+                                name="dailyDays[]"
+                                value="saturday"
+                                data-daily-required
+                              />
+                              <label
+                                class="form-check-label"
+                                for="saturday-daily"
+                                >Saturday</label
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Trip Type -->
+                      <div class="mb-4">
+                        <label class="form-label">Trip Type</label>
+                        <div class="d-flex">
+                          <div class="form-check me-4">
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              name="tripType"
+                              id="oneWay"
+                              value="one-way"
+                              data-daily-required
+                              checked
+                            />
+                            <label class="form-check-label" for="oneWay"
+                              >One-way trip</label
+                            >
+                          </div>
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              name="tripType"
+                              id="roundTrip"
+                              value="round-trip"
+                              data-daily-required
+                            />
+                            <label class="form-check-label" for="roundTrip"
+                              >Round trip</label
+                            >
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Daily Departure -->
+                      <div class="mb-4">
+                        <label class="form-label">Departure Time</label>
+                        <div class="input-group">
+                          <span class="input-group-text bg-light">
+                            <i class="fas fa-clock text-primary"></i>
+                          </span>
+                          <input
+                            type="time"
+                            class="form-control"
+                            name="dailyDeparture"
+                            data-daily-required
+                          />
+                        </div>
+                      </div>
+
+                      <!-- Return Time (if round trip) -->
+                      <div class="mb-4 return-time-container">
+                        <label class="form-label">Return Time</label>
+                        <div class="input-group">
+                          <span class="input-group-text bg-light">
+                            <i class="fas fa-clock text-primary"></i>
+                          </span>
+                          <input
+                            type="time"
+                            class="form-control"
+                            name="dailyReturn"
+                          />
+                        </div>
+                      </div>
+
+                      <!-- Daily Price -->
+                      <div class="mb-4">
+                        <label class="form-label">Price per seat (PKR)</label>
+                        <div class="input-group">
+                          <span class="input-group-text bg-light">
+                            <i class="fas fa-money-bill-wave text-primary"></i>
+                          </span>
+                          <input
+                            type="number"
+                            class="form-control"
+                            name="dailyPrice"
+                            placeholder="Enter daily price"
+                            min="0"
+                            data-daily-required
+                          />
+                        </div>
+                        <small class="text-muted ms-2"
+                          >Suggested: PKR 150-300 for campus routes</small
+                        >
+                      </div>
+                    </div>
+
+                    <!-- Monthly Basis Options -->
+                    <div id="monthlyBasisOptions" class="d-none">
+                      <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                          <label class="form-label">Departure Time</label>
+                          <div class="input-group">
+                            <span class="input-group-text bg-light">
+                              <i class="fas fa-clock text-primary"></i>
+                            </span>
+                            <input
+                              type="time"
+                              class="form-control"
+                              name="monthlyDeparture"
+                              data-monthly-required
+                            />
+                          </div>
+                        </div>
+
+                        <div class="col-md-6">
+                          <label class="form-label">Return Time</label>
+                          <div class="input-group">
+                            <span class="input-group-text bg-light">
+                              <i class="fas fa-clock text-primary"></i>
+                            </span>
+                            <input
+                              type="time"
+                              class="form-control"
+                              name="monthlyReturn"
+                              data-monthly-required
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Monthly Days -->
+                      <div class="mb-4">
+                        <label class="form-label">Days Available</label>
+                        <div class="row g-2">
+                          <!-- Repeat for all weekdays -->
+                          <div class="col-md-4 col-6">
+                            <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="monday"
+                                name="monthlyDays[]"
+                                value="monday"
+                                data-monthly-required
+                              />
+                              <label class="form-check-label" for="monday"
+                                >Monday</label
+                              >
+                            </div>
+                          </div>
+                          <!-- Repeat for other weekdays... -->
+                          <div class="col-md-4 col-6">
+                            <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="tuesday"
+                                name="monthlyDays[]"
+                                value="tuesday"
+                                data-monthly-required
+                              />
+                              <label class="form-check-label" for="tuesday"
+                                >Tuesday</label
+                              >
+                            </div>
+                          </div>
+                          <!-- ... Wednesday ... -->
+                          <div class="col-md-4 col-6">
+                            <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="wednesday"
+                                name="monthlyDays[]"
+                                value="wednesday"
+                                data-monthly-required
+                              />
+                              <label class="form-check-label" for="wednesday"
+                                >Wednesday</label
+                              >
+                            </div>
+                          </div>
+                          <!-- ... Thursday ... -->
+                          <div class="col-md-4 col-6">
+                            <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="thursday"
+                                name="monthlyDays[]"
+                                value="thursday"
+                                data-monthly-required
+                              />
+                              <label class="form-check-label" for="thursday"
+                                >Thursday</label
+                              >
+                            </div>
+                          </div>
+                          <!-- ... Friday ... -->
+                          <div class="col-md-4 col-6">
+                            <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="friday"
+                                name="monthlyDays[]"
+                                value="friday"
+                                data-monthly-required
+                              />
+                              <label class="form-check-label" for="friday"
+                                >Friday</label
+                              >
+                            </div>
+                          </div>
+                          <!-- ... Saturday ... -->
+                          <div class="col-md-4 col-6">
+                            <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="saturday"
+                                name="monthlyDays[]"
+                                value="saturday"
+                                data-monthly-required
+                              />
+                              <label class="form-check-label" for="saturday"
+                                >Saturday</label
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Monthly Price -->
+                      <div class="mb-4">
+                        <label class="form-label">Monthly price (PKR)</label>
+                        <div class="input-group">
+                          <span class="input-group-text bg-light">
+                            <i class="fas fa-money-bill-wave text-primary"></i>
+                          </span>
+                          <input
+                            type="number"
+                            class="form-control"
+                            name="monthlyPrice"
+                            placeholder="Enter monthly rate in PKR"
+                            min="0"
+                            data-monthly-required
+                          />
+                        </div>
+                        <small class="text-muted ms-2"
+                          >Suggested: PKR 3000-5000 for campus routes</small
+                        >
+                      </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                      <button
+                        type="button"
+                        class="btn btn-outline-secondary btn-lg px-4 prev-step"
+                      >
+                        <i class="fas fa-arrow-left me-2"></i> Back
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-primary btn-lg px-4 next-step"
+                      >
+                        Continue <i class="fas fa-arrow-right ms-2"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Step 3: Preferences -->
+                  <div class="step-content" id="step3">
+                    <h3 class="mb-4 fw-bold">Set your preferences</h3>
+
+                    <!-- Vehicle Type Selection -->
+                    <div class="mb-4">
+                      <label class="form-label">Vehicle Type</label>
+                      <div class="d-flex">
+                        <div class="form-check me-4">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            name="vehicleType"
+                            id="carType"
+                            checked
+                          />
+                          <label class="form-check-label" for="carType">
+                            <i class="fas fa-car me-2 text-primary"></i> Car
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            name="vehicleType"
+                            id="bikeType"
+                          />
+                          <label class="form-check-label" for="bikeType">
+                            <i class="fas fa-motorcycle me-2 text-primary"></i>
+                            Bike
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Car Details (default shown) -->
+                    <div id="carDetailsSection" class="mb-4">
+                      <label class="form-label">Vehicle Details</label>
+                      <div class="row g-3">
+                        <div class="col-md-6">
+                          <div class="input-group">
+                            <span class="input-group-text bg-light">
+                              <i class="fas fa-car text-primary"></i>
+                            </span>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Car make & model"
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="input-group">
+                            <span class="input-group-text bg-light">
+                              <i class="fas fa-palette text-primary"></i>
+                            </span>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Car color"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Passengers section (only for cars) -->
+                    <div id="passengersSection" class="mb-4">
+                      <label class="form-label"
+                        >How many passengers can you take?</label
+                      >
+                      <div class="input-group">
+                        <span class="input-group-text bg-light">
+                          <i class="fas fa-user-friends text-primary"></i>
+                        </span>
+                        <select class="form-select" required>
+                          <option value="" selected disabled>
+                            Select number of seats
+                          </option>
+                          <option value="1">1 passenger</option>
+                          <option value="2">2 passengers</option>
+                          <option value="3">3 passengers</option>
+                          <option value="4">4 passengers</option>
+                          <option value="5">5 passengers</option>
+                          <option value="6">6+ passengers</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <!-- Bike Details (hidden by default) -->
+                    <div id="bikeDetailsSection" class="mb-4 d-none">
+                      <label class="form-label">Vehicle Details</label>
+                      <div class="row g-3">
+                        <div class="col-md-6">
+                          <div class="input-group">
+                            <span class="input-group-text bg-light">
+                              <i class="fas fa-motorcycle text-primary"></i>
+                            </span>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Bike make & model"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="input-group">
+                            <span class="input-group-text bg-light">
+                              <i class="fas fa-palette text-primary"></i>
+                            </span>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Bike color"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Note: No passenger selection for bikes as only 1 passenger is allowed -->
+                      <div class="mt-2 text-muted">
+                        <small
+                          ><i class="fas fa-info-circle me-1"></i> Bikes can
+                          take only 1 passenger</small
+                        >
+                      </div>
+                    </div>
+
+                    <!-- Car Preferences -->
+                    <div id="carPreferencesSection" class="mb-4">
+                      <label class="form-label">Ride Preferences</label>
+                      <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                          <div class="row g-3">
+                            <div class="col-md-6">
+                              <div class="form-check mb-2">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  id="airConditioned"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="airConditioned"
+                                >
+                                  <i
+                                    class="fas fa-snowflake me-2 text-primary"
+                                  ></i>
+                                  Air conditioned
+                                </label>
+                              </div>
+                              <div class="form-check mb-2">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  id="smokingAllowed"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="smokingAllowed"
+                                >
+                                  <i
+                                    class="fas fa-smoking me-2 text-primary"
+                                  ></i>
+                                  Smoking allowed
+                                </label>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-check mb-2">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  id="petsAllowed"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="petsAllowed"
+                                >
+                                  <i class="fas fa-paw me-2 text-primary"></i>
+                                  Pets allowed
+                                </label>
+                              </div>
+                              <div class="form-check mb-2">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  id="musicAllowed"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="musicAllowed"
+                                >
+                                  <i class="fas fa-music me-2 text-primary"></i>
+                                  Music during trip
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Bike Preferences -->
+                    <div id="bikePreferencesSection" class="mb-4 d-none">
+                      <label class="form-label">Ride Preferences</label>
+                      <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                          <div class="row g-3">
+                            <div class="col-md-6">
+                              <div class="form-check mb-2">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  id="helmetProvided"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="helmetProvided"
+                                >
+                                  <i
+                                    class="fas fa-hard-hat me-2 text-primary"
+                                  ></i>
+                                  Helmet provided
+                                </label>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-check mb-2">
+                                <input
+                                  class="form-check-input"
+                                  type="checkbox"
+                                  id="rainGearAvailable"
+                                />
+                                <label
+                                  class="form-check-label"
+                                  for="rainGearAvailable"
+                                >
+                                  <i
+                                    class="fas fa-cloud-rain me-2 text-primary"
+                                  ></i>
+                                  Rain gear available
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mb-4">
+                      <label class="form-label"
+                        >Additional Information (Optional)</label
+                      >
+                      <div class="input-group">
+                        <span class="input-group-text bg-light">
+                          <i class="fas fa-info-circle text-primary"></i>
+                        </span>
+                        <textarea
+                          class="form-control"
+                          rows="3"
+                          placeholder="Add any details that might be helpful for passengers"
+                        ></textarea>
+                      </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                      <button
+                        type="button"
+                        class="btn btn-outline-secondary btn-lg px-4 prev-step"
+                      >
+                        <i class="fas fa-arrow-left me-2"></i> Back
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-primary btn-lg px-4 next-step"
+                      >
+                        Continue <i class="fas fa-arrow-right ms-2"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Step 4: Contact Details -->
+                  <div class="step-content" id="step4">
+                    <h3 class="mb-4 fw-bold">Contact Details</h3>
+
+                    <div class="mb-4">
+                      <label class="form-label"
+                        >Your Phone Number
+                        <span class="text-danger">*</span></label
+                      >
+                      <div class="input-group mb-2">
+                        <span class="input-group-text bg-light">
+                          <i class="fas fa-phone text-primary"></i>
+                        </span>
+                        <input
+                          type="tel"
+                          class="form-control"
+                          placeholder="Enter your phone number"
+                          required
+                        />
+                      </div>
+                      <div class="form-check ms-2">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="primaryWhatsapp"
+                        />
+                        <label
+                          class="form-check-label small"
+                          for="primaryWhatsapp"
+                        >
+                          <i class="fab fa-whatsapp text-success me-1"></i>
+                          This number is on WhatsApp
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="mb-4">
+                      <label class="form-label">Alternate Phone Number</label>
+                      <div class="input-group mb-2">
+                        <span class="input-group-text bg-light">
+                          <i class="fas fa-phone-alt text-primary"></i>
+                        </span>
+                        <input
+                          type="tel"
+                          class="form-control"
+                          placeholder="Enter alternate contact number (Optional)"
+                        />
+                      </div>
+                      <div class="form-check ms-2">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="alternateWhatsapp"
+                        />
+                        <label
+                          class="form-check-label small"
+                          for="alternateWhatsapp"
+                        >
+                          <i class="fab fa-whatsapp text-success me-1"></i>
+                          This number is on WhatsApp
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="mb-4">
+                      <label class="form-label"
+                        >Email Address <span class="text-danger">*</span></label
+                      >
+                      <div class="input-group">
+                        <span class="input-group-text bg-light">
+                          <i class="fas fa-envelope text-primary"></i>
+                        </span>
+                        <input
+                          type="email"
+                          class="form-control"
+                          placeholder="Enter your email address"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div class="mb-4">
+                      <label class="form-label">Preferred Contact Method</label>
+                      <div class="d-flex flex-wrap">
+                        <div class="form-check me-4 mb-2">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            name="contactPreference"
+                            id="preferPhone"
+                            checked
+                          />
+                          <label class="form-check-label" for="preferPhone">
+                            <i class="fas fa-phone me-2 text-primary"></i> Phone
+                            Call
+                          </label>
+                        </div>
+                        <div class="form-check me-4 mb-2">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            name="contactPreference"
+                            id="preferWhatsapp"
+                          />
+                          <label class="form-check-label" for="preferWhatsapp">
+                            <i class="fab fa-whatsapp me-2 text-primary"></i>
+                            WhatsApp
+                          </label>
+                        </div>
+                        <div class="form-check mb-2">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            name="contactPreference"
+                            id="preferEmail"
+                          />
+                          <label class="form-check-label" for="preferEmail">
+                            <i class="fas fa-envelope me-2 text-primary"></i>
+                            Email
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mb-4">
+                      <div class="card bg-light border-0">
+                        <div class="card-body">
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              id="shareContactConsent"
+                              required
+                            />
+                            <label
+                              class="form-check-label"
+                              for="shareContactConsent"
+                            >
+                              I consent to share my contact details with riders
+                              who book my ride
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mb-4">
+                      <div class="card bg-light border-0">
+                        <div class="card-body">
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              id="termsAgreed"
+                              required
+                            />
+                            <label class="form-check-label" for="termsAgreed">
+                              I agree to the
+                              <a href="#" class="link-primary"
+                                >terms and conditions</a
+                              >
+                              and
+                              <a href="#" class="link-primary"
+                                >privacy policy</a
+                              >
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                      <button
+                        type="button"
+                        class="btn btn-outline-secondary btn-lg px-4 prev-step"
+                      >
+                        <i class="fas fa-arrow-left me-2"></i> Back
+                      </button>
+                      <button
+                        type="submit"
+                        class="btn btn-primary btn-lg px-4"
+                        onclick=""
+                      >
+                        <i class="fas fa-check me-2"></i> Post Your Ride
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Animated Footer -->
+    <footer class="py-5 bg-dark text-white footer-animated">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-4">
+            <h5><i class="fas fa-car-side me-2"></i> RideTogether</h5>
+            <p class="text-muted">
+              Connecting NUST students for smarter, affordable, and eco-friendly
+              commuting.
+            </p>
+            <div class="social-links mt-3">
+              <a href="#" class="text-white me-3"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a href="#" class="text-white me-3"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a href="#" class="text-white me-3"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="#" class="text-white"
+                ><i class="fab fa-linkedin-in"></i
+              ></a>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-4 col-6">
+            <h6>Quick Links</h6>
+            <ul class="list-unstyled footer-links">
+              <li><a href="#" class="text-muted">Search Rides</a></li>
+              <li>
+                <a href="RidePosting.html" class="text-muted">Offer a Ride</a>
+              </li>
+              <li><a href="#" class="text-muted">Help Center</a></li>
+              <li><a href="#" class="text-muted">About Us</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-2 col-md-4 col-6">
+            <h6>Resources</h6>
+            <ul class="list-unstyled footer-links">
+              <li><a href="#" class="text-muted">How It Works</a></li>
+              <li><a href="#" class="text-muted">Safety Guidelines</a></li>
+              <li><a href="#" class="text-muted">Terms of Service</a></li>
+              <li><a href="#" class="text-muted">Privacy Policy</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-4">
+            <h6>Contact Us</h6>
+            <ul class="list-unstyled footer-links">
+              <li class="text-white">
+                <i class="fas fa-envelope me-2"></i> support@ridetogether.edu.pk
+              </li>
+              <li class="text-white">
+                <i class="fas fa-phone me-2"></i> +92 51 1234 5678
+              </li>
+              <li class="text-white">
+                <i class="fas fa-map-marker-alt me-2"></i> NUST Campus, H-12,
+                Islamabad
+              </li>
+            </ul>
+            <div class="mt-3">
+              <select
+                class="form-select form-select-sm bg-dark text-white border-secondary"
+              >
+                <option selected>English</option>
+                <option>Urdu</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <hr class="my-4 border-secondary" />
+
+        <div class="text-center text-muted">
+          <small
+            >&copy; 2025 RideTogether. All rights reserved. Built for NUST
+            community.</small
+          >
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="RidePosting.js"></script>
+  </body>
+</html>
+<!-- End of HTML Document -->
