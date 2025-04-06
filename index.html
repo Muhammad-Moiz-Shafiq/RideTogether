@@ -1,531 +1,796 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RideTogether - NUST Carpooling Platform</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css" />
     <!-- Add AOS library and GSAP for advanced animations -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top fade-in">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="fas fa-car-side text-primary me-2"></i>
-                <strong>RideTogether</strong>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-search me-1"></i> Search Rides</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-plus-circle me-1"></i> Offer a Ride</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-question-circle me-1"></i> Help Center</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary text-white px-3" href="#"><i class="fas fa-user me-1"></i> Login/Register</a>
-                    </li>
-                </ul>
-            </div>
+    <nav
+      class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top fade-in"
+    >
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <i class="fas fa-car-side text-primary me-2"></i>
+          <strong>RideTogether</strong>
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#"
+                ><i class="fas fa-search me-1"></i> Search Rides</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="RidePosting.html"
+                ><i class="fas fa-plus-circle me-1"></i> Offer a Ride</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"
+                ><i class="fas fa-question-circle me-1"></i> Help Center</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link btn btn-primary text-white px-3" href="#"
+                ><i class="fas fa-user me-1"></i> Login/Register</a
+              >
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
 
     <!-- Updated Hero Section without scroll indicator -->
     <header class="hero-section">
-        <div class="hero-parallax-bg"></div>
-        <div class="container position-relative">
-            <div class="row mb-4">
-                <div class="col-lg-7">
-                    <div class="hero-content">
-                        <h1 class="display-4 fw-bold text-white" data-aos="fade-right" data-aos-duration="1000">Find Your Campus Ride</h1>
-                        <p class="lead text-white tagline parallax-element" data-speed="0.3" data-aos="fade-right" data-aos-delay="300">Exclusive carpooling for NUST students. Save money, make friends, and travel together.</p>
-                    </div>
-                </div>
+      <div class="hero-parallax-bg"></div>
+      <div class="container position-relative">
+        <div class="row mb-4">
+          <div class="col-lg-7">
+            <div class="hero-content">
+              <h1
+                class="display-4 fw-bold text-white"
+                data-aos="fade-right"
+                data-aos-duration="1000"
+              >
+                Find Your Campus Ride
+              </h1>
+              <p
+                class="lead text-white tagline parallax-element"
+                data-speed="0.3"
+                data-aos="fade-right"
+                data-aos-delay="300"
+              >
+                Exclusive carpooling for NUST students. Save money, make
+                friends, and travel together.
+              </p>
             </div>
-            
-            <div class="row align-items-end">
-                <div class="col-lg-5">
-                    <div class="search-box" data-aos="fade-up" data-aos-delay="600">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Leaving from</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light"><i class="fas fa-map-marker-alt"></i></span>
-                                    <input type="text" class="form-control" placeholder="Enter location">
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-6">
-                                <label class="form-label">Going to</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light"><i class="fas fa-map-marker"></i></span>
-                                    <input type="text" class="form-control" placeholder="Enter destination">
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-6">
-                                <label class="form-label">Date</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light"><i class="fas fa-calendar"></i></span>
-                                    <input type="text" class="form-control" placeholder="mm/dd/yyyy">
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-6">
-                                <label class="form-label">Passengers</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light"><i class="fas fa-user-friends"></i></span>
-                                    <select class="form-select">
-                                        <option selected>1 passenger</option>
-                                        <option>2 passengers</option>
-                                        <option>3 passengers</option>
-                                        <option>4 passengers</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            <div class="col-12">
-                                <button class="btn btn-primary w-100 py-2" type="submit">
-                                    <i class="fas fa-search me-2"></i> Search
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-6 offset-lg-1">
-                    <div class="campus-image-container" data-aos="zoom-in" data-aos-delay="800">
-                        <div class="floating-animation">
-                            <img src="picture1.png" alt="NUST Campus" class="campus-image">
-                        </div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
+
+        <div class="row align-items-end">
+          <div class="col-lg-5">
+            <div class="search-box" data-aos="fade-up" data-aos-delay="600">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Leaving from</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-light"
+                      ><i class="fas fa-map-marker-alt"></i
+                    ></span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter location"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Going to</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-light"
+                      ><i class="fas fa-map-marker"></i
+                    ></span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter destination"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Date</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-light"
+                      ><i class="fas fa-calendar"></i
+                    ></span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="mm/dd/yyyy"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Passengers</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-light"
+                      ><i class="fas fa-user-friends"></i
+                    ></span>
+                    <select class="form-select">
+                      <option selected>1 passenger</option>
+                      <option>2 passengers</option>
+                      <option>3 passengers</option>
+                      <option>4 passengers</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <button class="btn btn-primary w-100 py-2" type="submit">
+                    <i class="fas fa-search me-2"></i> Search
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 offset-lg-1">
+            <div
+              class="campus-image-container"
+              data-aos="zoom-in"
+              data-aos-delay="800"
+            >
+              <div class="floating-animation">
+                <img
+                  src="picture1.png"
+                  alt="NUST Campus"
+                  class="campus-image"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </header>
 
     <!-- Why Choose Us Section with Interactive Cards -->
     <section class="py-5 bg-light features-section">
-        <div class="container">
-            <h2 class="text-center mb-5" data-aos="fade-up">Why Choose RideTogether?</h2>
-            
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm interactive-card" data-aos="fade-up" data-aos-delay="100">
-                        <div class="card-body text-center p-4">
-                            <div class="feature-icon-wrapper" data-aos="zoom-in" data-aos-delay="300">
-                                <div class="feature-icon bg-primary text-white mb-3">
-                                    <i class="fas fa-coins fa-2x"></i>
-                                </div>
-                                <div class="feature-icon-ripple"></div>
-                            </div>
-                            <h4>Affordable Rides</h4>
-                            <p class="text-muted">Split costs with fellow students and save up to 75% compared to taking a taxi alone.</p>
-                        </div>
-                    </div>
+      <div class="container">
+        <h2 class="text-center mb-5" data-aos="fade-up">
+          Why Choose RideTogether?
+        </h2>
+
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div
+              class="card h-100 border-0 shadow-sm interactive-card"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
+              <div class="card-body text-center p-4">
+                <div
+                  class="feature-icon-wrapper"
+                  data-aos="zoom-in"
+                  data-aos-delay="300"
+                >
+                  <div class="feature-icon bg-primary text-white mb-3">
+                    <i class="fas fa-coins fa-2x"></i>
+                  </div>
+                  <div class="feature-icon-ripple"></div>
                 </div>
-                
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm interactive-card" data-aos="fade-up" data-aos-delay="200">
-                        <div class="card-body text-center p-4">
-                            <div class="feature-icon-wrapper" data-aos="zoom-in" data-aos-delay="400">
-                                <div class="feature-icon bg-primary text-white mb-3">
-                                    <i class="fas fa-user-check fa-2x"></i>
-                                </div>
-                                <div class="feature-icon-ripple"></div>
-                            </div>
-                            <h4>Verified NUST Students</h4>
-                            <p class="text-muted">Safety first! All users are verified NUST students with institutional emails.</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm interactive-card" data-aos="fade-up" data-aos-delay="300">
-                        <div class="card-body text-center p-4">
-                            <div class="feature-icon-wrapper" data-aos="zoom-in" data-aos-delay="600">
-                                <div class="feature-icon bg-primary text-white mb-3">
-                                    <i class="fas fa-leaf fa-2x"></i>
-                                </div>
-                                <div class="feature-icon-ripple"></div>
-                            </div>
-                            <h4>Eco-Friendly Travel</h4>
-                            <p class="text-muted">Every shared ride reduces carbon emissions and eases campus parking congestion.</p>
-                        </div>
-                    </div>
-                </div>
+                <h4>Affordable Rides</h4>
+                <p class="text-muted">
+                  Split costs with fellow students and save up to 75% compared
+                  to taking a taxi alone.
+                </p>
+              </div>
             </div>
+          </div>
+
+          <div class="col-md-4">
+            <div
+              class="card h-100 border-0 shadow-sm interactive-card"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              <div class="card-body text-center p-4">
+                <div
+                  class="feature-icon-wrapper"
+                  data-aos="zoom-in"
+                  data-aos-delay="400"
+                >
+                  <div class="feature-icon bg-primary text-white mb-3">
+                    <i class="fas fa-user-check fa-2x"></i>
+                  </div>
+                  <div class="feature-icon-ripple"></div>
+                </div>
+                <h4>Verified NUST Students</h4>
+                <p class="text-muted">
+                  Safety first! All users are verified NUST students with
+                  institutional emails.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div
+              class="card h-100 border-0 shadow-sm interactive-card"
+              data-aos="fade-up"
+              data-aos-delay="300"
+            >
+              <div class="card-body text-center p-4">
+                <div
+                  class="feature-icon-wrapper"
+                  data-aos="zoom-in"
+                  data-aos-delay="600"
+                >
+                  <div class="feature-icon bg-primary text-white mb-3">
+                    <i class="fas fa-leaf fa-2x"></i>
+                  </div>
+                  <div class="feature-icon-ripple"></div>
+                </div>
+                <h4>Eco-Friendly Travel</h4>
+                <p class="text-muted">
+                  Every shared ride reduces carbon emissions and eases campus
+                  parking congestion.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- Added Statistics Section -->
     <section class="statistics-section py-5 bg-primary text-white">
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="stat-item">
-                        <div class="stat-icon">
-                            <i class="fas fa-users fa-3x mb-3"></i>
-                        </div>
-                        <h3 class="counter-value" data-count="5000">0</h3>
-                        <p>Happy Students</p>
-                    </div>
-                </div>
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="stat-item">
-                        <div class="stat-icon">
-                            <i class="fas fa-route fa-3x mb-3"></i>
-                        </div>
-                        <h3 class="counter-value" data-count="12500">0</h3>
-                        <p>Rides Completed</p>
-                    </div>
-                </div>
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="stat-item">
-                        <div class="stat-icon">
-                            <i class="fas fa-leaf fa-3x mb-3"></i>
-                        </div>
-                        <h3 class="counter-value" data-count="18">0</h3>
-                        <p>Tons CO₂ Saved</p>
-                    </div>
-                </div>
+      <div class="container">
+        <div class="row text-center">
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="stat-item">
+              <div class="stat-icon">
+                <i class="fas fa-users fa-3x mb-3"></i>
+              </div>
+              <h3 class="counter-value" data-count="5000">0</h3>
+              <p>Happy Students</p>
             </div>
+          </div>
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="stat-item">
+              <div class="stat-icon">
+                <i class="fas fa-route fa-3x mb-3"></i>
+              </div>
+              <h3 class="counter-value" data-count="12500">0</h3>
+              <p>Rides Completed</p>
+            </div>
+          </div>
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="stat-item">
+              <div class="stat-icon">
+                <i class="fas fa-leaf fa-3x mb-3"></i>
+              </div>
+              <h3 class="counter-value" data-count="18">0</h3>
+              <p>Tons CO₂ Saved</p>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- Offer a Ride Section with Advanced Animation -->
     <section class="offer-ride-section py-5 bg-white">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 mb-4 mb-lg-0">
-                    <h2 class="driver-heading" data-aos="fade-right">Driving in your car soon?</h2>
-                    <p class="driver-subtitle" data-aos="fade-right" data-aos-delay="200">Let's make this your least expensive journey ever.</p>
-                    
-                    <!-- Animated button with hover effect -->
-                    <div class="btn-animation-wrapper" data-aos="fade-up" data-aos-delay="400">
-                        <a href="#" class="btn btn-primary btn-lg mt-3 btn-animated">
-                            <span class="btn-text-wrapper">
-                                <i class="fas fa-plus-circle me-2"></i> Offer a ride
-                            </span>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="animated-car-container" data-aos="fade-left" data-aos-delay="300">
-                        <img src="picture2.jpg" alt="People carpooling" class="img-fluid driver-illustration">
-                        <div class="floating-people"></div>
-                        <div class="car-path">
-                            <svg width="100%" height="20" viewBox="0 0 200 20" class="car-path-svg">
-                                <path class="route-path-animation" d="M0,10 C40,0 60,20 100,10 C140,0 160,20 200,10" fill="none" stroke="#007dfe" stroke-width="2"></path>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6 mb-4 mb-lg-0">
+            <h2 class="driver-heading" data-aos="fade-right">
+              Driving in your car soon?
+            </h2>
+            <p
+              class="driver-subtitle"
+              data-aos="fade-right"
+              data-aos-delay="200"
+            >
+              Let's make this your least expensive journey ever.
+            </p>
+
+            <!-- Animated button with hover effect -->
+            <div
+              class="btn-animation-wrapper"
+              data-aos="fade-up"
+              data-aos-delay="400"
+            >
+              <a
+                href="RidePosting.html"
+                class="btn btn-primary btn-lg mt-3 btn-animated"
+              >
+                <span class="btn-text-wrapper">
+                  <i class="fas fa-plus-circle me-2"></i> Offer a ride
+                </span>
+              </a>
             </div>
+          </div>
+          <div class="col-lg-6">
+            <div
+              class="animated-car-container"
+              data-aos="fade-left"
+              data-aos-delay="300"
+            >
+              <img
+                src="picture2.jpg"
+                alt="People carpooling"
+                class="img-fluid driver-illustration"
+              />
+              <div class="floating-people"></div>
+              <div class="car-path">
+                <svg
+                  width="100%"
+                  height="20"
+                  viewBox="0 0 200 20"
+                  class="car-path-svg"
+                >
+                  <path
+                    class="route-path-animation"
+                    d="M0,10 C40,0 60,20 100,10 C140,0 160,20 200,10"
+                    fill="none"
+                    stroke="#007dfe"
+                    stroke-width="2"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- Popular Routes Section with Animated Cards -->
     <section class="popular-routes-section">
-        <div class="container">
-            <h2 class="text-center mb-4" data-aos="fade-up">Where do you want to go?</h2>
-            
-            <div class="row justify-content-center">
-                <div class="col-md-10">
-                    <div class="route-card route-card-animated" data-aos="fade-up" data-aos-delay="100">
-                        <div class="route-path">
-                            <span>NUST</span>
-                            <div class="route-arrow">
-                                <i class="fas fa-arrow-right arrow-icon"></i>
-                                <div class="arrow-pulse"></div>
-                            </div>
-                            <span>F-10</span>
-                        </div>
-                        <a href="#" class="btn btn-sm btn-outline-primary btn-hover-effect">
-                            <i class="fas fa-chevron-right"></i>
-                        </a>
-                    </div>
-                    
-                    <div class="route-card route-card-animated" data-aos="fade-up" data-aos-delay="200">
-                        <div class="route-path">
-                            <span>NUST</span>
-                            <div class="route-arrow">
-                                <i class="fas fa-arrow-right arrow-icon"></i>
-                                <div class="arrow-pulse"></div>
-                            </div>
-                            <span>Bahria</span>
-                        </div>
-                        <a href="#" class="btn btn-sm btn-outline-primary btn-hover-effect">
-                            <i class="fas fa-chevron-right"></i>
-                        </a>
-                    </div>
-                    
-                    <div class="route-card route-card-animated" data-aos="fade-up" data-aos-delay="300">
-                        <div class="route-path">
-                            <span>NUST</span>
-                            <div class="route-arrow">
-                                <i class="fas fa-arrow-right arrow-icon"></i>
-                                <div class="arrow-pulse"></div>
-                            </div>
-                            <span>Pindi Saddar</span>
-                        </div>
-                        <a href="#" class="btn btn-sm btn-outline-primary btn-hover-effect">
-                            <i class="fas fa-chevron-right"></i>
-                        </a>
-                    </div>
-                    
-                    <div class="text-center mt-3" data-aos="fade-up" data-aos-delay="400">
-                        <a href="#" class="see-more-link link-hover-effect">See our most popular rides</a>
-                    </div>
+      <div class="container">
+        <h2 class="text-center mb-4" data-aos="fade-up">
+          Where do you want to go?
+        </h2>
+
+        <div class="row justify-content-center">
+          <div class="col-md-10">
+            <div
+              class="route-card route-card-animated"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
+              <div class="route-path">
+                <span>NUST</span>
+                <div class="route-arrow">
+                  <i class="fas fa-arrow-right arrow-icon"></i>
+                  <div class="arrow-pulse"></div>
                 </div>
+                <span>F-10</span>
+              </div>
+              <a
+                href="#"
+                class="btn btn-sm btn-outline-primary btn-hover-effect"
+              >
+                <i class="fas fa-chevron-right"></i>
+              </a>
             </div>
+
+            <div
+              class="route-card route-card-animated"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              <div class="route-path">
+                <span>NUST</span>
+                <div class="route-arrow">
+                  <i class="fas fa-arrow-right arrow-icon"></i>
+                  <div class="arrow-pulse"></div>
+                </div>
+                <span>Bahria</span>
+              </div>
+              <a
+                href="#"
+                class="btn btn-sm btn-outline-primary btn-hover-effect"
+              >
+                <i class="fas fa-chevron-right"></i>
+              </a>
+            </div>
+
+            <div
+              class="route-card route-card-animated"
+              data-aos="fade-up"
+              data-aos-delay="300"
+            >
+              <div class="route-path">
+                <span>NUST</span>
+                <div class="route-arrow">
+                  <i class="fas fa-arrow-right arrow-icon"></i>
+                  <div class="arrow-pulse"></div>
+                </div>
+                <span>Pindi Saddar</span>
+              </div>
+              <a
+                href="#"
+                class="btn btn-sm btn-outline-primary btn-hover-effect"
+              >
+                <i class="fas fa-chevron-right"></i>
+              </a>
+            </div>
+
+            <div
+              class="text-center mt-3"
+              data-aos="fade-up"
+              data-aos-delay="400"
+            >
+              <a href="#" class="see-more-link link-hover-effect"
+                >See our most popular rides</a
+              >
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- Updated Help Center with flip cards (without hover text) -->
     <section class="py-5 bg-light">
-        <div class="container">
-            <h2 class="text-center mb-5" data-aos="fade-up">Help Center</h2>
-            
-            <div class="row g-4 mb-4">
-                <div class="col-lg-4">
-                    <div class="flip-card" data-aos="flip-left" data-aos-delay="100">
-                        <div class="flip-card-inner">
-                            <div class="flip-card-front">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><i class="fas fa-question-circle text-primary me-2"></i> How do I book a ride?</h5>
-                                        <p class="card-text text-muted">Search for your route, select an available ride that matches your schedule, and request to book. The driver will confirm your booking within 24 hours.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flip-card-back">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Booking Steps</h5>
-                                        <ol class="text-muted small">
-                                            <li>Enter your route details and search</li>
-                                            <li>Browse available rides matching your criteria</li>
-                                            <li>Select a ride and send a booking request</li>
-                                            <li>Wait for driver confirmation (usually within 24 hours)</li>
-                                            <li>Once confirmed, you'll get contact details and meeting point</li>
-                                        </ol>
-                                        <a href="#" class="btn btn-sm btn-primary mt-2">Learn More</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+      <div class="container">
+        <h2 class="text-center mb-5" data-aos="fade-up">Help Center</h2>
+
+        <div class="row g-4 mb-4">
+          <div class="col-lg-4">
+            <div class="flip-card" data-aos="flip-left" data-aos-delay="100">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h5 class="card-title">
+                        <i class="fas fa-question-circle text-primary me-2"></i>
+                        How do I book a ride?
+                      </h5>
+                      <p class="card-text text-muted">
+                        Search for your route, select an available ride that
+                        matches your schedule, and request to book. The driver
+                        will confirm your booking within 24 hours.
+                      </p>
                     </div>
+                  </div>
                 </div>
-                
-                <div class="col-lg-4">
-                    <div class="flip-card" data-aos="flip-left" data-aos-delay="200">
-                        <div class="flip-card-inner">
-                            <div class="flip-card-front">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><i class="fas fa-ban text-primary me-2"></i> Cancellation Policy</h5>
-                                        <p class="card-text text-muted">Free cancellations up to 3 hours before departure. Last-minute cancellations may result in a small fee to compensate the driver for lost opportunity.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flip-card-back">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Cancellation Policy</h5>
-                                        <p class="text-muted">Free cancellations up to 3 hours before departure. Last-minute cancellations may result in a small fee to compensate the driver for lost opportunity.</p>
-                                        <a href="#" class="btn btn-sm btn-primary mt-2">Learn More</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="flip-card-back">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h5 class="card-title">Booking Steps</h5>
+                      <ol class="text-muted small">
+                        <li>Enter your route details and search</li>
+                        <li>Browse available rides matching your criteria</li>
+                        <li>Select a ride and send a booking request</li>
+                        <li>
+                          Wait for driver confirmation (usually within 24 hours)
+                        </li>
+                        <li>
+                          Once confirmed, you'll get contact details and meeting
+                          point
+                        </li>
+                      </ol>
+                      <a href="#" class="btn btn-sm btn-primary mt-2"
+                        >Learn More</a
+                      >
                     </div>
+                  </div>
                 </div>
-                
-                <div class="col-lg-4">
-                    <div class="flip-card" data-aos="flip-left" data-aos-delay="300">
-                        <div class="flip-card-inner">
-                            <div class="flip-card-front">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><i class="fas fa-money-bill-wave text-primary me-2"></i> How much does it cost?</h5>
-                                        <p class="card-text text-muted">Prices are set by drivers but average 50-75% less than taxis. Most rides within Islamabad/Rawalpindi range from Rs. 200-400 depending on distance.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flip-card-back">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Cost Information</h5>
-                                        <p class="text-muted">Prices are set by drivers but average 50-75% less than taxis. Most rides within Islamabad/Rawalpindi range from Rs. 200-400 depending on distance.</p>
-                                        <a href="#" class="btn btn-sm btn-primary mt-2">Learn More</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+              </div>
             </div>
-            
-            <div class="row g-4">
-                <div class="col-lg-4">
-                    <div class="flip-card" data-aos="flip-left" data-aos-delay="400">
-                        <div class="flip-card-inner">
-                            <div class="flip-card-front">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><i class="fas fa-shield-alt text-primary me-2"></i> Is RideTogether safe?</h5>
-                                        <p class="card-text text-muted">Absolutely! All users must verify their NUST student ID. We also have a rating system and emergency support available 24/7 during active rides.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flip-card-back">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Safety Features</h5>
-                                        <p class="text-muted">Absolutely! All users must verify their NUST student ID. We also have a rating system and emergency support available 24/7 during active rides.</p>
-                                        <a href="#" class="btn btn-sm btn-primary mt-2">Learn More</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="flip-card" data-aos="flip-left" data-aos-delay="200">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h5 class="card-title">
+                        <i class="fas fa-ban text-primary me-2"></i>
+                        Cancellation Policy
+                      </h5>
+                      <p class="card-text text-muted">
+                        Free cancellations up to 3 hours before departure.
+                        Last-minute cancellations may result in a small fee to
+                        compensate the driver for lost opportunity.
+                      </p>
                     </div>
+                  </div>
                 </div>
-                
-                <div class="col-lg-4">
-                    <div class="flip-card" data-aos="flip-left" data-aos-delay="500">
-                        <div class="flip-card-inner">
-                            <div class="flip-card-front">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><i class="fas fa-car-crash text-primary me-2"></i> What about insurance?</h5>
-                                        <p class="card-text text-muted">Drivers must have valid vehicle insurance. For added peace of mind, RideTogether provides complementary ride protection for all verified trips.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flip-card-back">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Insurance Coverage</h5>
-                                        <p class="text-muted">Drivers must have valid vehicle insurance. For added peace of mind, RideTogether provides complementary ride protection for all verified trips.</p>
-                                        <a href="#" class="btn btn-sm btn-primary mt-2">Learn More</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="flip-card-back">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h5 class="card-title">Cancellation Policy</h5>
+                      <p class="text-muted">
+                        Free cancellations up to 3 hours before departure.
+                        Last-minute cancellations may result in a small fee to
+                        compensate the driver for lost opportunity.
+                      </p>
+                      <a href="#" class="btn btn-sm btn-primary mt-2"
+                        >Learn More</a
+                      >
                     </div>
+                  </div>
                 </div>
-                
-                <div class="col-lg-4">
-                    <div class="flip-card" data-aos="flip-left" data-aos-delay="600">
-                        <div class="flip-card-inner">
-                            <div class="flip-card-front">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><i class="fas fa-mobile-alt text-primary me-2"></i> Is there a mobile app?</h5>
-                                        <p class="card-text text-muted">Yes! Our mobile app is available for both iOS and Android. Download it for real-time ride tracking, instant notifications, and quick booking.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flip-card-back">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Mobile App Availability</h5>
-                                        <p class="text-muted">Yes! Our mobile app is available for both iOS and Android. Download it for real-time ride tracking, instant notifications, and quick booking.</p>
-                                        <a href="#" class="btn btn-sm btn-primary mt-2">Learn More</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+              </div>
             </div>
-            
-            <div class="text-center mt-5" data-aos="zoom-in" data-aos-delay="400">
-                <a href="#" class="btn btn-primary btn-lg pulse-animation">
-                    <i class="fas fa-book-open me-2"></i> View Full FAQ
-                </a>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="flip-card" data-aos="flip-left" data-aos-delay="300">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h5 class="card-title">
+                        <i class="fas fa-money-bill-wave text-primary me-2"></i>
+                        How much does it cost?
+                      </h5>
+                      <p class="card-text text-muted">
+                        Prices are set by drivers but average 50-75% less than
+                        taxis. Most rides within Islamabad/Rawalpindi range from
+                        Rs. 200-400 depending on distance.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="flip-card-back">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h5 class="card-title">Cost Information</h5>
+                      <p class="text-muted">
+                        Prices are set by drivers but average 50-75% less than
+                        taxis. Most rides within Islamabad/Rawalpindi range from
+                        Rs. 200-400 depending on distance.
+                      </p>
+                      <a href="#" class="btn btn-sm btn-primary mt-2"
+                        >Learn More</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
+
+        <div class="row g-4">
+          <div class="col-lg-4">
+            <div class="flip-card" data-aos="flip-left" data-aos-delay="400">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h5 class="card-title">
+                        <i class="fas fa-shield-alt text-primary me-2"></i> Is
+                        RideTogether safe?
+                      </h5>
+                      <p class="card-text text-muted">
+                        Absolutely! All users must verify their NUST student ID.
+                        We also have a rating system and emergency support
+                        available 24/7 during active rides.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="flip-card-back">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h5 class="card-title">Safety Features</h5>
+                      <p class="text-muted">
+                        Absolutely! All users must verify their NUST student ID.
+                        We also have a rating system and emergency support
+                        available 24/7 during active rides.
+                      </p>
+                      <a href="#" class="btn btn-sm btn-primary mt-2"
+                        >Learn More</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="flip-card" data-aos="flip-left" data-aos-delay="500">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h5 class="card-title">
+                        <i class="fas fa-car-crash text-primary me-2"></i> What
+                        about insurance?
+                      </h5>
+                      <p class="card-text text-muted">
+                        Drivers must have valid vehicle insurance. For added
+                        peace of mind, RideTogether provides complementary ride
+                        protection for all verified trips.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="flip-card-back">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h5 class="card-title">Insurance Coverage</h5>
+                      <p class="text-muted">
+                        Drivers must have valid vehicle insurance. For added
+                        peace of mind, RideTogether provides complementary ride
+                        protection for all verified trips.
+                      </p>
+                      <a href="#" class="btn btn-sm btn-primary mt-2"
+                        >Learn More</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="flip-card" data-aos="flip-left" data-aos-delay="600">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h5 class="card-title">
+                        <i class="fas fa-mobile-alt text-primary me-2"></i> Is
+                        there a mobile app?
+                      </h5>
+                      <p class="card-text text-muted">
+                        Yes! Our mobile app is available for both iOS and
+                        Android. Download it for real-time ride tracking,
+                        instant notifications, and quick booking.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="flip-card-back">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h5 class="card-title">Mobile App Availability</h5>
+                      <p class="text-muted">
+                        Yes! Our mobile app is available for both iOS and
+                        Android. Download it for real-time ride tracking,
+                        instant notifications, and quick booking.
+                      </p>
+                      <a href="#" class="btn btn-sm btn-primary mt-2"
+                        >Learn More</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-5" data-aos="zoom-in" data-aos-delay="400">
+          <a href="#" class="btn btn-primary btn-lg pulse-animation">
+            <i class="fas fa-book-open me-2"></i> View Full FAQ
+          </a>
+        </div>
+      </div>
     </section>
 
     <!-- Animated Footer -->
     <footer class="py-5 bg-dark text-white footer-animated">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-4">
-                    <h5><i class="fas fa-car-side me-2"></i> RideTogether</h5>
-                    <p class="text-muted">Connecting NUST students for smarter, affordable, and eco-friendly commuting.</p>
-                    <div class="social-links mt-3">
-                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                
-                <div class="col-lg-2 col-md-4 col-6">
-                    <h6>Quick Links</h6>
-                    <ul class="list-unstyled footer-links">
-                        <li><a href="#" class="text-muted">Search Rides</a></li>
-                        <li><a href="#" class="text-muted">Offer a Ride</a></li>
-                        <li><a href="#" class="text-muted">Help Center</a></li>
-                        <li><a href="#" class="text-muted">About Us</a></li>
-                    </ul>
-                </div>
-                
-                <div class="col-lg-2 col-md-4 col-6">
-                    <h6>Resources</h6>
-                    <ul class="list-unstyled footer-links">
-                        <li><a href="#" class="text-muted">How It Works</a></li>
-                        <li><a href="#" class="text-muted">Safety Guidelines</a></li>
-                        <li><a href="#" class="text-muted">Terms of Service</a></li>
-                        <li><a href="#" class="text-muted">Privacy Policy</a></li>
-                    </ul>
-                </div>
-                
-                <div class="col-lg-4 col-md-4">
-                    <h6>Contact Us</h6>
-                    <ul class="list-unstyled footer-links">
-                        <li class="text-muted"><i class="fas fa-envelope me-2"></i> support@ridetogether.edu.pk</li>
-                        <li class="text-muted"><i class="fas fa-phone me-2"></i> +92 51 1234 5678</li>
-                        <li class="text-muted"><i class="fas fa-map-marker-alt me-2"></i> NUST Campus, H-12, Islamabad</li>
-                    </ul>
-                    <div class="mt-3">
-                        <select class="form-select form-select-sm bg-dark text-white border-secondary">
-                            <option selected>English</option>
-                            <option>Urdu</option>
-                        </select>
-                    </div>
-                </div>
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-4">
+            <h5><i class="fas fa-car-side me-2"></i> RideTogether</h5>
+            <p class="text-muted">
+              Connecting NUST students for smarter, affordable, and eco-friendly
+              commuting.
+            </p>
+            <div class="social-links mt-3">
+              <a href="#" class="text-white me-3"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a href="#" class="text-white me-3"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a href="#" class="text-white me-3"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="#" class="text-white"
+                ><i class="fab fa-linkedin-in"></i
+              ></a>
             </div>
-            
-            <hr class="my-4 border-secondary">
-            
-            <div class="text-center text-muted">
-                <small>&copy; 2023 RideTogether. All rights reserved. Built for NUST community.</small>
+          </div>
+
+          <div class="col-lg-2 col-md-4 col-6">
+            <h6>Quick Links</h6>
+            <ul class="list-unstyled footer-links">
+              <li><a href="#" class="text-muted">Search Rides</a></li>
+              <li>
+                <a href="RidePosting.html" class="text-muted">Offer a Ride</a>
+              </li>
+              <li><a href="#" class="text-muted">Help Center</a></li>
+              <li><a href="#" class="text-muted">About Us</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-2 col-md-4 col-6">
+            <h6>Resources</h6>
+            <ul class="list-unstyled footer-links">
+              <li><a href="#" class="text-muted">How It Works</a></li>
+              <li><a href="#" class="text-muted">Safety Guidelines</a></li>
+              <li><a href="#" class="text-muted">Terms of Service</a></li>
+              <li><a href="#" class="text-muted">Privacy Policy</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-4">
+            <h6>Contact Us</h6>
+            <ul class="list-unstyled footer-links">
+              <li class="text-white">
+                <i class="fas fa-envelope me-2"></i> support@ridetogether.edu.pk
+              </li>
+              <li class="text-white">
+                <i class="fas fa-phone me-2"></i> +92 51 1234 5678
+              </li>
+              <li class="text-white">
+                <i class="fas fa-map-marker-alt me-2"></i> NUST Campus, H-12,
+                Islamabad
+              </li>
+            </ul>
+            <div class="mt-3">
+              <select
+                class="form-select form-select-sm bg-dark text-white border-secondary"
+              >
+                <option selected>English</option>
+                <option>Urdu</option>
+              </select>
             </div>
+          </div>
         </div>
+
+        <hr class="my-4 border-secondary" />
+
+        <div class="text-center text-muted">
+          <small
+            >&copy; 2025 RideTogether. All rights reserved. Built for NUST
+            community.</small
+          >
+        </div>
+      </div>
     </footer>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Custom JS -->
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
