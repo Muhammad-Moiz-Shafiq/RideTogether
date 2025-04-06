@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HAMSAFAR - Login</title>
+  <link rel="stylesheet" href="logsignstyle.css">
+</head>
+<body>
+  <div class="login-container">
+    <div class="logo">
+      <img src="logo.png" alt="HAMSAFAR Logo">
+    </div>
+
+    <form id="loginForm">
+      <div class="input-group">
+        <label for="username">USERNAME</label>
+        <input type="text" id="username" name="username" required>
+        <div class="error-message" id="username-error">Please enter your username</div>
+      </div>
+
+      <div class="input-group">
+        <label for="password">PASSWORD</label>
+        <input type="password" id="password" name="password" required>
+        <div class="error-message" id="password-error">Please enter your password</div>
+      </div>
+
+      <button type="submit" class="login-btn">LOGIN</button>
+
+      <a href="#" class="forgot-password">Forgot password?</a>
+      
+      <a href="signup.html" class="create-account">Create an account</a>
+    </form>
+  </div>
+
+
+  <!-- <script>
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Reset error messages
+      document.getElementById('username-error').style.display = 'none';
+      document.getElementById('password-error').style.display = 'none';
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      let isValid = true;
+
+      if (!username) {
+        document.getElementById('username-error').style.display = 'block';
+        isValid = false;
+      }
+
+      if (!password) {
+        document.getElementById('password-error').style.display = 'block';
+        isValid = false;
+      }
+
+      if (isValid) {
+        console.log('Login attempt with:', { username, password });
+        alert('Login successful! (This is a demo)');
+        // window.location.href = 'dashboard.html';
+      }
+    });
+
+    // Input focus label color change
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(input => {
+      input.addEventListener('focus', function () {
+        this.parentNode.querySelector('label').style.color = '#3498db';
+      });
+
+      input.addEventListener('blur', function () {
+        this.parentNode.querySelector('label').style.color = '#333';
+      });
+    });
+  </script> -->
+</body>
+</html>

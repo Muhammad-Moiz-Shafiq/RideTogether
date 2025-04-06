@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HAMSAFAR - Sign Up</title>
+  <link rel="stylesheet" href="logsignstyle.css">
+</head>
+<body>
+  <div class="signup-container">
+    <div class="logo">
+      <img src="logo.png" alt="HAMSAFAR Logo">
+    </div>
+
+    <form id="signupForm">
+      <div class="input-group">
+        <label for="username">USERNAME</label>
+        <input type="text" id="username" name="username" required>
+      </div>
+
+      <div class="input-group">
+        <label for="email">EMAIL</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+
+      <div class="input-group">
+        <label for="password">PASSWORD</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+
+      <div class="input-group">
+        <label for="confirm-password">CONFIRM PASSWORD</label>
+        <input type="password" id="confirm-password" name="confirm-password" required>
+        <div class="error-message" id="confirm-password-error">Passwords do not match</div>
+      </div>
+
+      <button type="submit" class="signup-btn">SIGN UP</button>
+
+      <a href="login.html" class="create-account">Already have an account? Login</a>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('signupForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Reset error messages
+      document.getElementById('confirm-password-error').style.display = 'none';
+
+      const password = document.getElementById('password').value.trim();
+      const confirmPassword = document.getElementById('confirm-password').value.trim();
+      let isValid = true;
+
+      if (password !== confirmPassword) {
+        document.getElementById('confirm-password-error').style.display = 'block';
+        isValid = false;
+      }
+
+      if (isValid) {
+        console.log('Sign up attempt with:', { password, confirmPassword });
+        alert('Signup successful! (This is a demo)');
+        // window.location.href = 'login.html'; // Uncomment to redirect after successful signup
+      }
+    });
+  </script>
+</body>
+</html>
