@@ -1,141 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const steps = document.querySelectorAll(".step-content");
-  const progressBar = document.querySelector(".progress-bar");
-  const stepItems = document.querySelectorAll(".step-item");
-
-  // Navigation (Next)
-  document.querySelectorAll(".next-step").forEach((button) => {
-    button.addEventListener("click", function () {
-      const currentStepIndex = [...steps].findIndex((s) =>
-        s.classList.contains("active")
-      );
-      const currentStep = steps[currentStepIndex];
-
-      if (validateStep(currentStep)) {
-        const nextIndex = currentStepIndex + 1;
-        if (nextIndex < steps.length) {
-          steps[currentStepIndex].classList.remove("active");
-          steps[nextIndex].classList.add("active");
-          updateProgress(nextIndex + 1);
-          steps[nextIndex].scrollIntoView({ behavior: "smooth" });
-        }
-      }
-    });
-  });
-
-  // Navigation (Back)
-  document.querySelectorAll(".prev-step").forEach((button) => {
-    button.addEventListener("click", function () {
-      const currentStepIndex = [...steps].findIndex((s) =>
-        s.classList.contains("active")
-      );
-      const prevIndex = currentStepIndex - 1;
-      if (prevIndex >= 0) {
-        steps[currentStepIndex].classList.remove("active");
-        steps[prevIndex].classList.add("active");
-        updateProgress(prevIndex + 1);
-        steps[prevIndex].scrollIntoView({ behavior: "smooth" });
-      }
-    });
-  });
-
-  // Progress bar logic
-  function updateProgress(stepIndex) {
-    const progressPercentage = (stepIndex / steps.length) * 100;
-    progressBar.style.width = progressPercentage + "%";
-
-    stepItems.forEach((item, index) => {
-      item.classList.toggle("active", index < stepIndex);
-    });
-  }
-
-  // Add/remove stops
-  const addStopBtn = document.getElementById("addStopBtn");
-  const stopsContainer = document.getElementById("stopsContainer");
-
-  addStopBtn?.addEventListener("click", function () {
-    const stopDiv = document.createElement("div");
-    stopDiv.className = "input-group mb-2";
-    stopDiv.innerHTML = `
-          <span class="input-group-text bg-light"><i class="fas fa-map-pin text-primary"></i></span>
-          <input type="text" class="form-control" placeholder="Enter a stop on your route">
-          <button type="button" class="btn btn-outline-secondary remove-stop"><i class="fas fa-times"></i></button>
-      `;
-    stopsContainer.appendChild(stopDiv);
-
-    stopDiv
-      .querySelector(".remove-stop")
-      .addEventListener("click", function () {
-        stopsContainer.removeChild(stopDiv);
-      });
-  });
-
-  // Remove existing stop buttons
-  document.querySelectorAll(".remove-stop").forEach((button) => {
-    button.addEventListener("click", function () {
-      const stopDiv = this.closest(".input-group");
-      stopsContainer.removeChild(stopDiv);
-    });
-  });
-
-  // Ride frequency toggle
-  const dailyBasis = document.getElementById("dailyBasis");
-  const monthlyBasis = document.getElementById("monthlyBasis");
-  const dailyBasisOptions = document.getElementById("dailyBasisOptions");
-  const monthlyBasisOptions = document.getElementById("monthlyBasisOptions");
-
-  dailyBasis?.addEventListener("change", function () {
-    if (this.checked) {
-      dailyBasisOptions.classList.remove("d-none");
-      monthlyBasisOptions.classList.add("d-none");
-
-      // Make daily fields required
-      dailyBasisOptions
-        .querySelectorAll("[data-daily-required]")
-        .forEach((input) => input.setAttribute("required", "required"));
-
-      // Remove required from monthly fields
-      monthlyBasisOptions
-        .querySelectorAll("[data-monthly-required]")
-        .forEach((input) => input.removeAttribute("required"));
-    }
-  });
-
-  monthlyBasis?.addEventListener("change", function () {
-    if (this.checked) {
-      monthlyBasisOptions.classList.remove("d-none");
-      dailyBasisOptions.classList.add("d-none");
-
-      // Make monthly fields required
-      monthlyBasisOptions
-        .querySelectorAll("[data-monthly-required]")
-        .forEach((input) => input.setAttribute("required", "required"));
-
-      // Remove required from daily fields
-      dailyBasisOptions
-        .querySelectorAll("[data-daily-required]")
-        .forEach((input) => input.removeAttribute("required"));
-    }
-  });
-
-  // One-way vs round-trip
-  const oneWay = document.getElementById("oneWay");
+  // Form validation
+  const form = document.getElementById("ridePostingForm");
+  const isNustStart = document.getElementById("isNustStart");
+  const isNustDest = document.getElementById("isNustDest");
+  const dailyOption = document.getElementById("dailyBasis");
+  const monthlyOption = document.getElementById("monthlyBasis");
+  const priceSuggestion = document.getElementById("priceSuggestion");
   const roundTrip = document.getElementById("roundTrip");
-  const returnTimeContainer = document.querySelector(".return-time-container");
-
-  oneWay?.addEventListener("change", () => {
-    returnTimeContainer?.classList.add("d-none");
-  });
-
-  roundTrip?.addEventListener("change", () => {
-    returnTimeContainer?.classList.remove("d-none");
-  });
-
-  if (oneWay?.checked) {
-    returnTimeContainer?.classList.add("d-none");
-  }
-
-  // Car vs Bike
+  const oneWay = document.getElementById("oneWay");
+  const returnTimeSection = document.getElementById("returnTimeSection");
   const carType = document.getElementById("carType");
   const bikeType = document.getElementById("bikeType");
   const carDetailsSection = document.getElementById("carDetailsSection");
@@ -147,138 +20,187 @@ document.addEventListener("DOMContentLoaded", function () {
   const bikePreferencesSection = document.getElementById(
     "bikePreferencesSection"
   );
+  const addStopBtn = document.getElementById("addStopBtn");
+  const stopsContainer = document.getElementById("stopsContainer");
 
-  carType?.addEventListener("change", function () {
+  // 1. Handle NUST campus checkbox validation
+  function validateNustCampus() {
+    if (!isNustStart.checked && !isNustDest.checked) {
+      alert(
+        "At least one location (Starting Point or Destination) must be NUST campus."
+      );
+      return false;
+    }
+    return true;
+  }
+
+  // Check if at least one day is selected
+  function validateDays() {
+    const checkedDays = document.querySelectorAll(
+      'input[name="days[]"]:checked'
+    );
+    if (checkedDays.length === 0) {
+      alert("Please select at least one day of the week.");
+      return false;
+    }
+    return true;
+  }
+
+  // 2. Handle monthly/daily basis change
+  dailyOption.addEventListener("change", function () {
     if (this.checked) {
-      carDetailsSection?.classList.remove("d-none");
-      bikeDetailsSection?.classList.add("d-none");
-      passengersSection?.classList.remove("d-none");
-      carPreferencesSection?.classList.remove("d-none");
-      bikePreferencesSection?.classList.add("d-none");
+      priceSuggestion.textContent =
+        "Suggested: PKR 150-500 for Islamabad/Rawalpindi";
     }
   });
 
-  bikeType?.addEventListener("change", function () {
+  monthlyOption.addEventListener("change", function () {
     if (this.checked) {
-      carDetailsSection?.classList.add("d-none");
-      bikeDetailsSection?.classList.remove("d-none");
-      passengersSection?.classList.add("d-none");
-      carPreferencesSection?.classList.add("d-none");
-      bikePreferencesSection?.classList.remove("d-none");
+      priceSuggestion.textContent =
+        "Suggested: PKR 3000-8000 for Islamabad/Rawalpindis";
     }
   });
 
-  // Form submission
-  const ridePostingForm = document.getElementById("ridePostingForm");
-
-  ridePostingForm?.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    const lastStep = steps[steps.length - 1];
-    if (validateStep(lastStep)) {
-      const formData = new FormData(ridePostingForm);
-      console.log("Form submitted!");
-      alert("Your ride has been posted successfully!");
-      // window.location.href = "confirmation.html";
+  // 3. Handle one-way/round trip selection
+  roundTrip.addEventListener("change", function () {
+    if (this.checked) {
+      returnTimeSection.classList.remove("d-none");
+      returnTimeSection.querySelector("input").required = true;
     }
   });
 
-  // Validation that skips hidden fields
-  function validateStep(step) {
+  oneWay.addEventListener("change", function () {
+    if (this.checked) {
+      returnTimeSection.classList.add("d-none");
+      returnTimeSection.querySelector("input").required = false;
+    }
+  });
+
+  // 4. Handle vehicle type selection
+  carType.addEventListener("change", function () {
+    if (this.checked) {
+      // Show car details, hide bike details
+      carDetailsSection.classList.remove("d-none");
+      bikeDetailsSection.classList.add("d-none");
+      passengersSection.classList.remove("d-none");
+      carPreferencesSection.classList.remove("d-none");
+      bikePreferencesSection.classList.add("d-none");
+
+      // Update required fields
+      carDetailsSection.querySelector("input").required = true;
+      passengersSection.querySelector("select").required = true;
+      bikeDetailsSection.querySelector("input").required = false;
+    }
+  });
+
+  bikeType.addEventListener("change", function () {
+    if (this.checked) {
+      // Show bike details, hide car details
+      carDetailsSection.classList.add("d-none");
+      bikeDetailsSection.classList.remove("d-none");
+      passengersSection.classList.add("d-none");
+      carPreferencesSection.classList.add("d-none");
+      bikePreferencesSection.classList.remove("d-none");
+
+      // Update required fields
+      carDetailsSection.querySelector("input").required = false;
+      passengersSection.querySelector("select").required = false;
+      bikeDetailsSection.querySelector("input").required = true;
+    }
+  });
+
+  // Handle adding stops
+  addStopBtn.addEventListener("click", function () {
+    const stopDiv = document.createElement("div");
+    stopDiv.className = "input-group mb-2";
+    stopDiv.innerHTML = `
+          <span class="input-group-text bg-light">
+              <i class="fas fa-map-pin text-primary"></i>
+          </span>
+          <input type="text" class="form-control" placeholder="Enter a stop on your route">
+          <button type="button" class="btn btn-outline-secondary remove-stop">
+              <i class="fas fa-times"></i>
+          </button>
+      `;
+    stopsContainer.appendChild(stopDiv);
+
+    // Add event listener to the remove button
+    stopDiv
+      .querySelector(".remove-stop")
+      .addEventListener("click", function () {
+        stopsContainer.removeChild(stopDiv);
+      });
+  });
+
+  // Remove stop functionality for initial stop
+  if (stopsContainer.querySelector(".btn-outline-secondary")) {
+    stopsContainer
+      .querySelector(".btn-outline-secondary")
+      .addEventListener("click", function () {
+        this.closest(".input-group").remove();
+      });
+  }
+
+  // Form submission validation
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    // Check if at least one NUST campus checkbox is checked
+    if (!validateNustCampus()) {
+      return;
+    }
+
+    // Check if at least one day is selected
+    const dayCheckboxes = document.querySelectorAll(
+      'input[name="days[]"]:checked'
+    );
+    if (dayCheckboxes.length === 0) {
+      alert("Please select at least one day of the week.");
+      return;
+    }
+
+    // Validate other required fields
+    const requiredFields = form.querySelectorAll("[required]");
     let isValid = true;
-    const requiredFields = step.querySelectorAll("[required]");
 
     requiredFields.forEach((field) => {
-      const isHidden = field.offsetParent === null;
-      if (!isHidden && !field.value.trim()) {
+      if (!field.value.trim()) {
         isValid = false;
         field.classList.add("is-invalid");
-
-        field.addEventListener(
-          "input",
-          () => {
-            if (field.value.trim()) {
-              field.classList.remove("is-invalid");
-            }
-          },
-          { once: true }
-        );
       } else {
         field.classList.remove("is-invalid");
       }
     });
 
-    // NUST Campus validation (only if present in current step)
-    const startNUST = document.getElementById("isNustStart");
-    const endNUST = document.getElementById("isNustDest");
-
-    if (startNUST && endNUST && step.contains(startNUST)) {
-      if (!startNUST.checked && !endNUST.checked) {
-        isValid = false;
-
-        // Highlight or show error near the checkboxes
-        const checkboxContainer =
-          startNUST.closest(".mb-3") || startNUST.parentElement;
-        checkboxContainer.classList.add("border", "border-danger", "p-2");
-
-        const existingError = checkboxContainer.querySelector(".nust-error");
-        if (!existingError) {
-          const errorMsg = document.createElement("div");
-          errorMsg.className = "text-danger mt-2 nust-error";
-          errorMsg.textContent =
-            "Please select at least one NUST campus option.";
-          checkboxContainer.appendChild(errorMsg);
-        }
-
-        // Remove highlighting when one is checked
-        [startNUST, endNUST].forEach((cb) => {
-          cb.addEventListener("change", function () {
-            if (startNUST.checked || endNUST.checked) {
-              checkboxContainer.classList.remove(
-                "border",
-                "border-danger",
-                "p-2"
-              );
-              const err = checkboxContainer.querySelector(".nust-error");
-              if (err) err.remove();
-            }
-          });
-        });
-      }
-    }
-
-    // Validate at least one weekday selected
-    const daySelections = step.querySelectorAll(
-      'input[type="checkbox"][id^="monday"], input[id^="tuesday"], input[id^="wednesday"], input[id^="thursday"], input[id^="friday"], input[id^="saturday"]'
-    );
-
-    if (daySelections.length > 0) {
-      const atLeastOneDaySelected = [...daySelections].some((cb) => cb.checked);
-      if (!atLeastOneDaySelected) {
-        isValid = false;
-        const daysSection = daySelections[0]?.closest(".mb-4");
-        if (daysSection) {
-          daysSection.classList.add("border", "border-danger", "p-2");
-          daySelections.forEach((cb) => {
-            cb.addEventListener("change", () => {
-              daysSection.classList.remove("border", "border-danger", "p-2");
-            });
-          });
-        }
-      }
-    }
-
     if (!isValid) {
-      const errorDiv = document.createElement("div");
-      errorDiv.className = "alert alert-danger mt-3";
-      errorDiv.textContent =
-        "Please fill in all required fields before proceeding.";
-      const existingError = step.querySelector(".alert-danger");
-      if (existingError) existingError.remove();
-      step.appendChild(errorDiv);
-      setTimeout(() => errorDiv.remove(), 3000);
+      alert("Please fill in all required fields.");
+      return;
     }
 
-    return isValid;
+    // If all validations pass, submit the form
+    alert("Ride posted successfully! Your ride is now available for booking.");
+    // form.submit(); // Uncomment when connected to backend
+  });
+
+  // Initialize state based on default selections
+  if (oneWay.checked) {
+    returnTimeSection.classList.add("d-none");
+    returnTimeSection.querySelector("input").required = false;
   }
+
+  if (bikeType.checked) {
+    carDetailsSection.classList.add("d-none");
+    bikeDetailsSection.classList.remove("d-none");
+    passengersSection.classList.add("d-none");
+    carPreferencesSection.classList.add("d-none");
+    bikePreferencesSection.classList.remove("d-none");
+  }
+
+  // Add input event listeners to remove invalid class when user starts typing
+  const inputs = form.querySelectorAll("input, select, textarea");
+  inputs.forEach((input) => {
+    input.addEventListener("input", function () {
+      this.classList.remove("is-invalid");
+    });
+  });
 });
