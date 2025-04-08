@@ -760,3 +760,194 @@ body {
     0% { transform: translateX(-100%); }
     100% { transform: translateX(100%); }
 }
+
+/* Search Rides Page Specific Styles */
+
+/* Route path styling */
+.route-path {
+    position: relative;
+}
+
+.route-line {
+    height: 30px;
+    width: 2px;
+    background-color: #ddd;
+    margin: 5px auto;
+}
+
+/* Card hover effect for ride listings */
+.ride-card-animated {
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+}
+
+.ride-card-animated:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.ride-card-animated:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), #4ecbff);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+}
+
+.ride-card-animated:hover:before {
+    transform: scaleX(1);
+}
+
+/* Search box enhancements */
+.search-box {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    transition: box-shadow 0.3s ease;
+}
+
+.search-box:hover {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Input focus states */
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.25rem rgba(0, 102, 204, 0.25);
+}
+
+/* Button animations */
+.btn-primary {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: all 0.5s ease;
+}
+
+.btn-primary:hover:after {
+    left: 100%;
+}
+
+/* Filter button pulse animation */
+@keyframes pulse-btn {
+    0% { box-shadow: 0 0 0 0 rgba(0, 102, 204, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(0, 102, 204, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 102, 204, 0); }
+}
+
+.pulse-animation {
+    animation: pulse-btn 2s infinite;
+}
+
+/* Rating stars styling */
+.fa-star, .fa-star-half-alt {
+    color: #ffc107;
+}
+
+/* Badge styling */
+.badge {
+    font-weight: 500;
+    padding: 0.4em 0.6em;
+}
+
+/* Responsive card styling for mobile */
+@media (max-width: 767.98px) {
+    .ride-card-animated .card-body {
+        padding: 1rem;
+    }
+    
+    .ride-card-animated .col-md-4 {
+        border-top: 1px solid #eee;
+        margin-top: 1rem;
+        padding-top: 1rem;
+    }
+    
+    .ride-card-animated .text-md-end {
+        text-align: left !important;
+    }
+}
+
+/* Enhancing the no results section */
+#no-results {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 3rem 1rem;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+#no-results i {
+    opacity: 0.3;
+    margin-bottom: 1rem;
+}
+
+/* Additional animations */
+.fade-in-up {
+    animation: fadeInUp 0.6s forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Enhance filter dropdown */
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.dropdown-item {
+    padding: 0.5rem 1rem;
+    transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background-color: #f0f7ff;
+    padding-left: 1.2rem;
+}
+
+/* Add vehicle icons with background */
+.vehicle-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: rgba(0, 102, 204, 0.1);
+    margin-right: 0.5rem;
+    color: var(--primary);
+}
+
+/* Styling preference icons */
+.preference-item {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+}
