@@ -23,6 +23,108 @@ document.addEventListener("DOMContentLoaded", function () {
   const addStopBtn = document.getElementById("addStopBtn");
   const stopsContainer = document.getElementById("stopsContainer");
 
+  // Helper functions for form data collection
+  function collectStops() {
+    const stopInputs = stopsContainer.querySelectorAll('input[type="text"]');
+    const stops = [];
+
+    stopInputs.forEach((input) => {
+      if (input.value.trim()) {
+        stops.push(input.value.trim());
+      }
+    });
+
+    return stops;
+  }
+
+  function collectDaysAvailable() {
+    const checkedDays = document.querySelectorAll(
+      'input[name="days[]"]:checked'
+    );
+    const days = [];
+
+    checkedDays.forEach((day) => {
+      days.push(day.value);
+    });
+
+    return days;
+  }
+
+  function collectVehicleDetails() {
+    if (carType.checked) {
+      return carDetailsSection.querySelector("input").value;
+    } else {
+      return bikeDetailsSection.querySelector("input").value;
+    }
+  }
+
+  function collectPassengerCapacity() {
+    if (carType.checked) {
+      return passengersSection.querySelector("select").value;
+    } else {
+      return 1; // Bikes can only take 1 passenger
+    }
+  }
+
+  function collectPreferences() {
+    if (carType.checked) {
+      return {
+        car: {
+          airConditioned: document.getElementById("airConditioned").checked,
+          smokingAllowed: document.getElementById("smokingAllowed").checked,
+          petsAllowed: document.getElementById("petsAllowed").checked,
+          musicAllowed: document.getElementById("musicAllowed").checked,
+        },
+      };
+    } else {
+      return {
+        bike: {
+          helmetProvided: document.getElementById("helmetProvided").checked,
+          rainGearAvailable:
+            document.getElementById("rainGearAvailable").checked,
+        },
+      };
+    }
+  }
+
+  function collectContactDetails() {
+    return {
+      phoneNumber: document.querySelector(
+        'input[placeholder="Enter your phone number"]'
+      ).value,
+      isWhatsapp: document.getElementById("primaryWhatsapp").checked,
+      alternatePhone: document.querySelector(
+        'input[placeholder="Enter alternate contact number (Optional)"]'
+      ).value,
+      alternateWhatsapp: document.getElementById("alternateWhatsapp").checked,
+      email: document.querySelector('input[type="email"]').value,
+      preferredContactMethod: document
+        .querySelector('input[name="contactPreference"]:checked')
+        .id.replace("prefer", "")
+        .toLowerCase(),
+    };
+  }
+
+  // Show alert function
+  function showAlert(type, message) {
+    // Create alert element
+    const alertElement = document.createElement("div");
+    alertElement.className = `alert alert-${type} alert-dismissible fade show`;
+    alertElement.innerHTML = `
+      ${message}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    `;
+
+    // Insert at the top of the form
+    form.parentNode.insertBefore(alertElement, form);
+
+    // Auto dismiss after 5 seconds
+    setTimeout(() => {
+      alertElement.classList.remove("show");
+      setTimeout(() => alertElement.remove(), 300);
+    }, 5000);
+  }
+
   // 1. Handle NUST campus checkbox validation
   function validateNustCampus() {
     if (!isNustStart.checked && !isNustDest.checked) {
@@ -57,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
   monthlyOption.addEventListener("change", function () {
     if (this.checked) {
       priceSuggestion.textContent =
-        "Suggested: PKR 3000-8000 for Islamabad/Rawalpindis";
+        "Suggested: PKR 3000-8000 for Islamabad/Rawalpindi";
     }
   });
 
@@ -114,14 +216,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const stopDiv = document.createElement("div");
     stopDiv.className = "input-group mb-2";
     stopDiv.innerHTML = `
-          <span class="input-group-text bg-light">
-              <i class="fas fa-map-pin text-primary"></i>
-          </span>
-          <input type="text" class="form-control" placeholder="Enter a stop on your route">
-          <button type="button" class="btn btn-outline-secondary remove-stop">
-              <i class="fas fa-times"></i>
-          </button>
-      `;
+        <span class="input-group-text bg-light">
+            <i class="fas fa-map-pin text-primary"></i>
+        </span>
+        <input type="text" class="form-control" placeholder="Enter a stop on your route">
+        <button type="button" class="btn btn-outline-secondary remove-stop">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
     stopsContainer.appendChild(stopDiv);
 
     // Add event listener to the remove button
@@ -142,7 +244,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Form submission validation
-  form.addEventListener("submit", function (event) {
+  form.addEventListener("submit", async function (event) {
     event.preventDefault();
 
     // Check if at least one NUST campus checkbox is checked
@@ -151,11 +253,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Check if at least one day is selected
-    const dayCheckboxes = document.querySelectorAll(
-      'input[name="days[]"]:checked'
-    );
-    if (dayCheckboxes.length === 0) {
-      alert("Please select at least one day of the week.");
+    if (!validateDays()) {
       return;
     }
 
@@ -173,10 +271,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     if (!isValid) {
-      alert("Please fill in all required fields.");
+      showAlert("danger", "Please fill in all required fields.");
       return;
     }
-
     // If all validations pass, submit the form
     alert("Ride posted successfully! Your ride is now available for booking.");
     // form.submit(); // Uncomment when connected to backend
