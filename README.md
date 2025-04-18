@@ -21,6 +21,7 @@
 
 ## 📁 Project Structure
 
+```
 RideTogether/
 ├── index.html               # Landing page
 ├── login.html               # User login page
@@ -40,6 +41,7 @@ RideTogether/
 ├── profile.jpg              # Profile image placeholder
 ├── stylishback.jpg          # Background image
 └── README.md                # Project documentation
+```
 
 ## 👥 Team Members
 
