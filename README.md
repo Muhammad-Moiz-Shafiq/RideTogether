@@ -15,7 +15,8 @@
 
 ## 🛠️ Technologies Used
 
-- **HTML5 & CSS3**: Structuring and styling the web pages.
+- **HTML5**: Structuring the web pages.
+- **BootStrap & CSS3**: Styling the web pages.
 - **JavaScript (Vanilla)**: Implementing interactive functionalities.
 - **Responsive Web Design**: Ensuring compatibility across devices.
 
@@ -48,7 +49,7 @@ RideTogether/
 - Muhammad Moiz
 - Muhammad Haseeb ul Haq
 - Abdul Ahad
--  Obaid Satti
+- Obaid Satti
 - Muhammad Omar Farooq
 
 ## 📌 Getting Started
