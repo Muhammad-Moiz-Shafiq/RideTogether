@@ -13,13 +13,86 @@
     --dark: #212529;
 }
 
+.mode-toggle-btn {
+    background-color: var(--secondary);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+    margin-left: 10px;
+    width: auto;
+}
+
+.mode-toggle-btn:hover {
+    background-color: #5a6268;
+}
+
+
 body {
-    background: linear-gradient(135deg, #07284b, #0a4958);
+    background: url('stylishback.jpg') no-repeat center center fixed;
+    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     color: var(--dark);
+}
+
+body.dark-mode {
+    background: #121212;
+    color: #f1f1f1;
+}
+
+.dark-mode .login-container,
+.dark-mode .signup-container {
+    background-color: #1e1e1e;
+    color: #f1f1f1;
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode input {
+    background-color: #2c2c2c;
+    border-color: #444;
+    color: #f1f1f1;
+}
+
+.dark-mode input:focus {
+    border-color: #66afe9;
+    background-color: #333;
+    box-shadow: 0 0 0 3px rgba(102, 175, 233, 0.3);
+}
+
+.dark-mode label {
+    color: #f1f1f1;
+}
+
+.dark-mode .login-btn,
+.dark-mode .signup-btn {
+    background-color: #444;
+}
+
+.dark-mode .login-btn:hover,
+.dark-mode .signup-btn:hover {
+    background-color: #666;
+}
+
+.dark-mode .forgot-password,
+.dark-mode .create-account {
+    color: #a3c9ff;
+}
+
+.dark-mode .forgot-password:hover,
+.dark-mode .create-account:hover {
+    color: #72a4f2;
+}
+
+.dark-mode .error-message {
+    color: #ff6b6b;
 }
 
 .login-container, .signup-container {
@@ -59,20 +132,23 @@ body {
     filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
 }
 
+.name-fields {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.half-width {
+    flex: 1;
+}
+
 .input-group {
     margin-bottom: 20px;
     text-align: left;
+    position: relative;
 }
 
-label {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: 500;
-    color: var(--dark);
-    font-size: 14px;
-}
-
-input {
+.input-group input {
     width: 100%;
     padding: 12px 15px;
     border: 1px solid #e0e0e0;
@@ -82,11 +158,27 @@ input {
     transition: all 0.3s ease;
 }
 
-input:focus {
+.input-group input:focus {
     border-color: var(--primary);
     background-color: #fff;
     outline: none;
     box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+}
+
+.error-message {
+    color: #e74c3c;
+    font-size: 13px;
+    margin-top: 5px;
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
 }
 
 .login-btn, .signup-btn {
@@ -124,13 +216,6 @@ input:focus {
     text-decoration: underline;
 }
 
-.error-message {
-    color: #e74c3c;
-    font-size: 13px;
-    margin-top: 5px;
-    display: none;
-}
-
 .create-account {
     display: block;
     margin-top: 20px;
@@ -143,4 +228,82 @@ input:focus {
 .create-account:hover {
     color: var(--primary-dark);
     text-decoration: underline;
+}
+
+.forgot-password-container {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    width: 400px;
+    text-align: center;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+.forgot-password-container:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+.reset-btn {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    width: 70%;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.reset-btn:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.2);
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.back-to-login {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.back-to-login:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+.dark-mode .forgot-password-container {
+    background-color: #1e1e1e;
+    color: #f1f1f1;
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode .reset-btn {
+    background-color: #444;
+}
+
+.dark-mode .reset-btn:hover {
+    background-color: #666;
+}
+
+.dark-mode .back-to-login {
+    color: #a3c9ff;
+}
+
+.dark-mode .back-to-login:hover {
+    color: #72a4f2;
 }
