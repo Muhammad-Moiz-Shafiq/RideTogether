@@ -22,48 +22,31 @@
 ## 📁 Project Structure
 
 RideTogether/
-
 ├── index.html               # Landing page
-
 ├── login.html               # User login page
-
 ├── signup.html              # User registration page
-
 ├── RidePosting.html         # Page for drivers to post rides
-
 ├── RideSearch.html          # Page for passengers to search rides
-
 ├── forgot-password.html     # Password recovery page
-
 ├── help_center.html         # Help and FAQs
-
 ├── styles.css               # Main stylesheet
-
 ├── logsignstyle.css         # Styles for login and signup pages
-
 ├── script.js                # Main JavaScript file
-
 ├── RidePosting.js           # JavaScript for ride posting functionality
-
 ├── RideSearch.js            # JavaScript for ride searching functionality
-
 ├── logo.PNG                 # Application logo
-
 ├── picture1.png             # Additional image
-
 ├── picture2.jpg             # Additional image
-
 ├── profile.jpg              # Profile image placeholder
-
 ├── stylishback.jpg          # Background image
-
 └── README.md                # Project documentation
 
 ## 👥 Team Members
 
 - Muhammad Moiz
 - Muhammad Haseeb ul Haq
-- Abdul Ahad Obaid Satti
+- Abdul Ahad
+-  Obaid Satti
 - Muhammad Omar Farooq
 
 ## 📌 Getting Started
@@ -76,7 +59,7 @@ To view the application:
 Navigate to the project directory:
 
    ```bash
-   cd RideTogether
+       cd RideTogether
    ```
 Open index.html in your preferred web browser.
  
