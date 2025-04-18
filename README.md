@@ -76,7 +76,7 @@ To view the application:
 Navigate to the project directory:
 
    ```bash
-   cd RideTogether
+   cd RideTogether```
 Open index.html in your preferred web browser.
  
 
