@@ -1,5 +1,8 @@
 // Wait for document to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize dark mode first
+    initializeDarkMode();
+    
     // Initialize any interactive elements
     
     // Animation on scroll functionality
@@ -146,4 +149,54 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         observer.observe(path);
     });
+
+    // FAQ Accordion Animation
+    const accordionButtons = document.querySelectorAll('.accordion-button');
+    
+    accordionButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+            
+            // Add animation class
+            this.classList.add('accordion-button-animated');
+            
+            // Remove animation class after animation completes
+            setTimeout(() => {
+                this.classList.remove('accordion-button-animated');
+            }, 300);
+        });
+    });
 });
+
+// Dark Mode Toggle Functionality
+function initializeDarkMode() {
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    if (darkModeToggle) {
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        
+        // Apply the saved theme immediately
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        
+        // Update toggle button state
+        if (savedTheme === 'dark') {
+            darkModeToggle.classList.add('active');
+        }
+
+        darkModeToggle.addEventListener('click', function() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            // Update theme
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            // Update toggle button state
+            if (newTheme === 'dark') {
+                this.classList.add('active');
+            } else {
+                this.classList.remove('active');
+            }
+        });
+    }
+}

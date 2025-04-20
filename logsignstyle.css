@@ -8,9 +8,20 @@
 :root {
     --primary: #0066CC;
     --primary-dark: #004C99;
+    --primary-light: #4d84ff;
     --secondary: #6c757d;
     --light: #f8f9fa;
     --dark: #212529;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --text-muted: #888888;
+    --border-color: #e0e0e0;
+    --background-main: #ffffff;
+    --background-secondary: #f8f9fa;
+    --card-bg: #ffffff;
+    --input-bg: #ffffff;
+    --input-border: #e0e0e0;
+    --input-color: #333333;
 }
 
 .mode-toggle-btn {
@@ -40,55 +51,74 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    color: var(--dark);
+    color: var(--text-primary);
 }
 
 body.dark-mode {
-    background: #121212;
-    color: #f1f1f1;
+    background: var(--background-main);
+    color: var(--text-primary);
+}
+
+.dark-mode {
+    --primary: #4d84ff;
+    --primary-dark: #3366cc;
+    --primary-light: #66a3ff;
+    --secondary: #6c757d;
+    --light: #1a1a1a;
+    --dark: #ffffff;
+    --text-primary: #ffffff;
+    --text-secondary: #cccccc;
+    --text-muted: #888888;
+    --border-color: #2d2d2d;
+    --background-main: #000000;
+    --background-secondary: #1a1a1a;
+    --card-bg: #1a1a1a;
+    --input-bg: #1a1a1a;
+    --input-border: #2d2d2d;
+    --input-color: #ffffff;
 }
 
 .dark-mode .login-container,
 .dark-mode .signup-container {
-    background-color: #1e1e1e;
-    color: #f1f1f1;
+    background-color: var(--card-bg);
+    color: var(--text-primary);
     box-shadow: 0 5px 15px rgba(255, 255, 255, 0.05);
 }
 
 .dark-mode input {
-    background-color: #2c2c2c;
-    border-color: #444;
-    color: #f1f1f1;
+    background-color: var(--input-bg);
+    border-color: var(--input-border);
+    color: var(--input-color);
 }
 
 .dark-mode input:focus {
-    border-color: #66afe9;
-    background-color: #333;
-    box-shadow: 0 0 0 3px rgba(102, 175, 233, 0.3);
+    border-color: var(--primary);
+    background-color: var(--input-bg);
+    box-shadow: 0 0 0 3px rgba(77, 132, 255, 0.3);
 }
 
 .dark-mode label {
-    color: #f1f1f1;
+    color: var(--text-primary);
 }
 
 .dark-mode .login-btn,
 .dark-mode .signup-btn {
-    background-color: #444;
+    background-color: var(--primary);
 }
 
 .dark-mode .login-btn:hover,
 .dark-mode .signup-btn:hover {
-    background-color: #666;
+    background-color: var(--primary-dark);
 }
 
 .dark-mode .forgot-password,
 .dark-mode .create-account {
-    color: #a3c9ff;
+    color: var(--primary-light);
 }
 
 .dark-mode .forgot-password:hover,
 .dark-mode .create-account:hover {
-    color: #72a4f2;
+    color: var(--primary);
 }
 
 .dark-mode .error-message {

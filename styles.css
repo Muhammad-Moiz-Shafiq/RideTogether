@@ -2,15 +2,27 @@
 :root {
     --primary: #0066CC;
     --primary-dark: #004C99;
+    --primary-light: #4d84ff;
     --secondary: #6c757d;
     --light: #f8f9fa;
     --dark: #212529;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --text-muted: #888888;
+    --border-color: #e0e0e0;
+    --background-main: #ffffff;
+    --background-secondary: #f8f9fa;
+    --card-bg: #ffffff;
+    --input-bg: #ffffff;
+    --input-border: #e0e0e0;
+    --input-color: #333333;
     --primary-hover: #4ecbff;
 }
 
 body {
     font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    color: #333;
+    color: var(--text-primary);
+    background-color: var(--background-main);
 }
 
 /* Navbar */
@@ -1009,4 +1021,358 @@ body {
     background-color: var(--primary-dark);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 102, 204, 0.15);
+}
+
+/* Dark Mode Styles */
+[data-theme="dark"] {
+    --primary: #4d84ff;
+    --primary-dark: #3366cc;
+    --primary-light: #66a3ff;
+    --secondary: #6c757d;
+    --light: #1a1a1a;
+    --dark: #ffffff;
+    --text-primary: #ffffff;
+    --text-secondary: #cccccc;
+    --text-muted: #888888;
+    --border-color: #2d2d2d;
+    --background-main: #121212;
+    --background-secondary: #1a1a1a;
+    --card-bg: #1e1e1e;
+    --input-bg: #1a1a1a;
+    --input-border: #2d2d2d;
+    --input-color: #ffffff;
+    --primary-hover: #66a3ff;
+}
+
+[data-theme="dark"] .navbar {
+    background-color: #121212 !important;
+    border-bottom: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .nav-link {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .nav-link:hover {
+    color: var(--primary) !important;
+}
+
+[data-theme="dark"] .card {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select,
+[data-theme="dark"] .input-group-text {
+    background-color: var(--input-bg);
+    border-color: var(--input-border);
+    color: var(--input-color);
+}
+
+[data-theme="dark"] .form-control::placeholder {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .form-control:focus,
+[data-theme="dark"] .form-select:focus {
+    background-color: var(--input-bg);
+    border-color: var(--primary);
+    color: var(--input-color);
+}
+
+[data-theme="dark"] .input-group-text {
+    background-color: var(--background-secondary);
+    color: var(--text-primary);
+    border-color: var(--input-border);
+}
+
+[data-theme="dark"] .text-muted {
+    color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] h1, 
+[data-theme="dark"] h2, 
+[data-theme="dark"] h3, 
+[data-theme="dark"] h4, 
+[data-theme="dark"] h5, 
+[data-theme="dark"] h6,
+[data-theme="dark"] p {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .text-dark {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .bg-light {
+    background-color: var(--background-secondary) !important;
+}
+
+[data-theme="dark"] .bg-white {
+    background-color: var(--background-main) !important;
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .hero-section {
+    background-color: #07284b;
+}
+
+[data-theme="dark"] .search-box {
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .footer {
+    background-color: var(--background-main);
+    border-top: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .footer-links a {
+    color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .footer-links a:hover {
+    color: var(--primary) !important;
+}
+
+[data-theme="dark"] .route-card {
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .route-path {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .preference-item {
+    background-color: var(--background-secondary);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .accordion-item {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .accordion-button {
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .accordion-button:not(.collapsed) {
+    background-color: var(--background-secondary);
+    color: var(--primary);
+}
+
+[data-theme="dark"] .accordion-body {
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+[data-theme="dark"] .btn-primary:hover {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+[data-theme="dark"] .dropdown-menu {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .dropdown-item {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .dropdown-item:hover {
+    background-color: var(--background-secondary);
+    color: var(--primary);
+}
+
+/* Dark Mode Toggle Button */
+#darkModeToggle {
+    position: relative;
+    width: 56px;
+    height: 28px;
+    border-radius: 14px;
+    background-color: #e9ecef;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    transition: all 0.3s ease;
+    margin: 0 15px;
+}
+
+#darkModeToggle::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+    left: 4px;
+}
+
+[data-theme="dark"] #darkModeToggle {
+    background-color: #4d84ff;
+}
+
+[data-theme="dark"] #darkModeToggle::before {
+    transform: translateX(28px);
+}
+
+#darkModeToggle .toggle-icons {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 4px;
+    color: #6c757d;
+}
+
+#darkModeToggle .toggle-icons i {
+    font-size: 12px;
+    z-index: 1;
+}
+
+[data-theme="dark"] #darkModeToggle .toggle-icons {
+    color: white;
+}
+
+/* FAQ Section Styles */
+.faq-section {
+    padding: 80px 0;
+}
+
+.accordion-item {
+    border: none;
+    margin-bottom: 1rem;
+    border-radius: 8px !important;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.accordion-button {
+    padding: 1.25rem;
+    font-weight: 600;
+    background-color: #fff;
+    transition: all 0.3s ease;
+}
+
+.accordion-button:not(.collapsed) {
+    color: var(--bs-primary);
+    background-color: rgba(13, 110, 253, 0.1);
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: rgba(13, 110, 253, 0.25);
+}
+
+.accordion-body {
+    padding: 1.25rem;
+    line-height: 1.6;
+}
+
+[data-theme="dark"] .navbar-brand {
+    color: var(--text-primary) !important;
+}
+
+/* Navbar items alignment */
+.navbar .d-flex {
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar-nav {
+    display: flex;
+    align-items: center;
+}
+
+[data-theme="dark"] .search-box,
+[data-theme="dark"] .card {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .form-label,
+[data-theme="dark"] .form-check-label {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .input-group-text {
+    background-color: var(--background-secondary);
+    border-color: var(--input-border);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select {
+    background-color: var(--input-bg);
+    border-color: var(--input-border);
+    color: var(--input-color);
+}
+
+[data-theme="dark"] .form-control:focus,
+[data-theme="dark"] .form-select:focus {
+    background-color: var(--input-bg);
+    border-color: var(--primary);
+    color: var(--input-color);
+}
+
+[data-theme="dark"] .form-check-input {
+    background-color: var(--input-bg);
+    border-color: var(--input-border);
+}
+
+[data-theme="dark"] .form-check-input:checked {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+[data-theme="dark"] .badge.bg-primary {
+    background-color: var(--primary) !important;
+}
+
+[data-theme="dark"] .dropdown-menu {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .dropdown-item {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .dropdown-item:hover {
+    background-color: var(--background-secondary);
+    color: var(--primary);
+}
+
+[data-theme="dark"] .text-muted {
+    color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] .bg-light {
+    background-color: var(--background-secondary) !important;
+}
+
+[data-theme="dark"] #no-results {
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .hero-section {
+    background-color: #07284b;
 }

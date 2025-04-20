@@ -144,7 +144,7 @@
       const mode = localStorage.getItem('theme');
       if (mode === 'dark') {
         document.body.classList.add('dark-mode');
-        document.getElementById('darkModeToggle').textContent = 'Light Mode';
+        document.getElementById('darkModeToggle').textContent = '';
         
         // Apply dark mode to navbar
         document.querySelector('.navbar').classList.remove('bg-white');
@@ -157,7 +157,7 @@
       document.body.classList.toggle('dark-mode');
       const isDark = document.body.classList.contains('dark-mode');
       localStorage.setItem('theme', isDark ? 'dark' : 'light');
-      this.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+      this.textContent = isDark ? '' : '';
       
       // Toggle navbar appearance
       const navbar = document.querySelector('.navbar');
