@@ -9,22 +9,8 @@ const PreferencesForm = ({ formData, handleInputChange }) => {
       {/* Ride Frequency Options */}
       <div className="mb-4">
         <label className="form-label">Ride Frequency</label>
-        <div className="d-flex">
-          <div className="form-check me-4">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="rideFrequency"
-              id="monthlyBasis"
-              value="monthly"
-              checked={formData.rideFrequency === "monthly"}
-              onChange={handleInputChange}
-            />
-            <label className="form-check-label" htmlFor="monthlyBasis">
-              Monthly basis
-            </label>
-          </div>
-          <div className="form-check">
+        <div className="d-flex flex-wrap">
+          <div className="form-check me-4 mb-2">
             <input
               className="form-check-input"
               type="radio"
@@ -35,7 +21,38 @@ const PreferencesForm = ({ formData, handleInputChange }) => {
               onChange={handleInputChange}
             />
             <label className="form-check-label" htmlFor="dailyBasis">
+              <i className="fas fa-calendar-day me-2 text-primary"></i>
               Daily basis
+            </label>
+          </div>
+          <div className="form-check me-4 mb-2">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="rideFrequency"
+              id="weeklyBasis"
+              value="weekly"
+              checked={formData.rideFrequency === "weekly"}
+              onChange={handleInputChange}
+            />
+            <label className="form-check-label" htmlFor="weeklyBasis">
+              <i className="fas fa-calendar-week me-2 text-primary"></i>
+              Weekly basis
+            </label>
+          </div>
+          <div className="form-check mb-2">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="rideFrequency"
+              id="monthlyBasis"
+              value="monthly"
+              checked={formData.rideFrequency === "monthly"}
+              onChange={handleInputChange}
+            />
+            <label className="form-check-label" htmlFor="monthlyBasis">
+              <i className="fas fa-calendar-alt me-2 text-primary"></i>
+              Monthly basis
             </label>
           </div>
         </div>
@@ -146,10 +163,26 @@ const PreferencesForm = ({ formData, handleInputChange }) => {
                 </label>
               </div>
             </div>
+            <div className="col-md-4 col-6">
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="sunday"
+                  name="days[]"
+                  value="sunday"
+                  checked={formData.daysAvailable.includes("sunday")}
+                  onChange={handleInputChange}
+                />
+                <label className="form-check-label" htmlFor="sunday">
+                  Sunday
+                </label>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Trip Type (only for daily basis) */}
+        {/* Trip Type */}
         <div className="mb-4" id="tripTypeSection">
           <label className="form-label">Trip Type</label>
           <div className="d-flex">
@@ -164,6 +197,7 @@ const PreferencesForm = ({ formData, handleInputChange }) => {
                 onChange={handleInputChange}
               />
               <label className="form-check-label" htmlFor="roundTrip">
+                <i className="fas fa-exchange-alt me-2 text-primary"></i>
                 Round trip
               </label>
             </div>
@@ -178,6 +212,7 @@ const PreferencesForm = ({ formData, handleInputChange }) => {
                 onChange={handleInputChange}
               />
               <label className="form-check-label" htmlFor="oneWay">
+                <i className="fas fa-long-arrow-alt-right me-2 text-primary"></i>
                 One-way trip
               </label>
             </div>
@@ -203,6 +238,7 @@ const PreferencesForm = ({ formData, handleInputChange }) => {
                 required
               />
             </div>
+            <small className="text-muted ms-2">From starting point</small>
           </div>
 
           {formData.tripType === "round-trip" && (
@@ -223,6 +259,7 @@ const PreferencesForm = ({ formData, handleInputChange }) => {
                   required
                 />
               </div>
+              <small className="text-muted ms-2">From destination</small>
             </div>
           )}
         </div>
@@ -246,11 +283,16 @@ const PreferencesForm = ({ formData, handleInputChange }) => {
               onChange={handleInputChange}
               required
             />
+            <span className="input-group-text bg-light">PKR</span>
           </div>
           <small className="text-muted ms-2" id="priceSuggestion">
             Suggested: PKR{" "}
-            {formData.rideFrequency === "monthly" ? "3000-8000" : "150-500"} for
-            Islamabad/Rawalpindi
+            {formData.rideFrequency === "monthly"
+              ? "3000-8000"
+              : formData.rideFrequency === "weekly"
+              ? "800-2000"
+              : "150-500"}{" "}
+            for Islamabad/Rawalpindi
           </small>
         </div>
       </div>

@@ -2,7 +2,7 @@
 
 **RideTogether** is a react based carpooling web application developed as an end-semester project for Spring 2025. Designed specifically for students of the National University of Sciences and Technology (NUST), it facilitates efficient and eco-friendly commuting by connecting drivers and passengers within the university community.
 
-![RideTogether Logo](./src/images/logo.PNG)
+![RideTogether Logo](./Frontend/src/images/logo.PNG)
 
 ## 🚀 Features
 

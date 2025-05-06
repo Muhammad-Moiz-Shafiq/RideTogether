@@ -8,6 +8,50 @@ const ContactDetailsForm = ({ formData, handleInputChange }) => {
         Contact Details
       </h3>
 
+      {/* User Name - Added Field */}
+      <div className="mb-4">
+        <label className="form-label">
+          Your Name
+          <span className="text-danger">*</span>
+        </label>
+        <div className="input-group mb-2">
+          <span className="input-group-text bg-light">
+            <i className="fas fa-user text-primary"></i>
+          </span>
+          <input
+            type="text"
+            className="form-control"
+            name="userName"
+            value={formData.userName}
+            onChange={handleInputChange}
+            placeholder="Enter your full name"
+            required
+          />
+        </div>
+      </div>
+
+      {/* Student ID - Added Field */}
+      <div className="mb-4">
+        <label className="form-label">
+          Student/Faculty ID
+          <span className="text-danger">*</span>
+        </label>
+        <div className="input-group mb-2">
+          <span className="input-group-text bg-light">
+            <i className="fas fa-id-card text-primary"></i>
+          </span>
+          <input
+            type="text"
+            className="form-control"
+            name="studentId"
+            value={formData.studentId}
+            onChange={handleInputChange}
+            placeholder="Enter your university ID"
+            required
+          />
+        </div>
+      </div>
+
       <div className="mb-4">
         <label className="form-label">
           Your Phone Number
@@ -44,37 +88,6 @@ const ContactDetailsForm = ({ formData, handleInputChange }) => {
       </div>
 
       <div className="mb-4">
-        <label className="form-label">Alternate Phone Number</label>
-        <div className="input-group mb-2">
-          <span className="input-group-text bg-light">
-            <i className="fas fa-phone-alt text-primary"></i>
-          </span>
-          <input
-            type="tel"
-            className="form-control"
-            name="alternatePhone"
-            value={formData.alternatePhone}
-            onChange={handleInputChange}
-            placeholder="Enter alternate contact number (Optional)"
-          />
-        </div>
-        <div className="form-check ms-2">
-          <input
-            className="form-check-input"
-            type="checkbox"
-            id="alternateWhatsapp"
-            name="isAlternateWhatsapp"
-            checked={formData.isAlternateWhatsapp}
-            onChange={handleInputChange}
-          />
-          <label className="form-check-label small" htmlFor="alternateWhatsapp">
-            <i className="fab fa-whatsapp text-success me-1"></i>
-            This number is on WhatsApp
-          </label>
-        </div>
-      </div>
-
-      <div className="mb-4">
         <label className="form-label">Email Address</label>
         <div className="input-group">
           <span className="input-group-text bg-light">
@@ -89,6 +102,9 @@ const ContactDetailsForm = ({ formData, handleInputChange }) => {
             placeholder="Enter your email address"
           />
         </div>
+        <small className="text-muted ms-2">
+          Preferably your university email
+        </small>
       </div>
 
       <div className="mb-4">
@@ -191,12 +207,6 @@ const ContactDetailsForm = ({ formData, handleInputChange }) => {
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="d-flex justify-content-between">
-        <button type="submit" className="btn btn-primary btn-lg px-4">
-          <i className="fas fa-check me-2"></i> Post Your Ride
-        </button>
       </div>
     </div>
   );
