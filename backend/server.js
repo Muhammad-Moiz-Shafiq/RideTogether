@@ -1,12 +1,10 @@
+require('dotenv').config();
 const express = require("express");
-const dotenv = require("dotenv");
 const cors = require("cors");
 const connectDB = require("./config/db");
 const { errorHandler } = require("./middleware/errorMiddleware");
 const rideRoutes = require("./routes/rideRoutes");
-
-// Load environment variables
-dotenv.config();
+const authRoutes = require("./routes/authRoutes");
 
 // Connect to database
 connectDB();
@@ -20,6 +18,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // Routes
 app.use("/api/rides", rideRoutes);
+app.use("/api/auth", authRoutes);
 
 // Default route
 app.get("/", (req, res) => {

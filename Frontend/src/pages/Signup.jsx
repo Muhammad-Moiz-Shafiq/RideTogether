@@ -6,7 +6,7 @@ import Footer from "../components/Footer";
 import AuthCard from "../components/AuthCard";
 import FormInput from "../components/FormInput";
 import AuthButton from "../components/AuthButton";
-// import DarkModeToggle from "../components/DarkModeToggle";
+import authService from "../services/authService";
 import "../css/logsignstyle.css";
 
 const Signup = () => {
@@ -18,6 +18,7 @@ const Signup = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    otp: "",
   });
 
   const [formErrors, setFormErrors] = useState({
@@ -27,7 +28,13 @@ const Signup = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    otp: "",
   });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpSentTo, setOtpSentTo] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -62,8 +69,8 @@ const Signup = () => {
 
     if (!formData.email.trim()) {
       errors.email = "Please enter an email";
-    } else if (!formData.email.includes("@")) {
-      errors.email = "Please enter a valid email";
+    } else if (!formData.email.endsWith("@seecs.edu.pk")) {
+      errors.email = "Only NUST SEECS email addresses (@seecs.edu.pk) are allowed";
     }
 
     if (formData.password.length < 8) {
@@ -74,25 +81,68 @@ const Signup = () => {
       errors.confirmPassword = "Passwords do not match";
     }
 
+    if (otpSent && !formData.otp.trim()) {
+      errors.otp = "Please enter the OTP";
+    }
+
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSendOTP = async (e) => {
     e.preventDefault();
+    setSubmitError("");
+
+    // Validate all fields before sending OTP
+    if (!validateForm()) {
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      await authService.sendOTP(formData.email);
+      // Redirect to verify email page with user info (except OTP)
+      navigate("/verify-email", {
+        state: {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          username: formData.username,
+          email: formData.email,
+          password: formData.password,
+        },
+      });
+    } catch (error) {
+      setSubmitError(error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitError("");
 
     if (validateForm()) {
-      console.log("Sign up attempt with:", {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        username: formData.username,
-        email: formData.email,
-      });
+      try {
+        setIsSubmitting(true);
+        const userData = {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          username: formData.username,
+          email: formData.email,
+          password: formData.password,
+          otp: formData.otp,
+        };
 
-      // This is where you would call your registration API
-      // For demo purposes, we'll just show an alert and redirect
-      alert("Signup successful! (This is a demo)");
-      navigate("/login"); // Navigate to login page after successful signup
+        await authService.verifyOTPAndRegister(userData);
+        navigate("/login", { 
+          state: { message: "Registration successful! Please login." }
+        });
+      } catch (error) {
+        setSubmitError(error.message);
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -109,7 +159,13 @@ const Signup = () => {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit}>
+          {submitError && (
+            <div className="alert alert-danger" role="alert">
+              {submitError}
+            </div>
+          )}
+
+          <form onSubmit={handleSendOTP}>
             <div className="name-fields">
               <FormInput
                 label="FIRST NAME"
@@ -153,6 +209,7 @@ const Signup = () => {
               onChange={handleChange}
               required={true}
               error={formErrors.email}
+              placeholder="example@seecs.edu.pk"
             />
 
             <FormInput
@@ -178,8 +235,11 @@ const Signup = () => {
             />
 
             <div className="button-group">
-              <AuthButton text="SIGN UP" className="signup-btn" />
-              {/* <DarkModeToggle /> */}
+              <AuthButton 
+                text={isSubmitting ? "SENDING OTP..." : "SIGN UP"} 
+                className="signup-btn"
+                disabled={isSubmitting}
+              />
             </div>
 
             <Link to="/login" className="create-account">

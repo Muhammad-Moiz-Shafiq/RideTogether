@@ -255,3 +255,57 @@ html[data-theme="dark"] .back-to-login:hover {
     padding: 10px 12px;
   }
 }
+
+.email-otp-group {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.send-otp-btn {
+  position: absolute;
+  right: 0;
+  top: 32px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.send-otp-btn:hover {
+  background-color: var(--primary-dark);
+}
+
+.send-otp-btn:disabled {
+  background-color: var(--text-secondary);
+  cursor: not-allowed;
+}
+
+.otp-sent-message {
+  position: absolute;
+  right: 0;
+  top: 32px;
+  color: var(--success);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.signup-btn {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  width: 100%;
+  min-width: 220px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  white-space: nowrap;
+}

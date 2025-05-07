@@ -1,16 +1,18 @@
 // pages/login.jsx
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import AuthCard from "../components/AuthCard";
 import FormInput from "../components/FormInput";
 import AuthButton from "../components/AuthButton";
+import authService from "../services/authService";
 // import DarkModeToggle from "../components/DarkModeToggle";
 import "../css/logsignstyle.css";
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -19,6 +21,17 @@ const Login = () => {
     username: "",
     password: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
+  // Check for success message from registration
+  useEffect(() => {
+    if (location.state?.message) {
+      setSubmitError(location.state.message);
+      // Clear the message from location state
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,16 +62,20 @@ const Login = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitError("");
 
     if (validateForm()) {
-      console.log("Login attempt with:", { username: formData.username });
-
-      // This is where you would call your authentication API
-      // For demo purposes, we'll just show an alert and redirect
-      alert("Login successful! (This is a demo)");
-      navigate("/"); // Navigate to home page after successful login
+      try {
+        setIsSubmitting(true);
+        await authService.login(formData);
+        navigate("/"); // Navigate to home page after successful login
+      } catch (error) {
+        setSubmitError(error.message);
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -67,6 +84,12 @@ const Login = () => {
       <Navbar />
 
       <AuthCard>
+        {submitError && (
+          <div className={`alert ${submitError.includes("successful") ? "alert-success" : "alert-danger"}`} role="alert">
+            {submitError}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit}>
           <FormInput
             label="USERNAME"
@@ -90,7 +113,11 @@ const Login = () => {
           />
 
           <div className="button-group">
-            <AuthButton text="LOGIN" className="login-btn" />
+            <AuthButton 
+              text={isSubmitting ? "LOGGING IN..." : "LOGIN"} 
+              className="login-btn"
+              disabled={isSubmitting}
+            />
           </div>
 
           <Link to="/forgot-password" className="forgot-password">

@@ -1,21 +1,25 @@
 // pages/forgotPassword.jsx
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import FormInput from "../components/FormInput";
 import AuthButton from "../components/AuthButton";
 // import DarkModeToggle from "../components/DarkModeToggle";
+import authService from "../services/authService";
 import "../css/logsignstyle.css";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setEmail(e.target.value);
     setEmailError("");
+    setSubmitError("");
   };
 
   const validateForm = () => {
@@ -29,15 +33,19 @@ const ForgotPassword = () => {
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setSubmitError("");
     if (validateForm()) {
-      console.log("Password reset requested for:", email);
-
-      // This is where you would call your password reset API
-      // For demo purposes, we'll just show a success message
-      setIsSubmitted(true);
+      try {
+        setIsSubmitting(true);
+        await authService.forgotPassword(email);
+        navigate("/verify-reset-otp", { state: { email } });
+      } catch (error) {
+        setSubmitError(error.message);
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -54,51 +62,36 @@ const ForgotPassword = () => {
             </div>
           </div>
 
-          {!isSubmitted ? (
-            <form onSubmit={handleSubmit} id="forgotPasswordForm">
-              <FormInput
-                label="EMAIL"
-                type="email"
-                id="email"
-                name="email"
-                value={email}
-                onChange={handleChange}
-                required={true}
-                error={emailError}
-              />
-
-              <div className="button-group">
-                <AuthButton text="RESET PASSWORD" className="reset-btn" />
-                {/* <DarkModeToggle /> */}
+          <form onSubmit={handleSubmit} id="forgotPasswordForm">
+            <FormInput
+              label="EMAIL"
+              type="email"
+              id="email"
+              name="email"
+              value={email}
+              onChange={handleChange}
+              required={true}
+              error={emailError}
+            />
+            {submitError && (
+              <div className="alert alert-danger" role="alert">
+                {submitError}
               </div>
-
-              <div className="links">
-                <Link to="/login" className="back-to-login">
-                  Back to Login
-                </Link>
-                <Link to="/signup" className="create-account">
-                  Create an account
-                </Link>
-              </div>
-            </form>
-          ) : (
-            <div className="success-message">
-              <i
-                className="fas fa-check-circle text-success mb-3"
-                style={{ fontSize: "48px" }}
-              ></i>
-              <h4>Reset Link Sent!</h4>
-              <p className="mb-4">
-                We've sent a password reset link to <strong>{email}</strong>.
-                Please check your inbox and follow the instructions.
-              </p>
-              <div className="button-group">
-                <Link to="/login" className="login-btn">
-                  BACK TO LOGIN
-                </Link>
-              </div>
+            )}
+            <div className="button-group">
+              <AuthButton text={isSubmitting ? "SENDING..." : "RESET PASSWORD"} className="reset-btn" />
+              {/* <DarkModeToggle /> */}
             </div>
-          )}
+
+            <div className="links">
+              <Link to="/login" className="back-to-login">
+                Back to Login
+              </Link>
+              <Link to="/signup" className="create-account">
+                Create an account
+              </Link>
+            </div>
+          </form>
         </div>
       </div>
 

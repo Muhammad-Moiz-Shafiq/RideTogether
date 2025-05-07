@@ -46,16 +46,17 @@ const Navbar = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <button className="btn" onClick={toggleTheme}>
-                <div className="toggle-icons">
-                  <i className="fas fa-sun"></i>
+              <button className="btn" onClick={toggleTheme} aria-label="Toggle dark mode">
+                {theme === "dark" ? (
+                  <i className="fas fa-sun" style={{ color: "#fff" }}></i>
+                ) : (
                   <i className="fas fa-moon"></i>
-                </div>
+                )}
               </button>
             </li>
             <li className="nav-item">
               <Link
-                className="nav-link btn btn-primary text-white px-3"
+                className="nav-link btn btn-primary text-white px-3 ms-3"
                 to="/login"
               >
                 <i className="fas fa-user me-1"></i> Login/Register
