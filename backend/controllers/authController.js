@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const OTP = require("../models/OTP");
-const { sendOTPEmail } = require("../utils/emailService");
+const { sendOTPEmail, sendPasswordResetOTPEmail } = require("../utils/emailService");
 const crypto = require("crypto");
 
 // Generate JWT
@@ -164,7 +164,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
   const otp = generateOTP();
   const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
   await OTP.create({ email, otp, expiresAt });
-  await sendOTPEmail(email, otp);
+  await sendPasswordResetOTPEmail(email, otp);
   res.status(200).json({ message: "OTP sent to email for password reset" });
 });
 

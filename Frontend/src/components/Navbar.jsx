@@ -1,16 +1,45 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import authService from "../services/authService";
 
 const Navbar = () => {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  const [user, setUser] = useState(authService.getCurrentUser());
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("theme", theme);
   }, [theme]);
 
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    }
+    if (dropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownOpen]);
+
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
+  };
+
+  const handleLogout = () => {
+    authService.logout();
+    setUser(null);
+    setDropdownOpen(false);
+    navigate("/");
   };
 
   return (
@@ -54,14 +83,56 @@ const Navbar = () => {
                 )}
               </button>
             </li>
-            <li className="nav-item">
-              <Link
-                className="nav-link btn btn-primary text-white px-3 ms-3"
-                to="/login"
-              >
-                <i className="fas fa-user me-1"></i> Login/Register
-              </Link>
-            </li>
+            {user && (
+              <li className="nav-item dropdown" ref={dropdownRef}>
+                <button
+                  className="btn nav-link d-flex align-items-center"
+                  style={{ background: "none", border: "none", outline: "none" }}
+                  onClick={() => setDropdownOpen((open) => !open)}
+                  aria-expanded={dropdownOpen}
+                  aria-label="User menu"
+                >
+                  <span className="me-1">
+                    <i className="fas fa-user-circle fa-lg" style={{ color: "#00AEEF" }}></i>
+                  </span>
+                  <span className="d-none d-md-inline">
+                    {user ? user.firstName : ""}
+                  </span>
+                  <i className={`fas fa-chevron-${dropdownOpen ? "up" : "down"} ms-1`}></i>
+                </button>
+                {dropdownOpen && (
+                  <ul className="dropdown-menu dropdown-menu-end show mt-2" style={{ minWidth: 220, right: 0 }}>
+                    <li className="dropdown-header text-center">
+                      <i className="fas fa-user-circle fa-2x mb-2" style={{ color: "#00AEEF" }}></i>
+                      <div className="fw-bold">{user.firstName} {user.lastName}</div>
+                      <div className="text-muted" style={{ fontSize: "0.9em" }}>{user.email}</div>
+                    </li>
+                    <li><hr className="dropdown-divider" /></li>
+                    <li>
+                      <button className="dropdown-item" onClick={() => { setDropdownOpen(false); navigate("/profile"); }}>
+                        Profile
+                      </button>
+                    </li>
+                    <li>
+                      <button className="dropdown-item" onClick={handleLogout}>
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                )}
+              </li>
+            )}
+            {!user && (
+              <li className="nav-item">
+                <button
+                  className="btn btn-primary px-3 ms-2"
+                  onClick={() => navigate("/login")}
+                  style={{ color: "#fff" }}
+                >
+                  <i className="fas fa-user me-1"></i> Login / Signup
+                </button>
+              </li>
+            )}
           </ul>
         </div>
       </div>

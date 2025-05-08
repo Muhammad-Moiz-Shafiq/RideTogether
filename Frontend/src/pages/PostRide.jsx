@@ -293,9 +293,9 @@ const PostRide = () => {
         <div className="container">
           <div className="row">
             <div className="col-lg-10 mx-auto">
-              <div className="card shadow-sm border-0 rounded-3">
-                <div className="card-body p-4 p-md-5">
-                  <form id="ridePostingForm" onSubmit={handleSubmit}>
+              <form id="ridePostingForm" onSubmit={handleSubmit}>
+                <div className="card shadow-sm border-0 rounded-3 mb-4">
+                  <div className="card-body p-4 p-md-5">
                     <RouteDetailsForm
                       formData={formData}
                       handleInputChange={handleInputChange}
@@ -303,52 +303,55 @@ const PostRide = () => {
                       handleRemoveStop={handleRemoveStop}
                       handleStopChange={handleStopChange}
                     />
-
-                    <hr className="my-4" />
-
+                  </div>
+                </div>
+                <div className="card shadow-sm border-0 rounded-3 mb-4">
+                  <div className="card-body p-4 p-md-5">
                     <PreferencesForm
                       formData={formData}
                       handleInputChange={handleInputChange}
                     />
-
-                    <hr className="my-4" />
-
+                  </div>
+                </div>
+                <div className="card shadow-sm border-0 rounded-3 mb-4">
+                  <div className="card-body p-4 p-md-5">
                     <VehicleInfoForm
                       formData={formData}
                       handleInputChange={handleInputChange}
                       handlePreferenceChange={handlePreferenceChange}
                     />
-
-                    <hr className="my-4" />
-
+                  </div>
+                </div>
+                <div className="card shadow-sm border-0 rounded-3 mb-4">
+                  <div className="card-body p-4 p-md-5">
                     <ContactDetailsForm
                       formData={formData}
                       handleInputChange={handleInputChange}
                     />
-                    {/* Submit Button Section */}
-                    <div className="d-flex justify-content-center mt-4">
-                      <button
-                        type="submit"
-                        className="btn btn-primary btn-lg px-5"
-                        disabled={isSubmitting}
-                      >
-                        {isSubmitting ? (
-                          <>
-                            <span
-                              className="spinner-border spinner-border-sm me-2"
-                              role="status"
-                              aria-hidden="true"
-                            ></span>
-                            Posting...
-                          </>
-                        ) : (
-                          "Post Ride"
-                        )}
-                      </button>
-                    </div>
-                  </form>
+                  </div>
                 </div>
-              </div>
+                {/* Submit Button Section */}
+                <div className="d-flex justify-content-center mt-4">
+                  <button
+                    type="submit"
+                    className="btn btn-primary btn-lg px-5"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm me-2"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        Posting...
+                      </>
+                    ) : (
+                      "Post Ride"
+                    )}
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>

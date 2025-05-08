@@ -30,7 +30,7 @@ transporter.verify(function(error, success) {
   }
 });
 
-// Function to send OTP email
+// Function to send OTP email for signup/verification
 const sendOTPEmail = async (email, otp) => {
   console.log('Attempting to send OTP email to:', email);
   console.log('OTP value:', otp);
@@ -70,6 +70,47 @@ const sendOTPEmail = async (email, otp) => {
   }
 };
 
+// Function to send OTP email for password reset
+const sendPasswordResetOTPEmail = async (email, otp) => {
+  console.log('Attempting to send Password Reset OTP email to:', email);
+  console.log('OTP value:', otp);
+
+  const mailOptions = {
+    from: process.env.SMTP_FROM,
+    to: email,
+    subject: "Reset Your Password - RideTogether",
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #0066cc;">Password Reset Request</h2>
+        <p>We received a request to reset your RideTogether account password. Use the OTP below to proceed:</p>
+        <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px; text-align: center; margin: 20px 0;">
+          <h1 style="color: #dc3545; margin: 0; font-size: 32px;">${otp}</h1>
+        </div>
+        <p>This OTP will expire in 10 minutes.</p>
+        <p>If you did not request a password reset, you can safely ignore this email. Your password will remain unchanged.</p>
+        <hr style="border: 1px solid #eee; margin: 20px 0;">
+        <p style="color: #666; font-size: 12px;">This is an automated message, please do not reply.</p>
+      </div>
+    `,
+  };
+
+  try {
+    console.log('Sending mail with options:', {
+      from: mailOptions.from,
+      to: mailOptions.to,
+      subject: mailOptions.subject
+    });
+    
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Password reset email sent successfully:', info.response);
+    return true;
+  } catch (error) {
+    console.error('Detailed email error:', error);
+    throw new Error("Failed to send password reset email");
+  }
+};
+
 module.exports = {
   sendOTPEmail,
+  sendPasswordResetOTPEmail,
 }; 
