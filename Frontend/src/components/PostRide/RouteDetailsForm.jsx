@@ -1,3 +1,6 @@
+import React, { useState } from "react";
+import MapPicker from "../MapPicker";
+
 const RouteDetailsForm = ({
   formData,
   handleInputChange,
@@ -5,13 +8,42 @@ const RouteDetailsForm = ({
   handleRemoveStop,
   handleStopChange,
 }) => {
+  const [showMap, setShowMap] = useState(false);
+  const [mapField, setMapField] = useState(null); // 'startingPoint' or 'destination'
+
+  // Handle map selection
+  const handleMapSelect = ({ address }) => {
+    if (mapField) {
+      handleInputChange({
+        target: {
+          name: mapField,
+          value: address,
+          type: "text",
+        },
+      });
+    }
+    setShowMap(false);
+    setMapField(null);
+  };
+
+  // Simple modal - no longer needed as MapPicker is self-contained
+  const Modal = ({ children }) => (
+    <>{children}</>
+  );
+
   return (
     <div className="mb-5">
+      {showMap && (
+        <MapPicker
+          onSelect={handleMapSelect}
+          onClose={() => setShowMap(false)}
+          type={mapField === "startingPoint" ? "start" : "destination"}
+        />
+      )}
       <h3 className="mb-4 fw-bold">
         <span className="badge bg-primary rounded-circle me-2">1</span>
         Where are you driving?
       </h3>
-
       <div className="mb-4">
         <label className="form-label">
           Starting Point<span className="text-danger">*</span>
@@ -29,6 +61,17 @@ const RouteDetailsForm = ({
             onChange={handleInputChange}
             required
           />
+          <button
+            type="button"
+            className="btn btn-outline-primary"
+            title="Pick on map"
+            onClick={() => {
+              setShowMap(true);
+              setMapField("startingPoint");
+            }}
+          >
+            <i className="fas fa-map"></i>
+          </button>
         </div>
         <div className="form-check ms-2">
           <input
@@ -44,7 +87,6 @@ const RouteDetailsForm = ({
           </label>
         </div>
       </div>
-
       <div className="mb-4">
         <label className="form-label">
           Destination<span className="text-danger">*</span>
@@ -62,6 +104,17 @@ const RouteDetailsForm = ({
             onChange={handleInputChange}
             required
           />
+          <button
+            type="button"
+            className="btn btn-outline-primary"
+            title="Pick on map"
+            onClick={() => {
+              setShowMap(true);
+              setMapField("destination");
+            }}
+          >
+            <i className="fas fa-map"></i>
+          </button>
         </div>
         <div className="form-check ms-2">
           <input
@@ -77,7 +130,6 @@ const RouteDetailsForm = ({
           </label>
         </div>
       </div>
-
       <div className="mb-4">
         <label className="form-label">Add Stops (Optional)</label>
         <div id="stopsContainer">

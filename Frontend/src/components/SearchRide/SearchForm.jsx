@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import MapPicker from "../MapPicker";
 
 const SearchForm = ({
   filters,
@@ -7,6 +8,8 @@ const SearchForm = ({
   resetFilters,
 }) => {
   const [timeOfDay, setTimeOfDay] = useState("");
+  const [showMap, setShowMap] = useState(false);
+  const [mapField, setMapField] = useState(null); // 'startingPoint' or 'destination'
 
   // Handle time of day selection (morning/evening)
   const handleTimeOfDayChange = (value) => {
@@ -23,8 +26,29 @@ const SearchForm = ({
     handleFilterChange("departureTime", timeValue);
   };
 
+  // Handle map selection
+  const handleMapSelect = ({ address }) => {
+    if (mapField) {
+      handleFilterChange(mapField, address);
+    }
+    setShowMap(false);
+    setMapField(null);
+  };
+
+  // Simple modal - no longer needed as MapPicker is self-contained
+  const Modal = ({ children }) => (
+    <>{children}</>
+  );
+
   return (
     <div className="search-box mb-5">
+      {showMap && (
+        <MapPicker
+          onSelect={handleMapSelect}
+          onClose={() => setShowMap(false)}
+          type={mapField === "startingPoint" ? "start" : "destination"}
+        />
+      )}
       <form
         id="search-form"
         onSubmit={(e) => {
@@ -51,6 +75,17 @@ const SearchForm = ({
                   handleFilterChange("startingPoint", e.target.value)
                 }
               />
+              <button
+                type="button"
+                className="btn btn-outline-primary"
+                title="Pick on map"
+                onClick={() => {
+                  setShowMap(true);
+                  setMapField("startingPoint");
+                }}
+              >
+                <i className="fas fa-map"></i>
+              </button>
             </div>
           </div>
 
@@ -72,6 +107,17 @@ const SearchForm = ({
                   handleFilterChange("destination", e.target.value)
                 }
               />
+              <button
+                type="button"
+                className="btn btn-outline-primary"
+                title="Pick on map"
+                onClick={() => {
+                  setShowMap(true);
+                  setMapField("destination");
+                }}
+              >
+                <i className="fas fa-map"></i>
+              </button>
             </div>
           </div>
         </div>
