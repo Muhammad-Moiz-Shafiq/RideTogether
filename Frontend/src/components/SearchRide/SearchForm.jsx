@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 const SearchForm = ({
   filters,
@@ -6,30 +6,32 @@ const SearchForm = ({
   applyFilters,
   resetFilters,
 }) => {
-  // State to handle radio button logic
-  const [selectedRideType, setSelectedRideType] = useState("");
+  const [timeOfDay, setTimeOfDay] = useState("");
 
-  // Update ride type and enable/disable date/month inputs
-  const handleRideTypeChange = (event) => {
-    const rideType = event.target.value;
-    setSelectedRideType(rideType);
-    handleFilterChange("rideType", rideType);
-  };
+  // Handle time of day selection (morning/evening)
+  const handleTimeOfDayChange = (value) => {
+    setTimeOfDay(value);
 
-  // Effect to handle enabling/disabling date and month inputs based on ride type
-  useEffect(() => {
-    if (selectedRideType === "Daily") {
-      // Reset month when daily is selected
-      handleFilterChange("month", "");
-    } else if (selectedRideType === "Monthly") {
-      // Reset date when monthly is selected
-      handleFilterChange("date", "");
+    // Convert selection to actual time range for filtering
+    let timeValue = "";
+    if (value === "morning") {
+      timeValue = "08:00"; // The API will handle range matching
+    } else if (value === "evening") {
+      timeValue = "16:00"; // The API will handle range matching
     }
-  }, [selectedRideType, handleFilterChange]);
+
+    handleFilterChange("departureTime", timeValue);
+  };
 
   return (
     <div className="search-box mb-5">
-      <form id="search-form">
+      <form
+        id="search-form"
+        onSubmit={(e) => {
+          e.preventDefault();
+          applyFilters();
+        }}
+      >
         <div className="row">
           <div className="col-md-6 mb-3">
             <label htmlFor="startingPoint" className="form-label">
@@ -53,8 +55,8 @@ const SearchForm = ({
           </div>
 
           <div className="col-md-6 mb-3">
-            <label htmlFor="endingPoint" className="form-label">
-              Ending Point
+            <label htmlFor="destination" className="form-label">
+              Destination
             </label>
             <div className="input-group">
               <span className="input-group-text">
@@ -63,11 +65,11 @@ const SearchForm = ({
               <input
                 type="text"
                 className="form-control"
-                id="endingPoint"
+                id="destination"
                 placeholder="Enter destination"
-                value={filters.endingPoint}
+                value={filters.destination}
                 onChange={(e) =>
-                  handleFilterChange("endingPoint", e.target.value)
+                  handleFilterChange("destination", e.target.value)
                 }
               />
             </div>
@@ -92,15 +94,15 @@ const SearchForm = ({
                 }
               >
                 <option value="">Any</option>
-                <option value="Car">Car</option>
-                <option value="Bike">Bike</option>
+                <option value="car">Car</option>
+                <option value="bike">Bike</option>
               </select>
             </div>
           </div>
 
           <div className="col-md-6 mb-3">
-            <label htmlFor="passengers" className="form-label">
-              Number of Passengers
+            <label htmlFor="passengerCapacity" className="form-label">
+              Passenger Capacity
             </label>
             <div className="input-group">
               <span className="input-group-text">
@@ -109,13 +111,14 @@ const SearchForm = ({
               <input
                 type="number"
                 className="form-control"
-                id="passengers"
+                id="passengerCapacity"
                 min="1"
-                placeholder="Number of seats"
-                value={filters.passengers}
+                placeholder="Minimum passenger capacity"
+                value={filters.passengerCapacity}
                 onChange={(e) =>
-                  handleFilterChange("passengers", e.target.value)
+                  handleFilterChange("passengerCapacity", e.target.value)
                 }
+                disabled={filters.vehicleType === "bike"}
               />
             </div>
           </div>
@@ -143,130 +146,52 @@ const SearchForm = ({
           </div>
 
           <div className="col-md-6 mb-3">
-            <label htmlFor="departureTime" className="form-label">
-              Departure Time
-            </label>
-            <div className="input-group">
-              <span className="input-group-text">
-                <i className="far fa-clock"></i>
-              </span>
-              <input
-                type="time"
-                className="form-control"
-                id="departureTime"
-                value={filters.departureTime}
-                onChange={(e) =>
-                  handleFilterChange("departureTime", e.target.value)
-                }
-              />
+            <label className="form-label">Time of Day</label>
+            <div className="d-flex">
+              <div className="form-check me-4">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  name="timeOfDay"
+                  id="morningTime"
+                  checked={timeOfDay === "morning"}
+                  onChange={() => handleTimeOfDayChange("morning")}
+                />
+                <label className="form-check-label" htmlFor="morningTime">
+                  Morning (8:00 - 11:00 AM)
+                </label>
+              </div>
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  name="timeOfDay"
+                  id="eveningTime"
+                  checked={timeOfDay === "evening"}
+                  onChange={() => handleTimeOfDayChange("evening")}
+                />
+                <label className="form-check-label" htmlFor="eveningTime">
+                  Evening (4:00 - 6:00 PM)
+                </label>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Ride Frequency Radio Buttons */}
-        <div className="row mb-3">
-          <div className="col-md-12">
-            <label className="form-label">Select Ride Type</label>
-            <div className="form-check form-check-inline ms-2">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="rideType"
-                id="dailyRide"
-                value="Daily"
-                checked={selectedRideType === "Daily"}
-                onChange={handleRideTypeChange}
-              />
-              <label className="form-check-label" htmlFor="dailyRide">
-                Daily
-              </label>
-            </div>
-            <div className="form-check form-check-inline">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="rideType"
-                id="monthlyRide"
-                value="Monthly"
-                checked={selectedRideType === "Monthly"}
-                onChange={handleRideTypeChange}
-              />
-              <label className="form-check-label" htmlFor="monthlyRide">
-                Monthly
-              </label>
-            </div>
-          </div>
-        </div>
-
-        {/* Date & Month Selection */}
-        <div className="row">
-          <div className="col-md-6 mb-3">
-            <label htmlFor="date" className="form-label">
-              Date (Daily rides)
-            </label>
-            <div className="input-group">
-              <span className="input-group-text">
-                <i className="far fa-calendar"></i>
-              </span>
-              <input
-                type="date"
-                className="form-control"
-                id="date"
-                disabled={selectedRideType !== "Daily"}
-                value={filters.date}
-                onChange={(e) => handleFilterChange("date", e.target.value)}
-              />
-            </div>
-          </div>
-
-          <div className="col-md-6 mb-3">
-            <label htmlFor="month" className="form-label">
-              Month (Monthly rides)
-            </label>
-            <div className="input-group">
-              <span className="input-group-text">
-                <i className="far fa-calendar-alt"></i>
-              </span>
-              <select
-                className="form-select"
-                id="month"
-                disabled={selectedRideType !== "Monthly"}
-                value={filters.month}
-                onChange={(e) => handleFilterChange("month", e.target.value)}
-              >
-                <option value="">Any</option>
-                <option value="January">January</option>
-                <option value="February">February</option>
-                <option value="March">March</option>
-                <option value="April">April</option>
-                <option value="May">May</option>
-                <option value="June">June</option>
-                <option value="July">July</option>
-                <option value="August">August</option>
-                <option value="September">September</option>
-                <option value="October">October</option>
-                <option value="November">November</option>
-                <option value="December">December</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-12 text-center">
+        <div className="row mt-4">
+          <div className="col-12 d-flex justify-content-between">
             <button
               type="button"
-              className="btn btn-primary pulse-animation px-4 py-2"
-              onClick={applyFilters}
+              className="btn btn-outline-secondary"
+              onClick={() => {
+                resetFilters();
+                setTimeOfDay("");
+              }}
             >
-              <i className="fas fa-search me-2"></i>Filter Rides
+              <i className="fas fa-redo me-1"></i> Reset Filters
             </button>
-            <button
-              type="button"
-              className="btn btn-outline-secondary ms-2 px-4 py-2"
-              onClick={resetFilters}
-            >
-              <i className="fas fa-undo me-2"></i>Reset Filters
+            <button type="submit" className="btn btn-primary">
+              <i className="fas fa-search me-1"></i> Search Rides
             </button>
           </div>
         </div>

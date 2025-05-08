@@ -1,0 +1,153 @@
+/* Hero Section Styles */
+.hero-section {
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  background-image: url("../../assets/images/campus-bg.jpg");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Search Form Styles */
+.search-box {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  margin-bottom: 30px;
+  transition: all 0.3s ease;
+}
+
+.search-box:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Ride Card Styles */
+.ride-card-animated {
+  border: none;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.ride-card-animated:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+.route-line {
+  height: 40px;
+  width: 2px;
+  background-color: #dee2e6;
+  margin: 5px auto;
+}
+
+/* Animation Classes */
+.fade-in {
+  opacity: 0;
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Sort Dropdown Styles */
+.dropdown-menu {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+  padding: 10px 15px;
+  transition: all 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+  transform: translateX(5px);
+}
+
+/* Custom Button Styles */
+.btn-primary {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  transition: all 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(13, 110, 253, 0.25);
+}
+
+.btn-outline-secondary {
+  transition: all 0.3s;
+}
+
+.btn-outline-secondary:hover {
+  transform: translateY(-2px);
+}
+
+/* Badge Styles */
+.badge {
+  padding: 6px 10px;
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+/* No Results State */
+#no-results {
+  padding: 50px 0;
+  opacity: 0.8;
+  animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.8;
+  }
+}
+
+/* Responsive Media Queries */
+@media (max-width: 768px) {
+  .hero-section {
+    min-height: 300px;
+  }
+
+  .search-box {
+    padding: 15px;
+  }
+}
+
+/* Loading Spinner Animation */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner-border {
+  animation: spin 1s linear infinite;
+}

@@ -5,164 +5,106 @@ import RideResults from "../components/SearchRide/RideResults";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ScrollToTop from "../components/ScrollToTop";
-
-// Mock data - in a real app this would come from an API
-import { ridesData } from "../data/ridesData";
+import rideService from "../services/rideService";
+import "../components/SearchRide/SearchRide.css";
 
 const SearchRide = () => {
   const [rides, setRides] = useState([]);
   const [filteredRides, setFilteredRides] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [currentSort, setCurrentSort] = useState("price-low");
-  const [onlyAvailable, setOnlyAvailable] = useState(true);
   const [filters, setFilters] = useState({
     startingPoint: "",
-    endingPoint: "",
+    destination: "",
     vehicleType: "",
-    passengers: "",
+    passengerCapacity: "",
     budget: "",
     departureTime: "",
-    date: "",
-    month: "",
-    rideType: "",
   });
 
   // Initialize data on mount
   useEffect(() => {
-    setRides(ridesData);
-    setFilteredRides(ridesData);
+    const fetchRides = async () => {
+      try {
+        setLoading(true);
+        const data = await rideService.getAllRides();
+        setRides(data);
+        setFilteredRides(data);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    fetchRides();
   }, []);
 
   // Apply filters
-  const applyFilters = () => {
-    let results = [...rides];
+  const applyFilters = async () => {
+    try {
+      setLoading(true);
 
-    // Filter logic
-    if (filters.startingPoint) {
-      const startingPoint = filters.startingPoint.toLowerCase();
-      results = results.filter((ride) => {
-        const route = [
-          ride.startingPoint.toLowerCase(),
-          ...ride.stops.map((stop) => stop.toLowerCase()),
-          ride.endingPoint.toLowerCase(),
-        ];
+      // Prepare filter parameters for the API
+      const apiFilters = {};
 
-        return route.some((loc) => loc.includes(startingPoint));
-      });
-    }
+      // Apply location filters
+      if (filters.startingPoint) {
+        apiFilters.startingPoint = filters.startingPoint;
+      }
 
-    if (filters.endingPoint) {
-      const endingPoint = filters.endingPoint.toLowerCase();
-      results = results.filter((ride) => {
-        const route = [
-          ride.startingPoint.toLowerCase(),
-          ...ride.stops.map((stop) => stop.toLowerCase()),
-          ride.endingPoint.toLowerCase(),
-        ];
+      if (filters.destination) {
+        apiFilters.destination = filters.destination;
+      }
 
-        // Check if starting point is also specified
-        if (filters.startingPoint) {
-          const startingPoint = filters.startingPoint.toLowerCase();
-          const startIndex = route.findIndex((loc) =>
-            loc.includes(startingPoint)
-          );
+      if (filters.vehicleType) {
+        apiFilters.vehicleType = filters.vehicleType;
+      }
 
-          if (startIndex === -1) return false;
+      // Get filtered rides from API
+      let results = await rideService.getRidesByFilter(apiFilters);
 
-          // Find ending point only if it appears after starting point
-          return route.some(
-            (loc, index) => index > startIndex && loc.includes(endingPoint)
-          );
-        }
+      // Additional client-side filtering
+      if (filters.budget) {
+        const budget = parseInt(filters.budget);
+        results = results.filter((ride) => parseInt(ride.price) <= budget);
+      }
 
-        return route.some((loc) => loc.includes(endingPoint));
-      });
-    }
+      if (filters.departureTime) {
+        results = results.filter((ride) => {
+          const departureHour = parseInt(ride.departureTime.split(":")[0]);
 
-    // Prevent starting point and ending point from being the same
-    results = results.filter((ride) => {
-      if (filters.startingPoint && filters.endingPoint) {
-        return (
-          filters.startingPoint.toLowerCase() !==
-            ride.endingPoint.toLowerCase() &&
-          filters.endingPoint.toLowerCase() !== ride.startingPoint.toLowerCase()
+          if (filters.departureTime === "08:00") {
+            // Morning rides (8:00 AM - 11:00 AM)
+            return departureHour >= 8 && departureHour <= 11;
+          } else if (filters.departureTime === "16:00") {
+            // Evening rides (4:00 PM - 6:00 PM)
+            return departureHour >= 16 && departureHour <= 18;
+          }
+
+          return true;
+        });
+      }
+
+      if (filters.passengerCapacity && filters.vehicleType === "car") {
+        const capacity = parseInt(filters.passengerCapacity);
+        results = results.filter(
+          (ride) =>
+            ride.passengerCapacity &&
+            parseInt(ride.passengerCapacity) >= capacity
         );
       }
-      return true;
-    });
 
-    // Vehicle type filter
-    if (filters.vehicleType) {
-      results = results.filter(
-        (ride) => ride.vehicleType === filters.vehicleType
-      );
+      // Sort results
+      sortRides(results);
+
+      setFilteredRides(results);
+      setLoading(false);
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
     }
-
-    // Passengers filter
-    if (filters.passengers) {
-      const passengers = parseInt(filters.passengers);
-      results = results.filter((ride) => ride.seatsAvailable >= passengers);
-    }
-
-    // Budget filter
-    if (filters.budget) {
-      const budget = parseInt(filters.budget);
-      results = results.filter((ride) => ride.price <= budget);
-    }
-
-    // Departure time filter
-    if (filters.departureTime) {
-      results = results.filter((ride) => {
-        const filterHours = parseInt(filters.departureTime.split(":")[0]);
-        const filterMinutes = parseInt(filters.departureTime.split(":")[1]);
-        const rideHours = parseInt(ride.departureTime.split(":")[0]);
-        const rideMinutes = parseInt(ride.departureTime.split(":")[1]);
-
-        // Convert to minutes for easier comparison
-        const filterTimeInMinutes = filterHours * 60 + filterMinutes;
-        const rideTimeInMinutes = rideHours * 60 + rideMinutes;
-
-        // Allow 30 minutes window before and after
-        return (
-          rideTimeInMinutes >= filterTimeInMinutes - 30 &&
-          rideTimeInMinutes <= filterTimeInMinutes + 30
-        );
-      });
-    }
-
-    // Date filter (for daily rides)
-    if (filters.date && filters.rideType === "Daily") {
-      results = results.filter((ride) => {
-        if (ride.frequency !== "Daily") return false;
-
-        const dayOfWeek = new Date(filters.date).getDay();
-        const dayMap = {
-          0: "Sun",
-          1: "Mon",
-          2: "Tue",
-          3: "Wed",
-          4: "Thu",
-          5: "Fri",
-          6: "Sat",
-        };
-        return ride.daysAvailable.includes(dayMap[dayOfWeek]);
-      });
-    }
-
-    // Month filter (for monthly rides)
-    if (filters.month && filters.rideType === "Monthly") {
-      results = results.filter((ride) => ride.frequency === "Monthly");
-      // In a real app, we'd have more logic here to filter by actual month
-    }
-
-    // Only available rides
-    if (onlyAvailable) {
-      results = results.filter((ride) => ride.seatsAvailable > 0);
-    }
-
-    // Sort results
-    sortRides(results);
-
-    setFilteredRides(results);
   };
 
   // Sort rides based on currentSort
@@ -171,10 +113,10 @@ const SearchRide = () => {
 
     switch (currentSort) {
       case "price-low":
-        sorted.sort((a, b) => a.price - b.price);
+        sorted.sort((a, b) => parseInt(a.price) - parseInt(b.price));
         break;
       case "price-high":
-        sorted.sort((a, b) => b.price - a.price);
+        sorted.sort((a, b) => parseInt(b.price) - parseInt(a.price));
         break;
       case "departure-early":
         sorted.sort((a, b) => {
@@ -191,7 +133,7 @@ const SearchRide = () => {
         });
         break;
       default:
-        sorted.sort((a, b) => a.price - b.price);
+        sorted.sort((a, b) => parseInt(a.price) - parseInt(b.price));
     }
 
     return sorted;
@@ -215,14 +157,11 @@ const SearchRide = () => {
   const resetFilters = () => {
     setFilters({
       startingPoint: "",
-      endingPoint: "",
+      destination: "",
       vehicleType: "",
-      passengers: "",
+      passengerCapacity: "",
       budget: "",
       departureTime: "",
-      date: "",
-      month: "",
-      rideType: "",
     });
     setCurrentSort("price-low");
     setFilteredRides(rides);
@@ -249,14 +188,24 @@ const SearchRide = () => {
             resetFilters={resetFilters}
           />
 
-          <RideResults
-            rides={filteredRides}
-            onlyAvailable={onlyAvailable}
-            setOnlyAvailable={setOnlyAvailable}
-            currentSort={currentSort}
-            handleSortChange={handleSortChange}
-            applyFilters={applyFilters}
-          />
+          {loading ? (
+            <div className="text-center my-5">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+              <p className="mt-2">Loading rides...</p>
+            </div>
+          ) : error ? (
+            <div className="alert alert-danger my-4" role="alert">
+              {error}
+            </div>
+          ) : (
+            <RideResults
+              rides={filteredRides}
+              currentSort={currentSort}
+              handleSortChange={handleSortChange}
+            />
+          )}
         </div>
       </section>
 
