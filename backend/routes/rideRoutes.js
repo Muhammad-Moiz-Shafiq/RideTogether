@@ -8,9 +8,10 @@ const {
   updateRideStatus,
   deleteRide,
 } = require("../controllers/rideController");
+const { protect } = require("../middleware/authMiddleware");
 
-// Create a new ride
-router.post("/", createRide);
+// Create a new ride - Protected route
+router.post("/", protect, createRide);
 
 // Get all rides
 router.get("/", getRides);

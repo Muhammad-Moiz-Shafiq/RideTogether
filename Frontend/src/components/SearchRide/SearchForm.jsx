@@ -36,9 +36,7 @@ const SearchForm = ({
   };
 
   // Simple modal - no longer needed as MapPicker is self-contained
-  const Modal = ({ children }) => (
-    <>{children}</>
-  );
+  const Modal = ({ children }) => <>{children}</>;
 
   return (
     <div className="search-box mb-5">
@@ -69,6 +67,7 @@ const SearchForm = ({
                 type="text"
                 className="form-control"
                 id="startingPoint"
+                name="startingPoint"
                 placeholder="Enter starting location"
                 value={filters.startingPoint}
                 onChange={(e) =>
@@ -87,6 +86,9 @@ const SearchForm = ({
                 <i className="fas fa-map"></i>
               </button>
             </div>
+            <small className="text-muted">
+              Search will include stops along the route as well
+            </small>
           </div>
 
           <div className="col-md-6 mb-3">
@@ -95,12 +97,13 @@ const SearchForm = ({
             </label>
             <div className="input-group">
               <span className="input-group-text">
-                <i className="fas fa-map-marker"></i>
+                <i className="fas fa-map-pin"></i>
               </span>
               <input
                 type="text"
                 className="form-control"
                 id="destination"
+                name="destination"
                 placeholder="Enter destination"
                 value={filters.destination}
                 onChange={(e) =>
@@ -119,6 +122,9 @@ const SearchForm = ({
                 <i className="fas fa-map"></i>
               </button>
             </div>
+            <small className="text-muted">
+              Search will include stops along the route as well
+            </small>
           </div>
         </div>
 

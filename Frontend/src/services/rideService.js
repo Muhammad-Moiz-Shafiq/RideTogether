@@ -1,4 +1,5 @@
 import axios from "axios";
+import authService from "./authService";
 
 // Define the base URL for the API
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
@@ -11,10 +12,24 @@ const api = axios.create({
   },
 });
 
+// Helper function to get auth token and set authorization header
+const setAuthHeader = () => {
+  const user = authService.getCurrentUser();
+  if (user && user.token) {
+    return {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    };
+  }
+  return {};
+};
+
 // Post a new ride
 const postRide = async (rideData) => {
   try {
-    const response = await api.post("/rides", rideData);
+    const config = setAuthHeader();
+    const response = await api.post("/rides", rideData, config);
     return response.data;
   } catch (error) {
     throw handleApiError(error);
@@ -54,7 +69,8 @@ const getRideById = async (id) => {
 // Update ride status
 const updateRideStatus = async (id, status) => {
   try {
-    const response = await api.put(`/rides/${id}/status`, { status });
+    const config = setAuthHeader();
+    const response = await api.put(`/rides/${id}/status`, { status }, config);
     return response.data;
   } catch (error) {
     throw handleApiError(error);
@@ -64,7 +80,8 @@ const updateRideStatus = async (id, status) => {
 // Delete a ride
 const deleteRide = async (id) => {
   try {
-    const response = await api.delete(`/rides/${id}`);
+    const config = setAuthHeader();
+    const response = await api.delete(`/rides/${id}`, config);
     return response.data;
   } catch (error) {
     throw handleApiError(error);

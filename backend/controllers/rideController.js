@@ -126,14 +126,47 @@ const getRidesByFilter = asyncHandler(async (req, res) => {
 
   const filter = { status: "active" };
 
-  if (startingPoint) {
-    filter.startingPoint = { $regex: startingPoint, $options: "i" };
+  // Build location search filter
+  if (startingPoint && destination) {
+    // When both start and destination are provided
+    filter.$or = [
+      // Direct match of starting point and destination
+      {
+        startingPoint: { $regex: startingPoint, $options: "i" },
+        destination: { $regex: destination, $options: "i" },
+      },
+      // Starting point direct match and destination in stops
+      {
+        startingPoint: { $regex: startingPoint, $options: "i" },
+        stops: { $elemMatch: { $regex: destination, $options: "i" } },
+      },
+      // Starting point in stops and destination direct match
+      {
+        stops: { $elemMatch: { $regex: startingPoint, $options: "i" } },
+        destination: { $regex: destination, $options: "i" },
+      },
+      // Both starting point and destination in stops (different stops)
+      {
+        stops: {
+          $in: [new RegExp(startingPoint, "i"), new RegExp(destination, "i")],
+        },
+      },
+    ];
+  } else if (startingPoint) {
+    // Only starting point is provided
+    filter.$or = [
+      { startingPoint: { $regex: startingPoint, $options: "i" } },
+      { stops: { $elemMatch: { $regex: startingPoint, $options: "i" } } },
+    ];
+  } else if (destination) {
+    // Only destination is provided
+    filter.$or = [
+      { destination: { $regex: destination, $options: "i" } },
+      { stops: { $elemMatch: { $regex: destination, $options: "i" } } },
+    ];
   }
 
-  if (destination) {
-    filter.destination = { $regex: destination, $options: "i" };
-  }
-
+  // Additional filters
   if (isNustStart === "true") {
     filter.isNustStart = true;
   }

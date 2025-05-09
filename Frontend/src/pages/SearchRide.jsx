@@ -30,7 +30,9 @@ const SearchRide = () => {
         setLoading(true);
         const data = await rideService.getAllRides();
         setRides(data);
-        setFilteredRides(data);
+        // Apply initial sorting
+        const sortedRides = sortRides(data, "price-low");
+        setFilteredRides(sortedRides);
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -96,10 +98,9 @@ const SearchRide = () => {
         );
       }
 
-      // Sort results
-      sortRides(results);
-
-      setFilteredRides(results);
+      // Apply current sort to the filtered results
+      const sortedResults = sortRides(results, currentSort);
+      setFilteredRides(sortedResults);
       setLoading(false);
     } catch (err) {
       setError(err.message);
@@ -107,11 +108,11 @@ const SearchRide = () => {
     }
   };
 
-  // Sort rides based on currentSort
-  const sortRides = (ridesToSort) => {
+  // Sort rides based on sort option
+  const sortRides = (ridesToSort, sortOption) => {
     const sorted = [...ridesToSort];
 
-    switch (currentSort) {
+    switch (sortOption) {
       case "price-low":
         sorted.sort((a, b) => parseInt(a.price) - parseInt(b.price));
         break;
@@ -142,7 +143,9 @@ const SearchRide = () => {
   // Handle sort change
   const handleSortChange = (sortOption) => {
     setCurrentSort(sortOption);
-    setFilteredRides(sortRides([...filteredRides]));
+    // Immediately sort and update the filtered rides with the new sort option
+    const sortedRides = sortRides(filteredRides, sortOption);
+    setFilteredRides(sortedRides);
   };
 
   // Handle filter changes
@@ -164,7 +167,9 @@ const SearchRide = () => {
       departureTime: "",
     });
     setCurrentSort("price-low");
-    setFilteredRides(rides);
+    // Apply default sorting
+    const sortedRides = sortRides(rides, "price-low");
+    setFilteredRides(sortedRides);
   };
 
   return (

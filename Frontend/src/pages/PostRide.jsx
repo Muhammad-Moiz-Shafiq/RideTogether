@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate for redirection
 import RouteDetailsForm from "../components/PostRide/RouteDetailsForm";
 import PreferencesForm from "../components/PostRide/PreferencesForm";
 import VehicleInfoForm from "../components/PostRide/VehicleInfoForm";
@@ -7,8 +8,10 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import HeroSection from "../components/PostRide/HeroSection";
 import rideService from "../services/rideService"; // Import the ride service
+import authService from "../services/authService"; // Import the auth service
 
 const PostRide = () => {
+  const navigate = useNavigate(); // Initialize useNavigate
   const [alert, setAlert] = useState({ show: false, type: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false); // Add loading state
   const [formData, setFormData] = useState({
@@ -55,6 +58,36 @@ const PostRide = () => {
     shareContactConsent: false,
     termsAgreed: false,
   });
+
+  // Check if user is logged in when the component mounts
+  useEffect(() => {
+    const user = authService.getCurrentUser();
+    if (!user) {
+      // If not logged in, show alert and redirect to login page
+      setAlert({
+        show: true,
+        type: "danger",
+        message: "You must be logged in to post a ride",
+      });
+
+      // Redirect to login page after a short delay
+      setTimeout(() => {
+        navigate("/login", {
+          state: {
+            from: "/post-ride",
+            message: "Please log in to post a ride",
+          },
+        });
+      }, 3000);
+    } else if (user.email) {
+      // Pre-fill email if user is logged in
+      setFormData((prevData) => ({
+        ...prevData,
+        email: user.email,
+        userName: `${user.firstName} ${user.lastName}` || "",
+      }));
+    }
+  }, [navigate]);
 
   const showAlert = (type, message) => {
     setAlert({ show: true, type, message });
@@ -204,6 +237,16 @@ const PostRide = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Check if user is authenticated before submitting
+    const user = authService.getCurrentUser();
+    if (!user) {
+      showAlert("danger", "You must be logged in to post a ride");
+      navigate("/login", {
+        state: { from: "/post-ride", message: "Please log in to post a ride" },
+      });
+      return;
+    }
 
     if (validateForm()) {
       try {
