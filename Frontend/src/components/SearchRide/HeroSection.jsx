@@ -29,7 +29,7 @@ const HeroSection = () => {
                 <i className="fas fa-search me-2"></i>Search Now
               </a>
               <a
-                href="/post-ride"
+                href="/post"
                 className="btn btn-outline-light btn-lg px-4 py-2"
               >
                 <i className="fas fa-car me-2"></i>Offer a Ride

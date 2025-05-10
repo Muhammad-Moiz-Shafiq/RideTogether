@@ -11,6 +11,20 @@ const api = axios.create({
   },
 });
 
+// Add request interceptor to add auth token to all requests
+api.interceptors.request.use(
+  (config) => {
+    const user = getCurrentUser();
+    if (user && user.token) {
+      config.headers.Authorization = `Bearer ${user.token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 // Send OTP for email verification
 const sendOTP = async (email) => {
   try {
@@ -86,11 +100,46 @@ const verifyResetOtp = async (email, otp) => {
 // Reset password
 const resetPassword = async (email, otp, newPassword) => {
   try {
-    const response = await api.post("/auth/reset-password", { email, otp, newPassword });
+    const response = await api.post("/auth/reset-password", {
+      email,
+      otp,
+      newPassword,
+    });
     return response.data;
   } catch (error) {
     throw handleApiError(error);
   }
+};
+
+// Get user profile
+const getUserProfile = async () => {
+  try {
+    const response = await api.get("/auth/profile");
+    return response.data;
+  } catch (error) {
+    throw handleApiError(error);
+  }
+};
+
+// Update user profile
+const updateUserProfile = async (userData) => {
+  try {
+    const response = await api.put("/auth/profile", userData);
+
+    // Update user in localStorage with new info
+    const updatedUser = response.data;
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+
+    return updatedUser;
+  } catch (error) {
+    throw handleApiError(error);
+  }
+};
+
+// Check if user is admin
+const isAdmin = () => {
+  const user = getCurrentUser();
+  return user && user.isAdmin === true;
 };
 
 const authService = {
@@ -102,6 +151,9 @@ const authService = {
   forgotPassword,
   verifyResetOtp,
   resetPassword,
+  getUserProfile,
+  updateUserProfile,
+  isAdmin,
 };
 
-export default authService; 
+export default authService;

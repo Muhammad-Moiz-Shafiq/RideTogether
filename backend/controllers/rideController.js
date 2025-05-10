@@ -3,7 +3,7 @@ const Ride = require("../models/Ride");
 
 // @desc    Create a new ride
 // @route   POST /api/rides
-// @access  Public
+// @access  Private
 const createRide = asyncHandler(async (req, res) => {
   const {
     startingPoint,
@@ -64,6 +64,7 @@ const createRide = asyncHandler(async (req, res) => {
 
   // Create ride
   const ride = await Ride.create({
+    rider: req.user._id,
     startingPoint,
     destination,
     isNustStart,
@@ -105,9 +106,20 @@ const createRide = asyncHandler(async (req, res) => {
 // @access  Public
 const getRides = asyncHandler(async (req, res) => {
   const rides = await Ride.find({ status: "active" })
+    .populate("rider", "firstName lastName email")
     .sort({ createdAt: -1 })
     .limit(50);
   res.status(200).json(rides);
+});
+
+// @desc    Get user's rides
+// @route   GET /api/rides/myrides
+// @access  Private
+const getMyRides = asyncHandler(async (req, res) => {
+  const rides = await Ride.find({ rider: req.user._id }).sort({
+    createdAt: -1,
+  });
+  res.json(rides);
 });
 
 // @desc    Get rides by filter
@@ -124,6 +136,7 @@ const getRidesByFilter = asyncHandler(async (req, res) => {
     vehicleType,
   } = req.query;
 
+  // Ensure only active rides are returned
   const filter = { status: "active" };
 
   // Build location search filter
@@ -187,26 +200,27 @@ const getRidesByFilter = asyncHandler(async (req, res) => {
   res.status(200).json(rides);
 });
 
-// @desc    Get ride by ID
+// @desc    Get single ride
 // @route   GET /api/rides/:id
 // @access  Public
-const getRideById = asyncHandler(async (req, res) => {
-  const ride = await Ride.findById(req.params.id);
+const getRide = asyncHandler(async (req, res) => {
+  const ride = await Ride.findById(req.params.id).populate(
+    "rider",
+    "firstName lastName email"
+  );
 
-  if (ride) {
-    res.status(200).json(ride);
-  } else {
+  if (!ride) {
     res.status(404);
     throw new Error("Ride not found");
   }
+
+  res.json(ride);
 });
 
-// @desc    Update ride status
-// @route   PUT /api/rides/:id/status
-// @access  Public
-const updateRideStatus = asyncHandler(async (req, res) => {
-  const { status } = req.body;
-
+// @desc    Update ride
+// @route   PUT /api/rides/:id
+// @access  Private (Ride owner only)
+const updateRide = asyncHandler(async (req, res) => {
   const ride = await Ride.findById(req.params.id);
 
   if (!ride) {
@@ -214,37 +228,71 @@ const updateRideStatus = asyncHandler(async (req, res) => {
     throw new Error("Ride not found");
   }
 
-  if (!["active", "completed", "cancelled"].includes(status)) {
-    res.status(400);
-    throw new Error("Invalid status value");
+  // Check if user is the ride owner
+  if (ride.rider.toString() !== req.user._id.toString()) {
+    res.status(403);
+    throw new Error("Not authorized to update this ride");
   }
 
-  ride.status = status;
-  const updatedRide = await ride.save();
+  const updatedRide = await Ride.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
 
-  res.status(200).json(updatedRide);
+  res.json(updatedRide);
 });
 
-// @desc    Delete a ride
+// @desc    Delete ride
 // @route   DELETE /api/rides/:id
-// @access  Public
+// @access  Private (Ride owner only)
 const deleteRide = asyncHandler(async (req, res) => {
-  const ride = await Ride.findById(req.params.id);
+  try {
+    console.log(
+      `Delete request for ride ID: ${req.params.id} from user: ${req.user._id}`
+    );
 
-  if (!ride) {
-    res.status(404);
-    throw new Error("Ride not found");
+    const ride = await Ride.findById(req.params.id);
+
+    if (!ride) {
+      console.log("Ride not found");
+      return res
+        .status(404)
+        .json({ success: false, message: "Ride not found" });
+    }
+
+    // Check ownership
+    if (ride.rider.toString() !== req.user._id.toString()) {
+      console.log("Unauthorized delete attempt");
+      return res.status(403).json({
+        success: false,
+        message: "Not authorized to delete this ride",
+      });
+    }
+
+    // Delete the ride
+    await Ride.findByIdAndDelete(req.params.id);
+    console.log("Ride deleted successfully");
+
+    // Send success response
+    return res.status(200).json({
+      success: true,
+      message: "Ride deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error in deleteRide:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error while deleting ride",
+    });
   }
-
-  await ride.deleteOne();
-  res.status(200).json({ message: "Ride removed" });
 });
 
 module.exports = {
   createRide,
   getRides,
+  getMyRides,
+  getRide,
   getRidesByFilter,
-  getRideById,
-  updateRideStatus,
+  updateRide,
   deleteRide,
 };

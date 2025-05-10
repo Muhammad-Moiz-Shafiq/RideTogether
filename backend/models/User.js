@@ -37,6 +37,25 @@ const userSchema = new mongoose.Schema(
       required: [true, "Password is required"],
       minlength: [8, "Password must be at least 8 characters long"],
     },
+    phone: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    bio: {
+      type: String,
+      default: "",
+      trim: true,
+      maxlength: [500, "Bio cannot be more than 500 characters"],
+    },
+    profilePicture: {
+      type: String,
+      default: "",
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
@@ -59,4 +78,4 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 
 const User = mongoose.model("User", userSchema);
 
-module.exports = User; 
+module.exports = User;

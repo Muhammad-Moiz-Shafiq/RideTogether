@@ -2,7 +2,10 @@ const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const OTP = require("../models/OTP");
-const { sendOTPEmail, sendPasswordResetOTPEmail } = require("../utils/emailService");
+const {
+  sendOTPEmail,
+  sendPasswordResetOTPEmail,
+} = require("../utils/emailService");
 const crypto = require("crypto");
 
 // Generate JWT
@@ -15,7 +18,7 @@ const generateToken = (id) => {
 // Generate OTP
 const generateOTP = () => {
   const otp = crypto.randomInt(100000, 999999).toString();
-  console.log('Generated OTP:', otp);
+  console.log("Generated OTP:", otp);
   return otp;
 };
 
@@ -23,11 +26,11 @@ const generateOTP = () => {
 // @route   POST /api/auth/send-otp
 // @access  Public
 const sendOTP = asyncHandler(async (req, res) => {
-  console.log('Received send OTP request:', req.body);
+  console.log("Received send OTP request:", req.body);
   const { email } = req.body;
 
   if (!email) {
-    console.log('Email missing in request');
+    console.log("Email missing in request");
     res.status(400);
     throw new Error("Email is required");
   }
@@ -35,7 +38,7 @@ const sendOTP = asyncHandler(async (req, res) => {
   // Check if user already exists
   const userExists = await User.findOne({ email });
   if (userExists) {
-    console.log('User already exists with email:', email);
+    console.log("User already exists with email:", email);
     res.status(400);
     throw new Error("User already exists with this email");
   }
@@ -44,7 +47,7 @@ const sendOTP = asyncHandler(async (req, res) => {
   const otp = generateOTP();
   const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
-  console.log('Creating OTP record for email:', email);
+  console.log("Creating OTP record for email:", email);
   // Save OTP
   await OTP.create({
     email,
@@ -52,13 +55,13 @@ const sendOTP = asyncHandler(async (req, res) => {
     expiresAt,
   });
 
-  console.log('Sending OTP email');
+  console.log("Sending OTP email");
   // Send OTP email
   try {
     await sendOTPEmail(email, otp);
-    console.log('OTP email sent successfully');
+    console.log("OTP email sent successfully");
   } catch (error) {
-    console.error('Error sending OTP email:', error);
+    console.error("Error sending OTP email:", error);
     res.status(500);
     throw new Error("Failed to send OTP email");
   }
@@ -139,6 +142,10 @@ const loginUser = asyncHandler(async (req, res) => {
       lastName: user.lastName,
       username: user.username,
       email: user.email,
+      isAdmin: user.isAdmin,
+      phone: user.phone,
+      bio: user.bio,
+      profilePicture: user.profilePicture,
       token: generateToken(user._id),
     });
   } else {
@@ -185,7 +192,9 @@ const verifyResetOtp = asyncHandler(async (req, res) => {
   }
   otpRecord.isUsed = true;
   await otpRecord.save();
-  res.status(200).json({ message: "OTP verified. You can now reset your password." });
+  res
+    .status(200)
+    .json({ message: "OTP verified. You can now reset your password." });
 });
 
 // @desc    Reset password
@@ -213,6 +222,60 @@ const resetPassword = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Password reset successful. Please login." });
 });
 
+// @desc    Get user profile
+// @route   GET /api/auth/profile
+// @access  Private
+const getUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user.id).select("-password");
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  res.status(200).json(user);
+});
+
+// @desc    Update user profile
+// @route   PUT /api/auth/profile
+// @access  Private
+const updateUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user.id);
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  // Update user fields
+  user.firstName = req.body.firstName || user.firstName;
+  user.lastName = req.body.lastName || user.lastName;
+  user.phone = req.body.phone || user.phone;
+  user.bio = req.body.bio || user.bio;
+  user.profilePicture = req.body.profilePicture || user.profilePicture;
+
+  // If password is provided, it will be hashed in the pre-save hook
+  if (req.body.password) {
+    user.password = req.body.password;
+  }
+
+  const updatedUser = await user.save();
+
+  // Send response without password
+  res.status(200).json({
+    _id: updatedUser._id,
+    firstName: updatedUser.firstName,
+    lastName: updatedUser.lastName,
+    username: updatedUser.username,
+    email: updatedUser.email,
+    isAdmin: updatedUser.isAdmin,
+    phone: updatedUser.phone,
+    bio: updatedUser.bio,
+    profilePicture: updatedUser.profilePicture,
+    token: generateToken(updatedUser._id),
+  });
+});
+
 module.exports = {
   sendOTP,
   verifyOTPAndRegister,
@@ -220,4 +283,6 @@ module.exports = {
   forgotPassword,
   verifyResetOtp,
   resetPassword,
-}; 
+  getUserProfile,
+  updateUserProfile,
+};

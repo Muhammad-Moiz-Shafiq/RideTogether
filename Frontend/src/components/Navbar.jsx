@@ -8,6 +8,23 @@ const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
+  const isAdmin = user && user.isAdmin;
+
+  // Subscribe to user changes in localStorage
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setUser(authService.getCurrentUser());
+    };
+
+    // Check for user updates on window focus
+    window.addEventListener("focus", handleStorageChange);
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("focus", handleStorageChange);
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
@@ -74,8 +91,19 @@ const Navbar = () => {
                 <i className="fas fa-question-circle me-1"></i> Help Center
               </Link>
             </li>
+            {isAdmin && (
+              <li className="nav-item">
+                <Link className="nav-link" to="/admin">
+                  <i className="fas fa-shield-alt me-1"></i> Admin
+                </Link>
+              </li>
+            )}
             <li className="nav-item">
-              <button className="btn" onClick={toggleTheme} aria-label="Toggle dark mode">
+              <button
+                className="btn"
+                onClick={toggleTheme}
+                aria-label="Toggle dark mode"
+              >
                 {theme === "dark" ? (
                   <i className="fas fa-sun" style={{ color: "#fff" }}></i>
                 ) : (
@@ -87,35 +115,123 @@ const Navbar = () => {
               <li className="nav-item dropdown" ref={dropdownRef}>
                 <button
                   className="btn nav-link d-flex align-items-center"
-                  style={{ background: "none", border: "none", outline: "none" }}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    outline: "none",
+                  }}
                   onClick={() => setDropdownOpen((open) => !open)}
                   aria-expanded={dropdownOpen}
                   aria-label="User menu"
                 >
                   <span className="me-1">
-                    <i className="fas fa-user-circle fa-lg" style={{ color: "#00AEEF" }}></i>
+                    {user.profilePicture ? (
+                      <img
+                        src={user.profilePicture}
+                        alt=""
+                        className="rounded-circle"
+                        style={{
+                          width: "32px",
+                          height: "32px",
+                          objectFit: "cover",
+                          border: "2px solid #00AEEF",
+                        }}
+                      />
+                    ) : (
+                      <i
+                        className="fas fa-user-circle fa-lg"
+                        style={{ color: "#00AEEF" }}
+                      ></i>
+                    )}
                   </span>
                   <span className="d-none d-md-inline">
                     {user ? user.firstName : ""}
                   </span>
-                  <i className={`fas fa-chevron-${dropdownOpen ? "up" : "down"} ms-1`}></i>
+                  <i
+                    className={`fas fa-chevron-${
+                      dropdownOpen ? "up" : "down"
+                    } ms-1`}
+                  ></i>
                 </button>
                 {dropdownOpen && (
-                  <ul className="dropdown-menu dropdown-menu-end show mt-2" style={{ minWidth: 220, right: 0 }}>
+                  <ul
+                    className="dropdown-menu dropdown-menu-end show mt-2"
+                    style={{ minWidth: 220, right: 0 }}
+                  >
                     <li className="dropdown-header text-center">
-                      <i className="fas fa-user-circle fa-2x mb-2" style={{ color: "#00AEEF" }}></i>
-                      <div className="fw-bold">{user.firstName} {user.lastName}</div>
-                      <div className="text-muted" style={{ fontSize: "0.9em" }}>{user.email}</div>
+                      {user.profilePicture ? (
+                        <img
+                          src={user.profilePicture}
+                          alt=""
+                          className="rounded-circle mb-2"
+                          style={{
+                            width: "60px",
+                            height: "60px",
+                            objectFit: "cover",
+                            border: "3px solid #00AEEF",
+                          }}
+                        />
+                      ) : (
+                        <i
+                          className="fas fa-user-circle fa-3x mb-2"
+                          style={{ color: "#00AEEF" }}
+                        ></i>
+                      )}
+                      <div className="fw-bold">
+                        {user.firstName} {user.lastName}
+                      </div>
+                      <div className="text-muted" style={{ fontSize: "0.9em" }}>
+                        {user.email}
+                      </div>
+                      {isAdmin && (
+                        <span className="badge bg-primary mt-1">Admin</span>
+                      )}
                     </li>
-                    <li><hr className="dropdown-divider" /></li>
                     <li>
-                      <button className="dropdown-item" onClick={() => { setDropdownOpen(false); navigate("/profile"); }}>
-                        Profile
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
+                      <button
+                        className="dropdown-item"
+                        onClick={() => {
+                          setDropdownOpen(false);
+                          navigate("/profile");
+                        }}
+                      >
+                        <i className="fas fa-user me-2"></i> Profile
                       </button>
                     </li>
                     <li>
+                      <button
+                        className="dropdown-item"
+                        onClick={() => {
+                          setDropdownOpen(false);
+                          navigate("/my-rides");
+                        }}
+                      >
+                        <i className="fas fa-car me-2"></i> My Rides
+                      </button>
+                    </li>
+                    {isAdmin && (
+                      <li>
+                        <button
+                          className="dropdown-item"
+                          onClick={() => {
+                            setDropdownOpen(false);
+                            navigate("/admin");
+                          }}
+                        >
+                          <i className="fas fa-shield-alt me-2"></i> Admin
+                          Dashboard
+                        </button>
+                      </li>
+                    )}
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
                       <button className="dropdown-item" onClick={handleLogout}>
-                        Logout
+                        <i className="fas fa-sign-out-alt me-2"></i> Logout
                       </button>
                     </li>
                   </ul>

@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const asyncHandler = require("express-async-handler");
 const User = require("../models/User");
+const Ride = require("../models/Ride");
 
 // Middleware to protect routes
 const protect = asyncHandler(async (req, res, next) => {
@@ -39,4 +40,22 @@ const protect = asyncHandler(async (req, res, next) => {
   }
 });
 
-module.exports = { protect };
+// Middleware to check if user is the owner of the ride
+const isRideOwner = asyncHandler(async (req, res, next) => {
+  const ride = await Ride.findById(req.params.id);
+
+  if (!ride) {
+    res.status(404);
+    throw new Error("Ride not found");
+  }
+
+  // Check if the logged-in user is the owner of the ride
+  if (ride.rider.toString() !== req.user._id.toString()) {
+    res.status(403);
+    throw new Error("Not authorized to perform this action");
+  }
+
+  next();
+});
+
+module.exports = { protect, isRideOwner };

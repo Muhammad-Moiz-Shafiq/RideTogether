@@ -46,6 +46,17 @@ const getAllRides = async () => {
   }
 };
 
+// Get the logged-in user's rides
+const getMyRides = async () => {
+  try {
+    const config = setAuthHeader();
+    const response = await api.get("/rides/myrides", config);
+    return response.data;
+  } catch (error) {
+    throw handleApiError(error);
+  }
+};
+
 // Get rides by filter
 const getRidesByFilter = async (filters) => {
   try {
@@ -66,6 +77,17 @@ const getRideById = async (id) => {
   }
 };
 
+// Update a ride
+const updateRide = async (id, rideData) => {
+  try {
+    const config = setAuthHeader();
+    const response = await api.put(`/rides/${id}`, rideData, config);
+    return response.data;
+  } catch (error) {
+    throw handleApiError(error);
+  }
+};
+
 // Update ride status
 const updateRideStatus = async (id, status) => {
   try {
@@ -80,10 +102,21 @@ const updateRideStatus = async (id, status) => {
 // Delete a ride
 const deleteRide = async (id) => {
   try {
-    const config = setAuthHeader();
-    const response = await api.delete(`/rides/${id}`, config);
+    const user = authService.getCurrentUser();
+    if (!user || !user.token) {
+      throw new Error("Authentication required");
+    }
+
+    // Use direct headers object instead of config
+    const headers = {
+      Authorization: `Bearer ${user.token}`,
+      "Content-Type": "application/json",
+    };
+
+    const response = await axios.delete(`${API_URL}/rides/${id}`, { headers });
     return response.data;
   } catch (error) {
+    console.error("Error deleting ride:", error);
     throw handleApiError(error);
   }
 };
@@ -101,8 +134,10 @@ const handleApiError = (error) => {
 const rideService = {
   postRide,
   getAllRides,
+  getMyRides,
   getRidesByFilter,
   getRideById,
+  updateRide,
   updateRideStatus,
   deleteRide,
 };

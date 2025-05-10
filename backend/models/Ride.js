@@ -2,6 +2,12 @@ const mongoose = require("mongoose");
 
 const RideSchema = mongoose.Schema(
   {
+    // Add rider reference at the top
+    rider: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     // Route Details
     startingPoint: {
       type: String,
