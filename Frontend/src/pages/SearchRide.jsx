@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import HeroSection from "../components/SearchRide/HeroSection";
 import SearchForm from "../components/SearchRide/SearchForm";
 import RideResults from "../components/SearchRide/RideResults";
@@ -22,6 +23,7 @@ const SearchRide = () => {
     budget: "",
     departureTime: "",
   });
+  const location = useLocation();
 
   // Initialize data on mount
   useEffect(() => {
@@ -42,6 +44,22 @@ const SearchRide = () => {
 
     fetchRides();
   }, []);
+
+  useEffect(() => {
+    // Read query params and pre-fill filters if present
+    const params = new URLSearchParams(location.search);
+    const from = params.get("from") || "";
+    const to = params.get("to") || "";
+    const passengers = params.get("passengers") || "";
+    const time = params.get("time") || "";
+    setFilters((prev) => ({
+      ...prev,
+      startingPoint: from,
+      destination: to,
+      passengerCapacity: passengers ? parseInt(passengers) : "",
+      departureTime: time === "morning" ? "08:00" : time === "evening" ? "16:00" : ""
+    }));
+  }, [location.search]);
 
   // Apply filters
   const applyFilters = async () => {

@@ -110,7 +110,41 @@ const sendPasswordResetOTPEmail = async (email, otp) => {
   }
 };
 
+// Function to send contact form email
+const sendContactFormEmail = async (formData) => {
+  const { name, email, subject, phone, message } = formData;
+  const mailOptions = {
+    from: process.env.SMTP_FROM,
+    to: "supridetogether@gmail.com",
+    replyTo: email,
+    subject: `Contact Form Submission: ${subject}`,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #0066cc;">New Contact Form Submission</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>NUST Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone || "N/A"}</p>
+        <p><strong>Subject:</strong> ${subject}</p>
+        <p><strong>Message:</strong></p>
+        <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px;">${message}</div>
+        <hr style="border: 1px solid #eee; margin: 20px 0;">
+        <p style="color: #666; font-size: 12px;">This is an automated message from the RideTogether contact form.</p>
+      </div>
+    `,
+  };
+
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Contact form email sent successfully:', info.response);
+    return true;
+  } catch (error) {
+    console.error('Contact form email error:', error);
+    throw new Error("Failed to send contact form email");
+  }
+};
+
 module.exports = {
   sendOTPEmail,
   sendPasswordResetOTPEmail,
+  sendContactFormEmail,
 }; 

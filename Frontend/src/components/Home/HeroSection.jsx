@@ -6,7 +6,7 @@ const HeroSection = () => {
   const [formData, setFormData] = useState({
     startingPoint: "",
     destination: "",
-    date: "",
+    time: "morning",
     passengers: "1 passenger"
   });
   const [showMap, setShowMap] = useState(false);
@@ -17,6 +17,13 @@ const HeroSection = () => {
     setFormData(prev => ({
       ...prev,
       [name]: value
+    }));
+  };
+
+  const handleTimeChange = (e) => {
+    setFormData(prev => ({
+      ...prev,
+      time: e.target.value
     }));
   };
 
@@ -35,8 +42,13 @@ const HeroSection = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     // Implement search functionality
-    console.log("Search with:", formData);
-    window.location.href = `/search?from=${encodeURIComponent(formData.startingPoint)}&to=${encodeURIComponent(formData.destination)}`;
+    const params = new URLSearchParams({
+      from: formData.startingPoint,
+      to: formData.destination,
+      passengers: formData.passengers,
+      time: formData.time
+    });
+    window.location.href = `/search?${params.toString()}`;
   };
 
   return (
@@ -135,19 +147,20 @@ const HeroSection = () => {
                   </div>
 
                   <div className="col-md-6">
-                    <label className="form-label">Date</label>
+                    <label className="form-label">Time</label>
                     <div className="input-group">
                       <span className="input-group-text bg-light">
-                        <i className="fas fa-calendar"></i>
+                        <i className="fas fa-clock"></i>
                       </span>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="mm/dd/yyyy"
-                        name="date"
-                        value={formData.date}
-                        onChange={handleInputChange}
-                      />
+                      <select
+                        className="form-select"
+                        name="time"
+                        value={formData.time}
+                        onChange={handleTimeChange}
+                      >
+                        <option value="morning">Morning (8:00 - 11:00 AM)</option>
+                        <option value="evening">Evening (4:00 - 6:00 PM)</option>
+                      </select>
                     </div>
                   </div>
 

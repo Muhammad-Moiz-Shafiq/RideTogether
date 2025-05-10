@@ -11,6 +11,7 @@ const ContactForm = () => {
 
   const [formErrors, setFormErrors] = useState({});
   const [formValid, setFormValid] = useState({});
+  const [formStatus, setFormStatus] = useState(null); // success or error message
 
   // Function to validate NUST email
   const isValidNUSTEmail = (email) => {
@@ -18,7 +19,7 @@ const ContactForm = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return (
       emailRegex.test(email) &&
-      (email.endsWith("nust.edu.pk") || email.endsWith("edu.pk"))
+      (email.endsWith("seecs.edu.pk") || email.endsWith("edu.pk"))
     );
   };
 
@@ -50,7 +51,7 @@ const ContactForm = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validate form
@@ -88,18 +89,36 @@ const ContactForm = () => {
 
     // If no errors, submit form
     if (Object.keys(errors).length === 0) {
-      // Here you would normally submit the form data to a server
-      alert("Thank you for your message! We will get back to you soon.");
-
-      // Reset form
-      setFormData({
-        fullName: "",
-        email: "",
-        subject: "",
-        phone: "",
-        message: "",
-      });
-      setFormValid({});
+      try {
+        setFormStatus(null);
+        const response = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: formData.fullName,
+            email: formData.email,
+            subject: formData.subject,
+            phone: formData.phone,
+            message: formData.message,
+          }),
+        });
+        const data = await response.json();
+        if (response.ok) {
+          setFormStatus({ type: "success", message: data.message || "Your message has been sent successfully." });
+          setFormData({
+            fullName: "",
+            email: "",
+            subject: "",
+            phone: "",
+            message: "",
+          });
+          setFormValid({});
+        } else {
+          setFormStatus({ type: "error", message: data.error || "Failed to send your message. Please try again later." });
+        }
+      } catch (error) {
+        setFormStatus({ type: "error", message: "Failed to send your message. Please try again later." });
+      }
     }
   };
 
@@ -124,6 +143,11 @@ const ContactForm = () => {
               data-aos-delay="200"
             >
               <div className="card-body p-4">
+                {formStatus && (
+                  <div className={`alert alert-${formStatus.type === "success" ? "success" : "danger"} mb-3`}>
+                    {formStatus.message}
+                  </div>
+                )}
                 <form id="contactForm" onSubmit={handleSubmit}>
                   <div className="row g-3">
                     <div className="col-md-6">

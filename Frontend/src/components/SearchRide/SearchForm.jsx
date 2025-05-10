@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MapPicker from "../MapPicker";
 
 const SearchForm = ({
@@ -10,6 +10,17 @@ const SearchForm = ({
   const [timeOfDay, setTimeOfDay] = useState("");
   const [showMap, setShowMap] = useState(false);
   const [mapField, setMapField] = useState(null); // 'startingPoint' or 'destination'
+
+  // Sync timeOfDay with filters.departureTime
+  useEffect(() => {
+    if (filters.departureTime === "08:00") {
+      setTimeOfDay("morning");
+    } else if (filters.departureTime === "16:00") {
+      setTimeOfDay("evening");
+    } else {
+      setTimeOfDay("");
+    }
+  }, [filters.departureTime]);
 
   // Handle time of day selection (morning/evening)
   const handleTimeOfDayChange = (value) => {

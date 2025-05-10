@@ -59,7 +59,7 @@ const FaqSection = () => {
       title: "Is there a mobile app?",
       content: {
         title: "Mobile App Availability",
-        text: "Yes! Our mobile app is available for both iOS and Android. Download it for real-time ride tracking, instant notifications, and quick booking.",
+        text: "Our mobile app is not available yet, but we're actively working on it to bring you real-time ride tracking, instant notifications, and quick booking soon!",
       },
       delay: 600,
     },

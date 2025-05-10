@@ -5,6 +5,7 @@ const connectDB = require("./config/db");
 const { errorHandler } = require("./middleware/errorMiddleware");
 const rideRoutes = require("./routes/rideRoutes");
 const authRoutes = require("./routes/authRoutes");
+const contactRoutes = require("./routes/contactRoutes");
 
 // Connect to database
 connectDB();
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: false, limit: "50mb" }));
 // Routes
 app.use("/api/rides", rideRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/contact", contactRoutes);
 
 // Default route
 app.get("/", (req, res) => {
