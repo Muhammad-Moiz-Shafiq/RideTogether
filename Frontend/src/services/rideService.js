@@ -1,43 +1,5 @@
-import axios from "axios";
+import api from '../config/apiConfig';
 import authService from "./authService";
-
-// Define the base URL for the API
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
-
-// Create axios instance
-const api = axios.create({
-  baseURL: API_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-
-// Add request interceptor to add auth token to all requests
-api.interceptors.request.use(
-  (config) => {
-    const user = authService.getCurrentUser();
-    if (user && user.token) {
-      config.headers.Authorization = `Bearer ${user.token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-
-// Helper function to get auth token and set authorization header
-const setAuthHeader = () => {
-  const user = authService.getCurrentUser();
-  if (user && user.token) {
-    return {
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-      },
-    };
-  }
-  return {};
-};
 
 // Post a new ride
 const postRide = async (rideData) => {
