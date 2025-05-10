@@ -4,6 +4,7 @@ const {
   createRide,
   getRides,
   getMyRides,
+  getRidesByFilter,
   getRide,
   updateRide,
   deleteRide,
@@ -20,7 +21,7 @@ const {
 
 // Public routes
 router.get("/", getRides);
-router.get("/filter", getRides);
+router.get("/filter", getRidesByFilter);
 
 // Protected routes
 router.post("/", protect, createRide);
