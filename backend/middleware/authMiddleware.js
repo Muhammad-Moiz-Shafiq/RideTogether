@@ -58,4 +58,13 @@ const isRideOwner = asyncHandler(async (req, res, next) => {
   next();
 });
 
-module.exports = { protect, isRideOwner };
+// Middleware to check if user is an admin
+const isAdmin = asyncHandler(async (req, res, next) => {
+  if (!req.user || !req.user.isAdmin) {
+    res.status(403);
+    throw new Error("Access denied. Admin privileges required");
+  }
+  next();
+});
+
+module.exports = { protect, isRideOwner, isAdmin };

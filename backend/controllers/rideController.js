@@ -287,12 +287,120 @@ const deleteRide = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Get all rides for admin (including inactive)
+// @route   GET /api/rides/admin/all
+// @access  Private (Admin Only)
+const getAdminRides = asyncHandler(async (req, res) => {
+  const rides = await Ride.find()
+    .populate("rider", "firstName lastName email")
+    .populate("lastModeratedBy", "firstName lastName")
+    .sort({ createdAt: -1 });
+
+  res.status(200).json(rides);
+});
+
+// @desc    Flag a ride for review
+// @route   PUT /api/rides/:id/flag
+// @access  Private (Admin Only)
+const flagRide = asyncHandler(async (req, res) => {
+  const { flagReason } = req.body;
+
+  if (!flagReason) {
+    res.status(400);
+    throw new Error("Flag reason is required");
+  }
+
+  const ride = await Ride.findById(req.params.id);
+
+  if (!ride) {
+    res.status(404);
+    throw new Error("Ride not found");
+  }
+
+  ride.isFlagged = true;
+  ride.flagReason = flagReason;
+  ride.lastModeratedBy = req.user._id;
+  ride.lastModeratedAt = new Date();
+
+  const updatedRide = await ride.save();
+
+  res.status(200).json(updatedRide);
+});
+
+// @desc    Update ride moderation status
+// @route   PUT /api/rides/:id/moderate
+// @access  Private (Admin Only)
+const moderateRide = asyncHandler(async (req, res) => {
+  const { moderationStatus, adminNotes } = req.body;
+
+  if (!moderationStatus) {
+    res.status(400);
+    throw new Error("Moderation status is required");
+  }
+
+  const ride = await Ride.findById(req.params.id);
+
+  if (!ride) {
+    res.status(404);
+    throw new Error("Ride not found");
+  }
+
+  ride.moderationStatus = moderationStatus;
+
+  // If ride is rejected, also mark it as inactive
+  if (moderationStatus === "rejected") {
+    ride.status = "cancelled";
+  }
+
+  if (adminNotes) {
+    ride.adminNotes = adminNotes;
+  }
+
+  ride.isFlagged = moderationStatus === "pending"; // Keep flagged only if pending
+  ride.lastModeratedBy = req.user._id;
+  ride.lastModeratedAt = new Date();
+
+  const updatedRide = await ride.save();
+
+  res.status(200).json(updatedRide);
+});
+
+// @desc    Admin delete ride (bypasses owner check)
+// @route   DELETE /api/rides/admin/:id
+// @access  Private (Admin Only)
+const adminDeleteRide = asyncHandler(async (req, res) => {
+  try {
+    const ride = await Ride.findById(req.params.id);
+
+    if (!ride) {
+      res.status(404);
+      throw new Error("Ride not found");
+    }
+
+    await Ride.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({
+      success: true,
+      message: "Ride deleted by admin",
+      _id: req.params.id,
+    });
+  } catch (error) {
+    console.error("Error in adminDeleteRide:", error);
+    res.status(500);
+    throw new Error("Failed to delete ride");
+  }
+});
+
 module.exports = {
   createRide,
   getRides,
   getMyRides,
-  getRide,
   getRidesByFilter,
+  getRide,
   updateRide,
   deleteRide,
+  getAdminRides,
+  flagRide,
+  moderateRide,
+  adminDeleteRide,
 };

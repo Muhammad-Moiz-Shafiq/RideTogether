@@ -157,6 +157,32 @@ const RideSchema = mongoose.Schema(
       enum: ["active", "completed", "cancelled"],
       default: "active",
     },
+
+    // Admin Moderation Fields
+    isFlagged: {
+      type: Boolean,
+      default: false,
+    },
+    flagReason: {
+      type: String,
+      default: "",
+    },
+    moderationStatus: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "approved",
+    },
+    adminNotes: {
+      type: String,
+      default: "",
+    },
+    lastModeratedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    lastModeratedAt: {
+      type: Date,
+    },
   },
   {
     timestamps: true,
