@@ -25,7 +25,7 @@ const PopularRoutesSection = () => {
                 <span>F-10</span>
               </div>
               <Link
-                to="/routes/nust-to-f10"
+                to="/search?startingPoint=F-10"
                 className="btn btn-sm btn-outline-primary btn-hover-effect"
               >
                 <i className="fas fa-chevron-right"></i>
@@ -46,7 +46,7 @@ const PopularRoutesSection = () => {
                 <span>Bahria</span>
               </div>
               <Link
-                to="/routes/nust-to-bahria"
+                to="/search?startingPoint=Bahria"
                 className="btn btn-sm btn-outline-primary btn-hover-effect"
               >
                 <i className="fas fa-chevron-right"></i>
@@ -67,7 +67,7 @@ const PopularRoutesSection = () => {
                 <span>Pindi Saddar</span>
               </div>
               <Link
-                to="/routes/nust-to-pindi-saddar"
+                to="/search?startingPoint=Pindi Saddar"
                 className="btn btn-sm btn-outline-primary btn-hover-effect"
               >
                 <i className="fas fa-chevron-right"></i>
@@ -79,10 +79,7 @@ const PopularRoutesSection = () => {
               data-aos="fade-up"
               data-aos-delay="400"
             >
-              <Link
-                to="/popular-routes"
-                className="see-more-link link-hover-effect"
-              >
+              <Link to="/search" className="see-more-link link-hover-effect">
                 See our most popular rides
               </Link>
             </div>

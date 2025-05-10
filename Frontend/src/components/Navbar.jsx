@@ -59,6 +59,21 @@ const Navbar = () => {
     navigate("/");
   };
 
+  // Handle post ride navigation based on auth status
+  const handlePostRideClick = (e) => {
+    e.preventDefault();
+    if (user) {
+      navigate("/post");
+    } else {
+      navigate("/login", {
+        state: {
+          from: "/post",
+          message: "You must be logged in to post a ride",
+        },
+      });
+    }
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top fade-in">
       <div className="container">
@@ -82,22 +97,15 @@ const Navbar = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/post">
+              <a className="nav-link" href="#" onClick={handlePostRideClick}>
                 <i className="fas fa-plus-circle me-1"></i> Offer a Ride
-              </Link>
+              </a>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/help">
                 <i className="fas fa-question-circle me-1"></i> Help Center
               </Link>
             </li>
-            {isAdmin && (
-              <li className="nav-item">
-                <Link className="nav-link" to="/admin">
-                  <i className="fas fa-shield-alt me-1"></i> Admin
-                </Link>
-              </li>
-            )}
             <li className="nav-item">
               <button
                 className="btn"

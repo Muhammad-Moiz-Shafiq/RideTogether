@@ -62,7 +62,18 @@ const PostRide = () => {
   // Check if user is logged in when the component mounts
   useEffect(() => {
     const user = authService.getCurrentUser();
-    if (user && user.email) {
+    if (!user) {
+      // Redirect to login page with return URL
+      navigate("/login", {
+        state: {
+          from: "/post",
+          message: "You must be logged in to post a ride",
+        },
+      });
+      return;
+    }
+
+    if (user.email) {
       // Pre-fill email if user is logged in
       setFormData((prevData) => ({
         ...prevData,
@@ -70,7 +81,7 @@ const PostRide = () => {
         userName: `${user.firstName} ${user.lastName}` || "",
       }));
     }
-  }, []);
+  }, [navigate]);
 
   const showAlert = (type, message) => {
     setAlert({ show: true, type, message });

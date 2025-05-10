@@ -1,19 +1,26 @@
 import React, { useEffect } from "react";
 
 const Modal = ({
+  show = true,
   title,
   message,
+  children,
+  footer,
   confirmText = "Confirm",
   cancelText = "Cancel",
   onConfirm,
   onCancel,
+  onClose,
   confirmButtonClass = "btn-primary",
 }) => {
+  // Use onClose as fallback for onCancel for backward compatibility
+  const handleClose = onCancel || onClose || (() => {});
+
   // Handle escape key press
   useEffect(() => {
     const handleEscapeKey = (event) => {
       if (event.key === "Escape") {
-        onCancel();
+        handleClose();
       }
     };
 
@@ -24,14 +31,19 @@ const Modal = ({
       document.removeEventListener("keydown", handleEscapeKey);
       document.body.style.overflow = "auto";
     };
-  }, [onCancel]);
+  }, [handleClose]);
+
+  // Don't render if show is false
+  if (!show) {
+    return null;
+  }
 
   return (
     <div className="modal-wrapper">
       {/* Modal backdrop */}
       <div
         className="modal-backdrop-custom"
-        onClick={onCancel}
+        onClick={handleClose}
         style={{
           position: "fixed",
           top: 0,
@@ -56,15 +68,17 @@ const Modal = ({
           alignItems: "center",
           justifyContent: "center",
           zIndex: 1050,
+          padding: "15px",
         }}
       >
         <div
           className="modal-dialog shadow"
           style={{
             maxWidth: "500px",
-            margin: "1.75rem auto",
+            maxHeight: "90vh",
+            margin: "0 auto",
             position: "relative",
-            width: "auto",
+            width: "100%",
           }}
         >
           <div
@@ -74,6 +88,9 @@ const Modal = ({
               border: "none",
               borderRadius: "0.3rem",
               boxShadow: "0 0.5rem 1rem rgba(0, 0, 0, 0.15)",
+              maxHeight: "90vh",
+              display: "flex",
+              flexDirection: "column",
             }}
           >
             <div className="modal-header bg-light" style={{ padding: "1rem" }}>
@@ -81,33 +98,46 @@ const Modal = ({
               <button
                 type="button"
                 className="btn-close"
-                onClick={onCancel}
+                onClick={handleClose}
                 aria-label="Close"
               ></button>
             </div>
 
-            <div className="modal-body" style={{ padding: "1rem" }}>
-              <p className="mb-0">{message}</p>
+            <div
+              className="modal-body"
+              style={{
+                padding: "1rem",
+                overflowY: "auto",
+                maxHeight: "calc(90vh - 130px)", // Subtract header and footer height
+              }}
+            >
+              {children || <p className="mb-0">{message}</p>}
             </div>
 
             <div
               className="modal-footer bg-light"
               style={{ padding: "0.75rem" }}
             >
-              <button
-                type="button"
-                className="btn btn-outline-secondary"
-                onClick={onCancel}
-              >
-                {cancelText}
-              </button>
-              <button
-                type="button"
-                className={`btn ${confirmButtonClass}`}
-                onClick={onConfirm}
-              >
-                {confirmText}
-              </button>
+              {footer ? (
+                footer
+              ) : (
+                <>
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={handleClose}
+                  >
+                    {cancelText}
+                  </button>
+                  <button
+                    type="button"
+                    className={`btn ${confirmButtonClass}`}
+                    onClick={onConfirm}
+                  >
+                    {confirmText}
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>

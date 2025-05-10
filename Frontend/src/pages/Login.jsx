@@ -24,12 +24,15 @@ const Login = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
-  // Check for success message from registration
+  // Check for success message from registration or redirect message
   useEffect(() => {
     if (location.state?.message) {
       setSubmitError(location.state.message);
-      // Clear the message from location state
-      window.history.replaceState({}, document.title);
+      // Clear the message from location state but keep the 'from' path
+      window.history.replaceState(
+        { from: location.state.from },
+        document.title
+      );
     }
   }, [location]);
 
@@ -70,7 +73,10 @@ const Login = () => {
       try {
         setIsSubmitting(true);
         await authService.login(formData);
-        navigate("/"); // Navigate to home page after successful login
+
+        // Navigate to the 'from' path if it exists, otherwise navigate to home
+        const redirectPath = location.state?.from || "/";
+        navigate(redirectPath);
       } catch (error) {
         setSubmitError(error.message);
       } finally {
@@ -85,7 +91,14 @@ const Login = () => {
 
       <AuthCard>
         {submitError && (
-          <div className={`alert ${submitError.includes("successful") ? "alert-success" : "alert-danger"}`} role="alert">
+          <div
+            className={`alert ${
+              submitError.includes("successful")
+                ? "alert-success"
+                : "alert-danger"
+            }`}
+            role="alert"
+          >
             {submitError}
           </div>
         )}
@@ -113,8 +126,8 @@ const Login = () => {
           />
 
           <div className="button-group">
-            <AuthButton 
-              text={isSubmitting ? "LOGGING IN..." : "LOGIN"} 
+            <AuthButton
+              text={isSubmitting ? "LOGGING IN..." : "LOGIN"}
               className="login-btn"
               disabled={isSubmitting}
             />

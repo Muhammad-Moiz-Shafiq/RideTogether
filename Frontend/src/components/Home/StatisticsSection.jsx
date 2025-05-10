@@ -10,7 +10,7 @@ const StatisticsSection = () => {
               <div className="stat-icon">
                 <i className="fas fa-users fa-3x mb-3"></i>
               </div>
-              <h3 className="counter-value" data-count="5000">
+              <h3 className="counter-value" data-count="500">
                 0
               </h3>
               <p>Happy Students</p>
@@ -21,7 +21,7 @@ const StatisticsSection = () => {
               <div className="stat-icon">
                 <i className="fas fa-route fa-3x mb-3"></i>
               </div>
-              <h3 className="counter-value" data-count="12500">
+              <h3 className="counter-value" data-count="200">
                 0
               </h3>
               <p>Rides Completed</p>

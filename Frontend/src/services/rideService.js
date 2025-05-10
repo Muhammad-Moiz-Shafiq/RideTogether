@@ -12,6 +12,20 @@ const api = axios.create({
   },
 });
 
+// Add request interceptor to add auth token to all requests
+api.interceptors.request.use(
+  (config) => {
+    const user = authService.getCurrentUser();
+    if (user && user.token) {
+      config.headers.Authorization = `Bearer ${user.token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 // Helper function to get auth token and set authorization header
 const setAuthHeader = () => {
   const user = authService.getCurrentUser();
@@ -28,8 +42,7 @@ const setAuthHeader = () => {
 // Post a new ride
 const postRide = async (rideData) => {
   try {
-    const config = setAuthHeader();
-    const response = await api.post("/rides", rideData, config);
+    const response = await api.post("/rides", rideData);
     return response.data;
   } catch (error) {
     throw handleApiError(error);
@@ -49,8 +62,7 @@ const getAllRides = async () => {
 // Get the logged-in user's rides
 const getMyRides = async () => {
   try {
-    const config = setAuthHeader();
-    const response = await api.get("/rides/myrides", config);
+    const response = await api.get("/rides/myrides");
     return response.data;
   } catch (error) {
     throw handleApiError(error);
@@ -80,8 +92,7 @@ const getRideById = async (id) => {
 // Update a ride
 const updateRide = async (id, rideData) => {
   try {
-    const config = setAuthHeader();
-    const response = await api.put(`/rides/${id}`, rideData, config);
+    const response = await api.put(`/rides/${id}`, rideData);
     return response.data;
   } catch (error) {
     throw handleApiError(error);
@@ -91,8 +102,7 @@ const updateRide = async (id, rideData) => {
 // Update ride status
 const updateRideStatus = async (id, status) => {
   try {
-    const config = setAuthHeader();
-    const response = await api.put(`/rides/${id}/status`, { status }, config);
+    const response = await api.put(`/rides/${id}/status`, { status });
     return response.data;
   } catch (error) {
     throw handleApiError(error);
@@ -102,21 +112,55 @@ const updateRideStatus = async (id, status) => {
 // Delete a ride
 const deleteRide = async (id) => {
   try {
-    const user = authService.getCurrentUser();
-    if (!user || !user.token) {
-      throw new Error("Authentication required");
-    }
-
-    // Use direct headers object instead of config
-    const headers = {
-      Authorization: `Bearer ${user.token}`,
-      "Content-Type": "application/json",
-    };
-
-    const response = await axios.delete(`${API_URL}/rides/${id}`, { headers });
+    const response = await api.delete(`/rides/${id}`);
     return response.data;
   } catch (error) {
     console.error("Error deleting ride:", error);
+    throw handleApiError(error);
+  }
+};
+
+// Admin functions
+// Get all rides for admin (including inactive)
+const getAdminRides = async () => {
+  try {
+    const response = await api.get("/rides/admin/all");
+    return response.data;
+  } catch (error) {
+    throw handleApiError(error);
+  }
+};
+
+// Flag a ride
+const flagRide = async (id, flagReason) => {
+  try {
+    console.log("Calling API to flag ride:", id, "with reason:", flagReason);
+    const response = await api.put(`/rides/${id}/flag`, { flagReason });
+    console.log("Flag ride API response:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error in flagRide service:", error);
+    console.error("Error response:", error.response?.data);
+    throw handleApiError(error);
+  }
+};
+
+// Moderate a ride
+const moderateRide = async (id, moderationData) => {
+  try {
+    const response = await api.put(`/rides/${id}/moderate`, moderationData);
+    return response.data;
+  } catch (error) {
+    throw handleApiError(error);
+  }
+};
+
+// Admin delete ride
+const adminDeleteRide = async (id) => {
+  try {
+    const response = await api.delete(`/rides/admin/${id}`);
+    return response.data;
+  } catch (error) {
     throw handleApiError(error);
   }
 };
@@ -140,6 +184,10 @@ const rideService = {
   updateRide,
   updateRideStatus,
   deleteRide,
+  getAdminRides,
+  flagRide,
+  moderateRide,
+  adminDeleteRide,
 };
 
 export default rideService;

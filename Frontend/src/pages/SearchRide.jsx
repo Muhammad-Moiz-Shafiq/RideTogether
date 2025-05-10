@@ -48,50 +48,104 @@ const SearchRide = () => {
   useEffect(() => {
     // Read query params and pre-fill filters if present
     const params = new URLSearchParams(location.search);
-    const from = params.get("from") || "";
-    const to = params.get("to") || "";
+    const startingPoint = params.get("startingPoint") || "";
+    const destination = params.get("destination") || "";
     const passengers = params.get("passengers") || "";
     const time = params.get("time") || "";
-    setFilters((prev) => ({
-      ...prev,
-      startingPoint: from,
-      destination: to,
+
+    const newFilters = {
+      ...filters,
+      startingPoint: startingPoint,
+      destination: destination,
       passengerCapacity: passengers ? parseInt(passengers) : "",
-      departureTime: time === "morning" ? "08:00" : time === "evening" ? "16:00" : ""
-    }));
+      departureTime:
+        time === "morning" ? "08:00" : time === "evening" ? "16:00" : "",
+    };
+
+    setFilters(newFilters);
+
+    // Automatically trigger search if startingPoint or destination is provided
+    if (startingPoint || destination) {
+      setTimeout(() => {
+        // Manually perform search using the API
+        const performSearch = async () => {
+          try {
+            setLoading(true);
+            console.log("Searching with filters:", newFilters);
+
+            // Build the search query
+            const apiFilters = {};
+
+            if (startingPoint) {
+              apiFilters.startingPoint = startingPoint;
+            }
+
+            if (destination) {
+              apiFilters.destination = destination;
+            }
+
+            console.log("API filters:", apiFilters);
+
+            // Get filtered rides from API
+            const results = await rideService.getRidesByFilter(apiFilters);
+            console.log("Search results:", results);
+
+            // Apply current sort to the filtered results
+            const sortedResults = sortRides(results, currentSort);
+            setFilteredRides(sortedResults);
+            setLoading(false);
+
+            // Scroll to results section
+            document
+              .getElementById("search-section")
+              ?.scrollIntoView({ behavior: "smooth" });
+          } catch (err) {
+            console.error("Search error:", err);
+            setError(err.message);
+            setLoading(false);
+          }
+        };
+
+        performSearch();
+      }, 300);
+    }
   }, [location.search]);
 
   // Apply filters
   const applyFilters = async () => {
     try {
       setLoading(true);
+      console.log("Applying filters:", filters);
 
       // Prepare filter parameters for the API
       const apiFilters = {};
 
-      // Apply location filters
-      if (filters.startingPoint) {
+      // Only add non-empty filters
+      if (filters.startingPoint && filters.startingPoint.trim() !== "") {
         apiFilters.startingPoint = filters.startingPoint;
       }
 
-      if (filters.destination) {
+      if (filters.destination && filters.destination.trim() !== "") {
         apiFilters.destination = filters.destination;
       }
 
-      if (filters.vehicleType) {
+      if (filters.vehicleType && filters.vehicleType !== "") {
         apiFilters.vehicleType = filters.vehicleType;
       }
 
+      console.log("API filters:", apiFilters);
+
       // Get filtered rides from API
       let results = await rideService.getRidesByFilter(apiFilters);
+      console.log("API search results:", results);
 
       // Additional client-side filtering
-      if (filters.budget) {
+      if (filters.budget && filters.budget !== "") {
         const budget = parseInt(filters.budget);
         results = results.filter((ride) => parseInt(ride.price) <= budget);
       }
 
-      if (filters.departureTime) {
+      if (filters.departureTime && filters.departureTime !== "") {
         results = results.filter((ride) => {
           const departureHour = parseInt(ride.departureTime.split(":")[0]);
 
@@ -116,11 +170,14 @@ const SearchRide = () => {
         );
       }
 
+      console.log("Final filtered results:", results);
+
       // Apply current sort to the filtered results
       const sortedResults = sortRides(results, currentSort);
       setFilteredRides(sortedResults);
       setLoading(false);
     } catch (err) {
+      console.error("Filter application error:", err);
       setError(err.message);
       setLoading(false);
     }
