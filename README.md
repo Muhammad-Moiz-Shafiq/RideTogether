@@ -48,7 +48,7 @@ To view the application:
    Navigate to the project directory:
 
    ```bash
-       cd RideTogether
+       cd RideTogether/frontend
    ````
 
    install all required dependencies using command
