@@ -178,9 +178,13 @@ const SearchForm = ({
                 min="1"
                 placeholder="Minimum passenger capacity"
                 value={filters.passengerCapacity}
-                onChange={(e) =>
-                  handleFilterChange("passengerCapacity", e.target.value)
-                }
+                onChange={(e) => {
+                  handleFilterChange("passengerCapacity", e.target.value);
+                  // If passenger capacity is set and vehicle type is not, default to car
+                  if (e.target.value && !filters.vehicleType) {
+                    handleFilterChange("vehicleType", "car");
+                  }
+                }}
                 disabled={filters.vehicleType === "bike"}
               />
             </div>

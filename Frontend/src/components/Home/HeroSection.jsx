@@ -7,32 +7,32 @@ const HeroSection = () => {
     startingPoint: "",
     destination: "",
     time: "morning",
-    passengers: "1 passenger"
+    passengers: "1 passenger",
   });
   const [showMap, setShowMap] = useState(false);
   const [mapField, setMapField] = useState(null); // 'startingPoint' or 'destination'
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleTimeChange = (e) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      time: e.target.value
+      time: e.target.value,
     }));
   };
 
   // Handle map selection
   const handleMapSelect = ({ address }) => {
     if (mapField) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        [mapField]: address
+        [mapField]: address,
       }));
     }
     setShowMap(false);
@@ -41,13 +41,18 @@ const HeroSection = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // Implement search functionality
+
+    // Extract the number of passengers from the string
+    const numPassengers = formData.passengers.split(" ")[0];
+
+    // Create URL parameters with correct parameter names that match SearchRide.jsx expectations
     const params = new URLSearchParams({
-      from: formData.startingPoint,
-      to: formData.destination,
-      passengers: formData.passengers,
-      time: formData.time
+      startingPoint: formData.startingPoint,
+      destination: formData.destination,
+      passengers: numPassengers,
+      time: formData.time,
     });
+
     window.location.href = `/search?${params.toString()}`;
   };
 
@@ -158,8 +163,12 @@ const HeroSection = () => {
                         value={formData.time}
                         onChange={handleTimeChange}
                       >
-                        <option value="morning">Morning (8:00 - 11:00 AM)</option>
-                        <option value="evening">Evening (4:00 - 6:00 PM)</option>
+                        <option value="morning">
+                          Morning (8:00 - 11:00 AM)
+                        </option>
+                        <option value="evening">
+                          Evening (4:00 - 6:00 PM)
+                        </option>
                       </select>
                     </div>
                   </div>
@@ -170,7 +179,7 @@ const HeroSection = () => {
                       <span className="input-group-text bg-light">
                         <i className="fas fa-user-friends"></i>
                       </span>
-                      <select 
+                      <select
                         className="form-select"
                         name="passengers"
                         value={formData.passengers}
@@ -185,7 +194,10 @@ const HeroSection = () => {
                   </div>
 
                   <div className="col-12">
-                    <button className="btn btn-primary w-100 py-2" type="submit">
+                    <button
+                      className="btn btn-primary w-100 py-2"
+                      type="submit"
+                    >
                       <i className="fas fa-search me-2"></i> Search
                     </button>
                   </div>

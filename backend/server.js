@@ -13,10 +13,9 @@ connectDB();
 const app = express();
 
 // Middleware
-app.use(cors());
-// Increase JSON payload size limit to 50mb to handle base64 encoded images
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: false, limit: "50mb" }));
+app.use(cors());
 
 // Routes
 app.use("/api/rides", rideRoutes);

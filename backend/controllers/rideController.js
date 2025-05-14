@@ -109,6 +109,7 @@ const getRides = asyncHandler(async (req, res) => {
     .populate("rider", "firstName lastName email")
     .sort({ createdAt: -1 })
     .limit(50);
+
   res.status(200).json(rides);
 });
 
@@ -196,7 +197,10 @@ const getRidesByFilter = asyncHandler(async (req, res) => {
     filter.vehicleType = vehicleType;
   }
 
-  const rides = await Ride.find(filter).sort({ createdAt: -1 });
+  const rides = await Ride.find(filter)
+    .populate("rider", "firstName lastName email")
+    .sort({ createdAt: -1 });
+
   res.status(200).json(rides);
 });
 

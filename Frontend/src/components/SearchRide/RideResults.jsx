@@ -67,78 +67,80 @@ const RideResults = ({ rides, currentSort, handleSortChange }) => {
             Available Rides{" "}
             <span className="badge bg-primary ms-2">{rides.length}</span>
           </h3>
-          <div className="d-flex justify-content-end align-items-center mb-3">
-            <div className="dropdown">
-              <button
-                className="btn btn-outline-secondary dropdown-toggle"
-                type="button"
-                id="sortDropdown"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Sort by:{" "}
-                {currentSort === "price-low"
-                  ? "Price: Low to High"
-                  : currentSort === "price-high"
-                  ? "Price: High to Low"
-                  : currentSort === "departure-early"
-                  ? "Departure: Earliest"
-                  : currentSort === "departure-late"
-                  ? "Departure: Latest"
-                  : "Sort by"}
-              </button>
-              <ul className="dropdown-menu" aria-labelledby="sortDropdown">
-                <li>
-                  <a
-                    className="dropdown-item"
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleSortChange("price-low");
-                    }}
-                  >
-                    Price: Low to High
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className="dropdown-item"
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleSortChange("price-high");
-                    }}
-                  >
-                    Price: High to Low
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className="dropdown-item"
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleSortChange("departure-early");
-                    }}
-                  >
-                    Departure: Earliest
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className="dropdown-item"
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleSortChange("departure-late");
-                    }}
-                  >
-                    Departure: Latest
-                  </a>
-                </li>
-              </ul>
+          {rides.length > 0 && (
+            <div className="d-flex justify-content-end align-items-center mb-3">
+              <div className="dropdown">
+                <button
+                  className="btn btn-outline-secondary dropdown-toggle"
+                  type="button"
+                  id="sortDropdown"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Sort by:{" "}
+                  {currentSort === "price-low"
+                    ? "Price: Low to High"
+                    : currentSort === "price-high"
+                    ? "Price: High to Low"
+                    : currentSort === "departure-early"
+                    ? "Departure: Earliest"
+                    : currentSort === "departure-late"
+                    ? "Departure: Latest"
+                    : "Sort by"}
+                </button>
+                <ul className="dropdown-menu" aria-labelledby="sortDropdown">
+                  <li>
+                    <a
+                      className="dropdown-item"
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleSortChange("price-low");
+                      }}
+                    >
+                      Price: Low to High
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className="dropdown-item"
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleSortChange("price-high");
+                      }}
+                    >
+                      Price: High to Low
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className="dropdown-item"
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleSortChange("departure-early");
+                      }}
+                    >
+                      Departure: Earliest
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className="dropdown-item"
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleSortChange("departure-late");
+                      }}
+                    >
+                      Departure: Latest
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 
@@ -389,12 +391,19 @@ const RideResults = ({ rides, currentSort, handleSortChange }) => {
             );
           })
         ) : (
-          <div id="no-results" className="text-center py-5">
-            <i className="fas fa-search fa-3x mb-3 text-secondary"></i>
-            <h4>No rides match your search criteria</h4>
+          <div className="text-center py-5">
+            <div className="mb-3">
+              <i className="fas fa-search fa-3x text-muted"></i>
+            </div>
+            <h4>No rides found</h4>
             <p className="text-muted">
-              Try adjusting your filters or check back later for new rides
+              Try adjusting your filters or post a new ride if you're offering
+              transport.
             </p>
+            <a href="/post" className="btn btn-primary mt-2">
+              <i className="fas fa-plus me-2"></i>
+              Post a Ride
+            </a>
           </div>
         )}
       </div>

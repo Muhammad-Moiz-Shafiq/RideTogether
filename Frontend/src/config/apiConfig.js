@@ -20,13 +20,32 @@ const api = axios.create({
 // Add request interceptor to add auth token to all requests
 api.interceptors.request.use(
   (config) => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user && user.token) {
-      config.headers.Authorization = `Bearer ${user.token}`;
+    // Get user from local storage
+    const userJson = localStorage.getItem("user");
+    if (userJson) {
+      try {
+        const user = JSON.parse(userJson);
+        if (user && user.token) {
+          config.headers.Authorization = `Bearer ${user.token}`;
+        }
+      } catch (error) {
+        console.error("Error parsing user from localStorage:", error);
+      }
     }
     return config;
   },
   (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Add response interceptor to handle common errors
+api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    console.error("API Error:", error.response?.data || error.message);
     return Promise.reject(error);
   }
 );
