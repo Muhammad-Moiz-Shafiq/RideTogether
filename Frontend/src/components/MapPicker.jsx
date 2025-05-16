@@ -4,7 +4,12 @@ import "leaflet/dist/leaflet.css";
 
 const defaultPosition = [33.6844, 73.0479]; // Islamabad as default
 
-const MapPicker = ({ onSelect, initialPosition = defaultPosition, onClose, type = "start" }) => {
+const MapPicker = ({
+  onSelect,
+  initialPosition = defaultPosition,
+  onClose,
+  type = "start",
+}) => {
   const mapRef = useRef(null);
   const leafletMap = useRef(null);
   const markerRef = useRef(null);
@@ -19,7 +24,8 @@ const MapPicker = ({ onSelect, initialPosition = defaultPosition, onClose, type 
     if (!leafletMap.current) {
       leafletMap.current = L.map(mapRef.current).setView(initialPosition, 13);
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(leafletMap.current);
 
       // Only use geolocation for starting point
@@ -28,7 +34,10 @@ const MapPicker = ({ onSelect, initialPosition = defaultPosition, onClose, type 
           (pos) => {
             const { latitude, longitude } = pos.coords;
             leafletMap.current.setView([latitude, longitude], 15);
-            L.circle([latitude, longitude], { radius: 30, color: 'blue' }).addTo(leafletMap.current);
+            L.circle([latitude, longitude], {
+              radius: 30,
+              color: "blue",
+            }).addTo(leafletMap.current);
           },
           () => {},
           { enableHighAccuracy: true }
@@ -69,12 +78,14 @@ const MapPicker = ({ onSelect, initialPosition = defaultPosition, onClose, type 
 
   // Search handler
   const handleSearch = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault(); // Handle event if provided
     if (!search.trim()) return;
     setSearching(true);
     setError("");
     try {
-      const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(search)}&format=json&limit=1`;
+      const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+        search
+      )}&format=json&limit=1`;
       const response = await fetch(url);
       const data = await response.json();
       if (data && data.length > 0) {
@@ -85,7 +96,9 @@ const MapPicker = ({ onSelect, initialPosition = defaultPosition, onClose, type 
         if (markerRef.current) {
           markerRef.current.setLatLng([latNum, lonNum]);
         } else {
-          markerRef.current = L.marker([latNum, lonNum]).addTo(leafletMap.current);
+          markerRef.current = L.marker([latNum, lonNum]).addTo(
+            leafletMap.current
+          );
         }
         // Optionally, auto-select on search:
         // if (onSelect) onSelect({ address: display_name, lat: latNum, lng: lonNum });
@@ -102,74 +115,114 @@ const MapPicker = ({ onSelect, initialPosition = defaultPosition, onClose, type 
   return (
     <>
       {/* Fixed overlay backdrop */}
-      <div style={{ 
-        position: "fixed", 
-        top: 0, 
-        left: 0, 
-        width: "100%", 
-        height: "100%", 
-        background: "rgba(0,0,0,0.5)", 
-        zIndex: 9998,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center"
-      }} />
-      
+      <div
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          background: "rgba(0,0,0,0.5)",
+          zIndex: 9998,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      />
+
       {/* Modal Content */}
-      <div style={{ 
-        position: "fixed",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        background: "#fff",
-        width: "85%",
-        maxWidth: "600px",
-        borderRadius: "12px",
-        boxShadow: "0 5px 15px rgba(0,0,0,0.3)",
-        zIndex: 9999,
-        overflow: "hidden"
-      }}>
+      <div
+        style={{
+          position: "fixed",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          background: "#fff",
+          width: "85%",
+          maxWidth: "600px",
+          borderRadius: "12px",
+          boxShadow: "0 5px 15px rgba(0,0,0,0.3)",
+          zIndex: 9999,
+          overflow: "hidden",
+        }}
+      >
         {/* Search Bar */}
-        <div style={{
-          padding: "12px 12px 8px 12px",
-          borderBottom: "1px solid #eee"
-        }}>
-          <form onSubmit={handleSearch} style={{ display: "flex", gap: "8px" }}>
+        <div
+          style={{
+            padding: "12px 12px 8px 12px",
+            borderBottom: "1px solid #eee",
+          }}
+        >
+          <div style={{ display: "flex", gap: "8px" }}>
             <input
               type="text"
               className="form-control"
               placeholder="Search for a place or address..."
               value={search}
-              onChange={e => setSearch(e.target.value)}
+              onChange={(e) => setSearch(e.target.value)}
               style={{ flex: 1 }}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleSearch(e);
+                }
+              }}
             />
-            <button 
-              className="btn btn-primary" 
-              type="submit" 
+            <button
+              className="btn btn-primary"
+              type="button"
+              onClick={handleSearch}
               disabled={searching}
             >
               {searching ? "Searching..." : "Search"}
             </button>
-          </form>
+          </div>
         </div>
-        
+
         {/* Map */}
         <div style={{ position: "relative" }}>
           <div ref={mapRef} style={{ width: "100%", height: "350px" }} />
           {loading && (
-            <div style={{ position: "absolute", top: "20px", left: "20px", background: "#fff", padding: "8px", borderRadius: "4px", boxShadow: "0 2px 5px rgba(0,0,0,0.2)" }}>
+            <div
+              style={{
+                position: "absolute",
+                top: "20px",
+                left: "20px",
+                background: "#fff",
+                padding: "8px",
+                borderRadius: "4px",
+                boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
+              }}
+            >
               <span>Loading address...</span>
             </div>
           )}
           {error && (
-            <div style={{ position: "absolute", top: "20px", left: "20px", background: "#fff0f0", color: "#b00", padding: "8px", borderRadius: "4px", boxShadow: "0 2px 5px rgba(0,0,0,0.2)" }}>
+            <div
+              style={{
+                position: "absolute",
+                top: "20px",
+                left: "20px",
+                background: "#fff0f0",
+                color: "#b00",
+                padding: "8px",
+                borderRadius: "4px",
+                boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
+              }}
+            >
               {error}
             </div>
           )}
         </div>
-        
+
         {/* Footer */}
-        <div style={{ padding: "12px 16px", borderTop: "1px solid #eee", textAlign: "right" }}>
+        <div
+          style={{
+            padding: "12px 16px",
+            borderTop: "1px solid #eee",
+            textAlign: "right",
+          }}
+        >
           <button className="btn btn-secondary" onClick={onClose}>
             Cancel
           </button>
@@ -179,4 +232,4 @@ const MapPicker = ({ onSelect, initialPosition = defaultPosition, onClose, type 
   );
 };
 
-export default MapPicker; 
+export default MapPicker;
