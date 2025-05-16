@@ -87,7 +87,7 @@ const Footer = () => {
             <ul className="list-unstyled footer-links">
               <li className="text-white">
                 <i className="fas fa-envelope me-2"></i>{" "}
-                support@ridetogether.edu.pk
+                supridetogether@gmail.com
               </li>
               <li className="text-white">
                 <i className="fas fa-phone me-2"></i> +92 51 1234 5678
@@ -100,7 +100,7 @@ const Footer = () => {
             <div className="mt-3">
               <select className="form-select form-select-sm bg-dark text-white border-secondary">
                 <option selected>English</option>
-                <option>Urdu</option>
+                
               </select>
             </div>
           </div>
