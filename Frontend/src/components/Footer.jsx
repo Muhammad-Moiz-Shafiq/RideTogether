@@ -49,7 +49,7 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/" className="text-white">
+                <Link to="/about" className="text-white">
                   About Us
                 </Link>
               </li>
@@ -60,22 +60,22 @@ const Footer = () => {
             <h6>Resources</h6>
             <ul className="list-unstyled footer-links">
               <li>
-                <Link to="/help" className="text-white">
+                <Link to="/how-it-works" className="text-white">
                   How It Works
                 </Link>
               </li>
               <li>
-                <Link to="/help" className="text-white">
+                <Link to="/safety-guidelines" className="text-white">
                   Safety Guidelines
                 </Link>
               </li>
               <li>
-                <Link to="/" className="text-white">
+                <Link to="/terms-of-service" className="text-white">
                   Terms of Service
                 </Link>
               </li>
               <li>
-                <Link to="/" className="text-white">
+                <Link to="/privacy-policy" className="text-white">
                   Privacy Policy
                 </Link>
               </li>
