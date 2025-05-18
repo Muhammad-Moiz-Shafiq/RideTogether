@@ -3,7 +3,7 @@
 // Note: For Vite to expose env variables to the client, they must be prefixed with VITE_
 const API_URL = import.meta.env.VITE_API_URL
   ? import.meta.env.VITE_API_URL
-  : "http://localhost:5000/api";
+  : "https://ridetogetherbackend-production.up.railway.app";
 
 console.log("API URL being used:", API_URL);
 
