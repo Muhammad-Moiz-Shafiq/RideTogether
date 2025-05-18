@@ -10,7 +10,7 @@ const Footer = () => {
             <h5>
               <i className="fas fa-car-side me-2"></i> RideTogether
             </h5>
-            <p className="text-muted">
+            <p className="text-white">
               Connecting NUST students for smarter, affordable, and eco-friendly
               commuting.
             </p>
@@ -100,7 +100,6 @@ const Footer = () => {
             <div className="mt-3">
               <select className="form-select form-select-sm bg-dark text-white border-secondary">
                 <option selected>English</option>
-                
               </select>
             </div>
           </div>
@@ -110,7 +109,7 @@ const Footer = () => {
 
         <div className="text-center text-white">
           <small>
-            &copy; 2023 RideTogether. All rights reserved. Built for NUST
+            &copy; 2025 RideTogether. All rights reserved. Built for NUST
             community.
           </small>
         </div>

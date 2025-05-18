@@ -127,13 +127,13 @@ npm run dev
 
 ## 👥 Team
 
-| Name                   | ID     | Contributions                                           |
-| ---------------------- | ------ | ------------------------------------------------------- |
-| Muhammad Haseeb Ul Haq | 454512 | Homepage UI, Bootstrap components, dark mode toggle     |
-| Muhammad Moiz          | 464192 | Help center layout, dynamic FAQs, scroll-to-top feature |
-| Muhammad Omar Farooq   | 461846 | Ride search page, filtering logic implementation        |
-| Obaid Satti            | 464870 | Login/signup pages styling and validation               |
-| Abdul Ahad             | 457564 | Multi-step ride posting form, README documentation      |
+| Name                   | ID     |
+| ---------------------- | ------ |
+| Muhammad Haseeb Ul Haq | 454512 |
+| Muhammad Moiz          | 464192 |
+| Muhammad Omar Farooq   | 461846 |
+| Obaid Satti            | 464870 |
+| Abdul Ahad             | 457564 |
 
 ## 📱 Future Enhancements
 

@@ -194,12 +194,12 @@ const ContactDetailsForm = ({ formData, handleInputChange }) => {
               />
               <label className="form-check-label" htmlFor="termsAgreed">
                 I agree to the
-                <a href="#" className="link-primary">
+                <a href="/terms-of-service" className="link-primary">
                   {" "}
                   terms and conditions
                 </a>
                 and
-                <a href="#" className="link-primary">
+                <a href="/privacy-policy" className="link-primary">
                   {" "}
                   privacy policy
                 </a>
