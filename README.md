@@ -1,68 +1,154 @@
-# RideTogether
-
-**RideTogether** is a react based carpooling web application developed as an end-semester project for Spring 2025. Designed specifically for students of the National University of Sciences and Technology (NUST), it facilitates efficient and eco-friendly commuting by connecting drivers and passengers within the university community.
+# RideTogether 🚗
 
 ![RideTogether Logo](./Frontend/src/images/logo.PNG)
 
-## 🚀 Features
+**RideTogether** is a modern carpooling web application specifically designed for students at the National University of Sciences and Technology (NUST). The platform enables students to share rides, reduce transportation costs, decrease carbon emissions, and build community connections.
 
-- **User Authentication**: Secure sign-up and login functionalities.
-- **Ride Posting**: Drivers can post available rides with details like destination, date, and time.
-- **Ride Searching**: Passengers can search for available rides based on their preferences.
-- **Responsive Design**: Ensures usability across various devices.
-- **Help Center**: Provides assistance and FAQs for users.
-- **Password Recovery**: Allows users to reset forgotten passwords.
+## 🌐 Live Demo
 
-## 🛠️ Technologies Used
+[View Live Demo](https://ridetogether.vercel.app)
 
-- **React**: Structuring the web pages and implementing interactive functionality.
-- **BootStrap & CSS3**: Styling the web pages.
-- **Responsive Web Design**: Ensuring compatibility across devices.
+## 📋 Overview
 
-## 👥 Team Members
+RideTogether connects drivers who have available seats with passengers headed in the same direction. The application features an intuitive user interface, comprehensive search functionality, and secure account management to create a seamless carpooling experience for university students.
 
-- Muhammad Moiz
-- Muhammad Haseeb ul Haq
-- Abdul Ahad
-- Obaid Satti
-- Muhammad Omar Farooq
+## ✨ Key Features
 
-## Group Contributions
+- **User Authentication** - Secure registration, login, email verification, and password recovery
+- **Ride Management** - Post, edit, and delete ride offers with detailed information
+- **Advanced Search** - Find rides based on location, time, date, and passenger capacity
+- **Interactive Maps** - Select exact pickup and drop-off locations using interactive maps
+- **Profile Management** - View and edit personal information and ride history
+- **Responsive Design** - Fully functional experience across desktop and mobile devices
+- **Admin Dashboard** - Content and user management for platform administrators
+- **Help Center** - FAQs and support information for platform users
 
-| Name                   | Qalam ID | Contributions                                                                                     |
-| ---------------------- | -------- | ------------------------------------------------------------------------------------------------- |
-| Muhammad Haseeb Ul Haq | 454512   | Designed the homepage UI, implemented Bootstrap components, and dark mode toggle                  |
-| Muhammad Moiz          | 464192   | Worked on the help center layout, dynamic FAQs, and scroll-to-top feature                         |
-| Muhammad Omar Farooq   | 461846   | Created the ride search page, implemented filtering logic in `SearchRide.jsx`                     |
-| Obaid Satti            | 464870   | Handled login/signup pages styling and validation                                                 |
-| Abdul Ahad             | 457564   | Developed the multi-step ride posting form, wrote `PostRide.js`, and created the `README.md` file |
+## 🛠️ Technology Stack
 
-## 📌 Getting Started
+### Frontend
 
-To view the application:
+- **React** (v19) - Modern UI library for building the user interface
+- **React Router** - For routing and navigation
+- **Axios** - For API requests
+- **Leaflet** - For interactive maps integration
+- **Bootstrap** - For responsive layout and UI components
+- **AOS** - For scroll animations
+- **Vite** - For fast development and building
 
-1. Clone the repository:
+### Backend
 
-   ````bash
-   git clone https://github.com/Muhammad-Moiz-Shafiq/RideTogether.git
-   Navigate to the project directory:
+- **Node.js** - JavaScript runtime
+- **Express** - Web application framework
+- **MongoDB** - NoSQL database for storing application data
+- **Mongoose** - MongoDB object modeling
+- **JWT** - For secure authentication
+- **Bcrypt** - For password hashing
+- **Nodemailer** - For email notifications
 
-   ```bash
-       cd RideTogether/frontend
-   ````
+## 🔍 Core Functionality
 
-   install all required dependencies using command
+- **Ride Posting**: Drivers can create ride listings with details about:
+
+  - Route (start location, destination, stops)
+  - Schedule (date, time, frequency)
+  - Vehicle information (type, capacity, details)
+  - Cost and preferences
+
+- **Ride Finding**: Passengers can:
+  - Search available rides with multiple filters
+  - View detailed ride information
+  - Contact ride providers
+  - Manage their ride history
+
+## 🔄 Application Workflow
+
+1. Users register and create profiles
+2. Drivers post rides with relevant details
+3. Passengers search for rides matching their requirements
+4. Riders connect through the platform
+5. Both parties provide feedback after completed rides
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v14 or newer)
+- MongoDB (local installation or MongoDB Atlas account)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository
 
 ```bash
-    npm install
+git clone https://github.com/MuhammadHaseebUlHaqq/RideTogether.git
+cd RideTogether
 ```
 
-then run below command to start your website
+2. Install dependencies
 
 ```bash
-    npm run dev
+# Install root dependencies
+npm install
+
+# Install frontend dependencies
+cd Frontend
+npm install
+
+# Install backend dependencies
+cd ../backend
+npm install
 ```
 
-finally, go to the link provided in terminal
+3. Configure environment variables
 
-## Thank You!
+```bash
+# In the backend folder, create a .env file with:
+NODE_ENV=development
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+```
+
+4. Run the application
+
+```bash
+# Run backend only
+cd backend
+npm run server
+
+# Run frontend only
+cd Frontend
+npm run dev
+
+# Run both concurrently (from backend folder)
+npm run dev
+```
+
+## 👥 Team
+
+| Name                   | ID     | Contributions                                           |
+| ---------------------- | ------ | ------------------------------------------------------- |
+| Muhammad Haseeb Ul Haq | 454512 | Homepage UI, Bootstrap components, dark mode toggle     |
+| Muhammad Moiz          | 464192 | Help center layout, dynamic FAQs, scroll-to-top feature |
+| Muhammad Omar Farooq   | 461846 | Ride search page, filtering logic implementation        |
+| Obaid Satti            | 464870 | Login/signup pages styling and validation               |
+| Abdul Ahad             | 457564 | Multi-step ride posting form, README documentation      |
+
+## 📱 Future Enhancements
+
+- Real-time notifications
+- In-app messaging system
+- Ride ratings and reviews
+- Payment integration
+- Mobile applications (iOS/Android)
+- Ride scheduling and calendar integration
+- Enhanced analytics for route optimization
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+## 📞 Contact
+
+For questions, feedback, or support, please [open an issue](https://github.com/MuhammadHaseebUlHaqq/RideTogether/issues) on GitHub.
