@@ -93,7 +93,7 @@ npm install
 
 # Install frontend dependencies
 cd Frontend
-npm install
+npm install --force
 
 # Install backend dependencies
 cd ../backend
